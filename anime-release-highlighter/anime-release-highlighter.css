@@ -1,0 +1,23 @@
+@namespace url(http://www.w3.org/1999/xhtml);
+
+@-moz-document url("http://www.animefreak.tv/tracker"), url-prefix("http://www.animefreak.tv/tracker"){
+
+h1, .view-header {
+  display: none;
+}
+ 
+#userscript-arh-container {
+  padding: 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.userscript-arh-highlight {
+  background-color: #000 !important;
+  color: #fff;
+}
+
+.userscript-arh-highlight > td > a {
+	color: #fff;
+}
+}
