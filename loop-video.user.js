@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Loop video
-// @namespace   sc4r4b@toshi
+// @namespace   https://github.com/bakuzan/user-scripts
 // @author      Bakuzan
 // @description Automatically enables looping on Webm videos and provides context menu option to toggle loop for any html5 video tag.
 // @include		https://gfycat.com/*

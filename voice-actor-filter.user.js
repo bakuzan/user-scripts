@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         MAL Voice role filter
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/bakuzan/user-scripts
 // @version      0.2
 // @description  Filter MAL voice actor roles by your MAL list anime.
 // @author       Bakuzan

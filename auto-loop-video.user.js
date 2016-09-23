@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Auto loop video
-// @namespace   sc4r4b@toshi
+// @namespace   https://github.com/bakuzan/user-scripts
 // @author      Bakuzan
 // @description Automatically enables looping on Webm videos.
 // @include		https://gfycat.com/*

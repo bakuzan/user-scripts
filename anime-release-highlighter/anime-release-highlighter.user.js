@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
-// @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
+// @version      0.2.0
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak]
 // @author       Bakuzan
 // @match		 http://www.animefreak.tv/tracker
@@ -12,7 +12,8 @@
 (function() {
     'use strict';
 	  	    
-	var RELEASE_COUNT = 0,
+	var watchList = [],
+		RELEASE_COUNT = 0,
 		REGEX = '\/\W+\/g',
 		HIGHLIGHT_CLASS = ' userscript-arh-highlight',
 		CONTAINER_ID = 'userscript-arh-container';
@@ -37,18 +38,25 @@
         }
 		return itemLowerCase;
 	}
-    
+    GM_xmlhttpRequest({
+		method: "GET",
+		url: "https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-spellings.json",
+		onload: function(response) {
+			var data = eval(`(${response.responseText})`),
+				series = data.names;
+			for(var i = 0, len = series.length; i < len; i++) {
+				readingList.push(cleanText(series[i]));
+			}
+		}
+	});
+	
     GM_xmlhttpRequest({
         method: "GET",
         url: "http://myanimelist.net/malappinfo.php?u=bakuzan&status=all&type=anime",
         onload: function(response) {
-			//Pre-added series that aren't on MAL, or are spelled differently.
-            var watchList = [
-				cleanText('Saiki Kusuo no Psi-nan'),cleanText('Naruto Shippuuden'),cleanText('Macross Delta')
-			],
-			xml = response.responseXML,
-			nodes = xml.evaluate("//myanimelist/anime[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
-			result = nodes.iterateNext();
+            var xml = response.responseXML,
+				nodes = xml.evaluate("//myanimelist/anime[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
+				result = nodes.iterateNext();
             while (result) {
                 watchList.push(cleanText(result.nodeValue));
                 result = nodes.iterateNext();
