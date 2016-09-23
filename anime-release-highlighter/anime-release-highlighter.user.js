@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.2.0
+// @version      0.2.1
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak]
 // @author       Bakuzan
 // @match		 http://www.animefreak.tv/tracker
@@ -45,7 +45,7 @@
 			var data = eval(`(${response.responseText})`),
 				series = data.names;
 			for(var i = 0, len = series.length; i < len; i++) {
-				readingList.push(cleanText(series[i]));
+				watchList.push(cleanText(series[i]));
 			}
 		}
 	});
