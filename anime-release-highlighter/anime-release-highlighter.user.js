@@ -44,8 +44,7 @@
         onload: function(response) {
 			//Pre-added series that aren't on MAL, or are spelled differently.
             var watchList = [
-				cleanText('Saiki Kusuo no Psi-nan'),cleanText('Naruto Shippuuden'),
-				cleanText('Fate/kaleid liner Prisma Illya 3rei!!'),cleanText('Macross Delta')
+				cleanText('Saiki Kusuo no Psi-nan'),cleanText('Naruto Shippuuden'),cleanText('Macross Delta')
 			],
 			xml = response.responseXML,
 			nodes = xml.evaluate("//myanimelist/anime[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
