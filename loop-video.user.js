@@ -7,26 +7,25 @@
 // @include     file:///*
 // @include     *.webm
 // @run-at      document-start
-// @version     0.7
+// @version     0.1.1
 // ==/UserScript==
 
 (function() {
     'use strict';
     
-    var CHECK = '\u2713',
-		TARGET_NAME = 'userscript-loop-video',
+    var TARGET_NAME = 'userscript-loop-video',
 		ATTRIBUTE_NAME = 'videoClass',
 		body = document.body;
     body.addEventListener('contextmenu', initMenu, false);
     var menu = body.appendChild(document.createElement('menu'));
     
-    var vids = document.getElementsByTagName('video');
+    var videos = document.getElementsByTagName('video');
     for (var i = 0, len = vids.length; i < len; i++) {
-        vids[i].setAttribute('loop', 'true');
+        videos[i].setAttribute('loop', 'true');
     }
 
     menu.outerHTML = `<menu id="${TARGET_NAME}" type="context">
-                       <menuitem icon="&#10003;" label="Loop html5 video"></menuitem>
+                       <menuitem type="checkbox" checked="true" label="Loop html5 video"></menuitem>
                       </menu>`;
 
     document.querySelector(`#${TARGET_NAME} menuitem`).addEventListener('click', toggleLoop, false);
@@ -37,17 +36,16 @@
 
         if (node.localName === 'video') {
             body.setAttribute('contextmenu', TARGET_NAME);
-			addTargetName(node);
-			setIcon(item, node);
+	    	addTargetName(node);
+	    	setIcon(item, node);
         } else {
             body.removeAttribute('contextmenu');
-			removeTargetName();
+	    	removeTargetName();
         }
     }
 	
 	function setIcon(item, node) {
-		if(node.getAttribute('loop') === "true") item.setAttribute('icon', `${CHECK}`);
-		else item.removeAttribute('icon');
+	    item.setAttribute('checked', node.getAttribute('loop'));
 	}
 	
 	function addTargetName(node) {
