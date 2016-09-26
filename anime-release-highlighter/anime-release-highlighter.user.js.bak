@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.2.2
+// @version      0.2.1
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak]
 // @author       Bakuzan
 // @match		 http://www.animefreak.tv/tracker
@@ -14,7 +14,7 @@
 	  	    
 	var watchList = [],
 		RELEASE_COUNT = 0,
-		REGEX = /\W/g,
+		REGEX = '\/\W+\/g',
 		HIGHLIGHT_CLASS = ' userscript-arh-highlight',
 		CONTAINER_ID = 'userscript-arh-container';
         
@@ -34,7 +34,7 @@
 		var itemLowerCase = text.toLowerCase().replace(REGEX, ''),
             index = itemLowerCase.indexOf('episode');
         if (index > -1) {
-            itemLowerCase = itemLowerCase.substring(0, index);
+            itemLowerCase = itemLowerCase.substring(0, index - 1); //-1 to account for space.
         }
 		return itemLowerCase;
 	}

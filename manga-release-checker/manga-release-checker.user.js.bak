@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.2.1
+// @version      0.2.0
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox]
 // @author       Bakuzan
 // @match		 http://mangafox.me/releases/*
@@ -13,7 +13,7 @@
     'use strict';
 	
     var readingList = [],
-		REGEX = /\W/g,
+		REGEX = '\/\W+\/g',
 		content = document.getElementById('content'),
 		nav = document.getElementById('nav'),
 		releaseList = document.getElementById('updates'),
