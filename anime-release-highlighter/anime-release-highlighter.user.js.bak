@@ -72,7 +72,7 @@
                 text = release.textContent;
             if(watchList.indexOf(processText(text)) > -1) {
                 release.href += `/${release.title.replace(' ', '-')}?id=`;
-                newReleaseContainer.insertBefore(release, newReleaseContainer.firstChild);
+                newReleaseContainer.appendChild(release);
                 RELEASE_COUNT++;
             }
         }
