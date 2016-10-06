@@ -1,23 +1,40 @@
 @namespace url(http://www.w3.org/1999/xhtml);
 
-@-moz-document url("http://www.animefreak.tv/tracker"), url-prefix("http://www.animefreak.tv/tracker"){
+@-moz-document 
+	url("http://www.animefreak.tv/tracker"),
+	url-prefix("http://www.animefreak.tv/tracker"),
+	url("http://kissanime.to/")
+{
 
-h1, .view-header {
-  display: none;
-}
- 
-#userscript-arh-container {
-  padding: 10px;
-  font-size: 1.5em;
-  font-weight: bold;
-}
+	/* animefreak specific. */
+	h1, .view-header {
+	  display: none;
+	}
 
-.userscript-arh-highlight {
-  background-color: #000 !important;
-  color: #fff;
-}
+	/* kissanime specific. */
+	#divRandomAnime, #divReload {
+		display: none;
+	}
+  
+  #userscript-arh-container > a > img, #userscript-arh-container > a > br {
+    display: none;
+  }
+  
+  /* kissanime end */
+	 
+	#userscript-arh-container {
+	  padding: 10px;
+	  font-size: 1.5em;
+	  font-weight: bold;
+	}
 
-.userscript-arh-highlight > td > a {
-	color: #fff;
-}
+	.userscript-arh-highlight {
+	  background-color: #000 !important;
+	  color: #fff;
+	}
+
+	.userscript-arh-highlight > td > a {
+		color: #fff;
+	}
+
 }
