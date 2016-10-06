@@ -1,77 +1,107 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.2.2
-// @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak]
+// @version      0.3.0
+// @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
-// @match		 http://www.animefreak.tv/tracker
-// @incude       http://www.animefreak.tv/tracker
+// @include      http://animefreak.tv/tracker
+// @include      http://www.animefreak.tv/tracker
+// @include      http://kissanime.to/
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 (function() {
     'use strict';
 	  	    
-	var watchList = [],
-		RELEASE_COUNT = 0,
-		REGEX = /\W/g,
-		HIGHLIGHT_CLASS = ' userscript-arh-highlight',
-		CONTAINER_ID = 'userscript-arh-container';
-        
-    var content = document.getElementById('primary'),
-		releaseList = content.getElementsByTagName('tbody')[0],
-        releases = releaseList.children,
-		len = releases.length;
-        
+	var CONTAINER_ID = 'userscript-arh-container',
+        HIGHLIGHT_CLASS = ' userscript-arh-highlight',
+        processors = {
+            animefreak: animefreakProcessor,
+            kissanime: kissanimeProcessor
+        },
+		REGEX_CLEANER = /\W/g,
+        REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
+        RELEASE_COUNT = 0,
+        watchList = [];
+    
     var newReleaseContainer = document.createElement('DIV');
     newReleaseContainer.id = CONTAINER_ID;
 	
 	function cleanText(text) {
-		return text.toLowerCase().replace(REGEX, '');
+		return text.toLowerCase().replace(REGEX_CLEANER, '');
 	}
 	
 	function processText(text) {
-		var itemLowerCase = text.toLowerCase().replace(REGEX, ''),
+		var itemLowerCase = text.toLowerCase().replace(REGEX_CLEANER, ''),
             index = itemLowerCase.indexOf('episode');
         if (index > -1) {
             itemLowerCase = itemLowerCase.substring(0, index);
         }
 		return itemLowerCase;
 	}
-    GM_xmlhttpRequest({
-		method: "GET",
-		url: "https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-spellings.json",
-		onload: function(response) {
-			var data = eval(`(${response.responseText})`),
-				series = data.names;
-			for(var i = 0, len = series.length; i < len; i++) {
-				watchList.push(cleanText(series[i]));
-			}
-		}
-	});
-	
-    GM_xmlhttpRequest({
-        method: "GET",
-        url: "http://myanimelist.net/malappinfo.php?u=bakuzan&status=all&type=anime",
-        onload: function(response) {
-            var xml = response.responseXML,
-				nodes = xml.evaluate("//myanimelist/anime[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
-				result = nodes.iterateNext();
-            while (result) {
-                watchList.push(cleanText(result.nodeValue));
-                result = nodes.iterateNext();
+    
+    function animefreakProcessor() {
+        var content = document.getElementById('primary'),
+            releaseList = content.getElementsByTagName('tbody')[0],
+            releases = releaseList.children,
+            len = releases.length;
+        
+        for (var i = 0; i < len; i++) {
+            var release = releases[i],
+                text = release.getElementsByTagName('a')[0].textContent;
+            if(watchList.indexOf(processText(text)) > -1) {
+                release.className += HIGHLIGHT_CLASS;
+                RELEASE_COUNT++;
             }
-
-            for (var i = 0; i < len; i++) {
-                var release = releases[i],
-					text = release.getElementsByTagName('a')[0].textContent;
-                if(watchList.indexOf(processText(text)) > -1) {
-                    release.className += HIGHLIGHT_CLASS;
-                    RELEASE_COUNT++;
-                }
-            }
-            newReleaseContainer.textContent = `Found ${RELEASE_COUNT} anime from your current watch list.`;
-            content.insertBefore(newReleaseContainer, content.childNodes[0]);
         }
-    });
+        newReleaseContainer.textContent = `Found ${RELEASE_COUNT} anime from your current watch list.`;
+        content.insertBefore(newReleaseContainer, content.childNodes[0]);
+    }
+    
+    function kissanimeProcessor() {
+        console.log('kissanime processor not implemented.');
+    }
+    
+    function getProcessor() {
+        var host = window.location.host;
+        console.log(host);
+        var domain = host.replace(REGEX_EXTRACTER, '');
+        console.log(host, ' > ', domain);
+        return domain;
+    }
+    
+    function extractReleases(response) {
+        var xml = response.responseXML,
+            nodes = xml.evaluate("//myanimelist/anime[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
+            result = nodes.iterateNext();
+        while (result) {
+            watchList.push(cleanText(result.nodeValue));
+            result = nodes.iterateNext();
+        }
+        console.log('watchList: ', watchList);
+        processors[`${getProcessor()}`]();
+    }
+    
+    function getExceptions(response) {
+        var data = JSON.parse(response.responseText),
+            series = data.names;
+        for(var i = 0, len = series.length; i < len; i++) {
+            watchList.push(cleanText(series[i]));
+        }
+        
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: "http://myanimelist.net/malappinfo.php?u=bakuzan&status=all&type=anime",
+            onload: extractReleases
+        });
+    }
+    
+    (function () {
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: "https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-spellings.json",
+            onload: getExceptions
+        });
+    })();
+    
 })();
