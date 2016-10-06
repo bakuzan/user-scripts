@@ -4,6 +4,7 @@
 // @version      0.3.0
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
+// @include		 file:///C:/Users/Walshs/Documents/%23misc/ka-page.html
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
@@ -37,6 +38,7 @@
         if (index > -1) {
             itemLowerCase = itemLowerCase.substring(0, index);
         }
+        console.log('processed text: ', itemLowerCase);
 		return itemLowerCase;
 	}
     
@@ -59,14 +61,27 @@
     }
     
     function kissanimeProcessor() {
-        console.log('kissanime processor not implemented.');
+        var newLocation = document.getElementById('divRandomAnime'),
+            content = document.getElementById('leftside'),
+            container = content.getElementsByClassName('items')[0],
+            releases = container.getElementsByTagName('a'),
+            len = releases.length;
+
+        while (len--) {
+            var release = releases[len],
+                text = release.textContent;
+            if(watchList.indexOf(processText(text)) > -1) {
+                release.href += `/${release.title.replace(' ', '-')}?id=`;
+                newReleaseContainer.appendChild(release);
+                RELEASE_COUNT++;
+            }
+        }
+        newLocation.parentNode.insertBefore(newReleaseContainer, newLocation);
     }
     
     function getProcessor() {
         var host = window.location.host;
-        console.log(host);
-        var domain = host.replace(REGEX_EXTRACTER, '');
-        console.log(host, ' > ', domain);
+        var domain = host.replace(REGEX_EXTRACTER, '') || 'kissanime';
         return domain;
     }
     
@@ -78,7 +93,6 @@
             watchList.push(cleanText(result.nodeValue));
             result = nodes.iterateNext();
         }
-        console.log('watchList: ', watchList);
         processors[`${getProcessor()}`]();
     }
     
