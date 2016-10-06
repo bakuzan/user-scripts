@@ -2,25 +2,12 @@
 
 @-moz-document 
 	url("http://www.animefreak.tv/tracker"),
-	url-prefix("http://www.animefreak.tv/tracker"),
-	url("http://kissanime.to/")
+	url-prefix("http://www.animefreak.tv/tracker")
 {
 
-	/* animefreak specific. */
 	h1, .view-header {
 	  display: none;
 	}
-
-	/* kissanime specific. */
-	#divRandomAnime, #divReload {
-		display: none;
-	}
-  
-  #userscript-arh-container > a > img, #userscript-arh-container > a > br {
-    display: none;
-  }
-  
-  /* kissanime end */
 	 
 	#userscript-arh-container {
 	  padding: 10px;
@@ -36,5 +23,25 @@
 	.userscript-arh-highlight > td > a {
 		color: #fff;
 	}
+}
 
+@-moz-document url("http://kissanime.to/")  {
+	#divRandomAnime, #divReload {
+		display: none;
+	}
+  
+	#userscript-arh-container > a > img, #userscript-arh-container > a > br {
+		display: none;
+	}
+	
+	#userscript-arh-container > a {
+		display: block;
+		float: left;
+		margin-right: 8px;
+		width: 135px;
+		height: 180px;
+		text-decoration: none;
+		text-align: center;
+		cursor: pointer;
+	}
 }
