@@ -26,22 +26,11 @@
 }
 
 @-moz-document url("http://kissanime.to/")  {
+	.banner {
+		padding: 12px;
+	}
 	#divRandomAnime, #divReload {
 		display: none;
 	}
   
-	#userscript-arh-container > a > img, #userscript-arh-container > a > br {
-		display: none;
-	}
-	
-	#userscript-arh-container > a {
-		display: block;
-		float: left;
-		margin-right: 8px;
-		width: 135px;
-		height: 180px;
-		text-decoration: none;
-		text-align: center;
-		cursor: pointer;
-	}
 }

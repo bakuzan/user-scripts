@@ -61,22 +61,26 @@
     }
     
     function kissanimeProcessor() {
-        var newLocation = document.getElementById('divRandomAnime'),
+        var KA_SCROLL_INNER = 'items',
+			newLocation = document.getElementsByClassName('details')[0],
             content = document.getElementById('leftside'),
-            container = content.getElementsByClassName('items')[0],
+            container = content.getElementsByClassName(KA_SCROLL_INNER)[0],
             releases = container.getElementsByTagName('a'),
-            len = releases.length;
-
+            len = releases.length
+		newLocation.className = 'scrollable';
+		newReleaseContainer.className += KA_SCROLL_INNER;
+		
         while (len--) {
             var release = releases[len],
-                text = release.textContent;
+                text = release.textContent,
+				img = release.firstChild;
             if(watchList.indexOf(processText(text)) > -1) {
                 release.href += `/${release.title.replace(' ', '-')}?id=`;
+                img.src = img.src || img.getAttribute('srctemp');
                 newReleaseContainer.insertBefore(release, newReleaseContainer.firstChild);
-                RELEASE_COUNT++;
             }
         }
-        newLocation.parentNode.insertBefore(newReleaseContainer, newLocation);
+        newLocation.insertBefore(newReleaseContainer, newLocation.firstChild);
     }
     
     function getProcessor() {
