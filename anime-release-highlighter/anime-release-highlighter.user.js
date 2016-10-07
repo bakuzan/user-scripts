@@ -20,7 +20,7 @@
             animefreak: animefreakProcessor,
             kissanime: kissanimeProcessor
         },
-		REGEX_CLEANER = /\W/g,
+	REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
         REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
         RELEASE_COUNT = 0,
         watchList = [];
