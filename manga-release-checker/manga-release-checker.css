@@ -14,4 +14,13 @@
     width: 100%;
     padding-bottom: 20px;
   }
+  
+  #userscript-mrc-container #nav .page_parts {
+    display: none;
+  }
+  
+  #nav li {
+    display: inline;
+    float: none;
+  }
 }
