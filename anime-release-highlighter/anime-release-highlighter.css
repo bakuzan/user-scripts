@@ -41,8 +41,12 @@
 	#userscript-arh-nav .navi {
 		display: none;
 	}
-	
+
 	#divRandomAnime, #divReload {
+		display: none;
+	}
+	
+	#navsubbar > p {
 		display: none;
 	}
   

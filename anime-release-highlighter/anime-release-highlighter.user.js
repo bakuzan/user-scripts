@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.3.0
+// @version      0.3.1
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include		 file:///C:/Users/Walshs/Documents/%23misc/ka-page.html
@@ -26,13 +26,23 @@
         SCROLLER_CONTROLS_ID = 'userscript-arh-nav',
         SCROLLER_NEXT_ID = 'userscript-arh-next',
         SCROLLER_PREV_ID = 'userscript-arh-prev',
+        SCROLLER_SHIFT = 675,
         watchList = [];
     
     var newReleaseContainer = document.createElement('DIV');
     newReleaseContainer.id = CONTAINER_ID;
     
+    function digitsOnly(valueWithUnits) {
+        return Number(valueWithUnits.replace('px', ''));
+    }
+    
     function scrollerMovement(event) {
-        console.log(event);
+        var id = event.target.id;
+        if(id === SCROLLER_NEXT_ID) {
+            newReleaseContainer.style.left = `${digitsOnly(newReleaseContainer.style.left) - SCROLLER_SHIFT}px`;
+        } else if (id === SCROLLER_PREV_ID) {
+            newReleaseContainer.style.left = (digitsOnly(newReleaseContainer.style.left) + SCROLLER_SHIFT > 0) ? 0 : `${digitsOnly(newReleaseContainer.style.left) + SCROLLER_SHIFT}px`;
+        }
     }
 	
 	function cleanText(text) {
