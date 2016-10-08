@@ -20,20 +20,13 @@
             animefreak: animefreakProcessor,
             kissanime: kissanimeProcessor
         },
-		REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
+	REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
         REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
         RELEASE_COUNT = 0,
-        SCROLLER_CONTROLS_ID = 'userscript-arh-nav',
-        SCROLLER_NEXT_ID = 'userscript-arh-next',
-        SCROLLER_PREV_ID = 'userscript-arh-prev',
         watchList = [];
     
     var newReleaseContainer = document.createElement('DIV');
     newReleaseContainer.id = CONTAINER_ID;
-    
-    function scrollerMovement(event) {
-        console.log(event);
-    }
 	
 	function cleanText(text) {
 		return text.toLowerCase().replace(REGEX_CLEANER, '');
@@ -45,6 +38,7 @@
         if (index > -1) {
             itemLowerCase = itemLowerCase.substring(0, index);
         }
+        console.log('processed text: ', itemLowerCase);
 		return itemLowerCase;
 	}
     
@@ -65,22 +59,6 @@
         newReleaseContainer.textContent = `Found ${RELEASE_COUNT} anime from your current watch list.`;
         content.insertBefore(newReleaseContainer, content.childNodes[0]);
     }
-	
-	function kissanimeScrollerControls(scroller) {
-		var recentNav = document.getElementById('recently-nav'),
-            controls = recentNav.cloneNode(true),
-            arrows = controls.getElementsByTagName('a'),
-            prev = arrows[0], next = arrows[1];
- 
-        controls.id = SCROLLER_CONTROLS_ID;
-        prev.id = SCROLLER_PREV_ID;
-        next.id = SCROLLER_NEXT_ID;
-        
-        prev.addEventListener('click', scrollerMovement);
-        next.addEventListener('click', scrollerMovement);
-        
-        scroller.parentNode.insertBefore(controls, scroller);
-	}
     
     function kissanimeProcessor() {
         var KA_SCROLL_INNER = 'items',
@@ -103,7 +81,6 @@
             }
         }
         newLocation.insertBefore(newReleaseContainer, newLocation.firstChild);
-		kissanimeScrollerControls(newLocation);
     }
     
     function getProcessor() {
