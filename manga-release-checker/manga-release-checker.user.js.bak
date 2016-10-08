@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.2.2
+// @version      0.2.1
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox]
 // @author       Bakuzan
-// @match		     http://mangafox.me/releases/*
+// @match		 http://mangafox.me/releases/*
 // @incude       http://mangafox.me/releases/*
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
@@ -40,8 +40,8 @@
 		method: "GET",
 		url: "https://raw.githubusercontent.com/bakuzan/user-scripts/master/manga-release-checker/manga-spellings.json",
 		onload: function(response) {
-			var data = JSON.parse(response.responseText),
-            series = data.names;
+			var data = eval(`(${response.responseText})`),
+				series = data.names;
 			for(var i = 0, len = series.length; i < len; i++) {
 				readingList.push(cleanText(series[i]));
 			}
@@ -53,20 +53,19 @@
         url: "http://myanimelist.net/malappinfo.php?u=bakuzan&status=all&type=manga",
         onload: function(response) {
             var xml = response.responseXML,
-				        nodes = xml.evaluate("//myanimelist/manga[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
-				        result = nodes.iterateNext();
+				nodes = xml.evaluate("//myanimelist/manga[my_status=1]/series_title/text()", xml, null, XPathResult.ANY_TYPE, null),
+				result = nodes.iterateNext();
             while (result) {
                 readingList.push(cleanText(result.nodeValue));
                 result = nodes.iterateNext();
             }
-					  var len = releases.length;
-					
-            while (len--) {
-                var newChapter = releases[len],
-					          text = newChapter.getElementsByTagName('a')[0].textContent;
+
+            for (var i = 0; i < releases.length; i++) {
+                var newChapter = releases[i],
+					text = newChapter.getElementsByTagName('a')[0].textContent;
                 if(readingList.indexOf(processText(text)) > -1) {
                     newChapter.className += ' userscript-mrc-highlight';
-                    newChapterContainer.insertBefore(newChapter, nav.nextSibling);
+                    newChapterContainer.appendChild(newChapter);
                 }
             }
             content.insertBefore(newChapterContainer, releaseList);
