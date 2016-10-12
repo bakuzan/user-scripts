@@ -4,6 +4,7 @@
 // @authour     Bakuzan
 // @description Link to scroll to the top of the page.
 // @include     http*
+// @run-at      document-start
 // @version     0.1.0
 // @grant       none
 // ==/UserScript==
@@ -43,7 +44,7 @@
   }
   
   function toggleScrollPageTopButton() {
-    var distanceScrolledDown = window.scrollY;
+    var distanceScrolledDown = body.scrollTop;
     console.log('distance: ', distanceScrolledDown);
     if (distanceScrolledDown > 100) buttonDisplayStatus(true);
     if (distanceScrolledDown < 100) buttonDisplayStatus(false);
