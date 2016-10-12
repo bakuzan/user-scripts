@@ -1,12 +1,11 @@
 // ==UserScript==
 // @name        Go page top
 // @namespace   https://github.com/bakuzan/user-scripts
-// @authour      Bakuzan
+// @authour     Bakuzan
 // @description Link to scroll to the top of the page.
 // @include     http*
-// @exclude     https://www.reddit.com/*
 // @run-at      document-start
-// @version     1.0
+// @version     0.1.0
 // @grant       none
 // ==/UserScript==
 
@@ -16,15 +15,28 @@
   var body = document.body,
       button = document.createElement('span');
   button.id = 'userscript-gpt-button';
-  button.style.cssText = `display: none;
-                          postion: absolute; 
-                          right: 25px;
-                          bottom: 25px;
-                          content: '\25B2';
-                         `;
+  button.style.cssText = `
+   display: none;
+   position: fixed;
+   right: 25px;
+   bottom: 25px;
+   width: 30px;
+   height: 20px;
+   padding: 5px;
+   line-height: 10px;
+   background-color: rgb(255, 255, 255);
+   color: #aaa;
+   border: 1px solid #aaa;
+   cursor: pointer;
+   font-size: 13px;
+   font-weight: bold;
+   font-family: Arial,Helvetica,Sans-Serif;
+   text-align: center;
+  `;
+   button.textContent = '^\nTOP';
   
   function buttonDisplayStatus(status) {
-    button.style.display = status ? '' : 'none';
+    button.style.display = status ? 'block' : 'none';
   }
   
   function scrollPageTop() {
