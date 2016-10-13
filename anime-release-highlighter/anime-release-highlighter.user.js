@@ -1,10 +1,9 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.3.1
+// @version      0.3.2
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
-// @include		 file:///C:/Users/Walshs/Documents/%23misc/ka-page.html
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
@@ -22,7 +21,6 @@
         },
 		REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
         REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
-        RELEASE_COUNT = 0,
         SCROLLER_CONTROLS_ID = 'userscript-arh-nav',
         SCROLLER_NEXT_ID = 'userscript-arh-next',
         SCROLLER_PREV_ID = 'userscript-arh-prev',
@@ -45,16 +43,16 @@
         }
     }
 	
-	function cleanText(text) {
-		return text.toLowerCase().replace(REGEX_CLEANER, '');
-	}
-	
+    function cleanText(text) {
+        return text.toLowerCase().replace(REGEX_CLEANER, '');
+    }
+
 	function processText(text) {
 		var itemLowerCase = text.toLowerCase().replace(REGEX_CLEANER, ''),
-            index = itemLowerCase.indexOf('episode');
-        if (index > -1) {
-            itemLowerCase = itemLowerCase.substring(0, index);
-        }
+	    index = itemLowerCase.indexOf('episode');
+		if (index > -1) {
+			itemLowerCase = itemLowerCase.substring(0, index);
+		}
 		return itemLowerCase;
 	}
     
@@ -64,16 +62,14 @@
             releases = releaseList.children,
             len = releases.length;
         
-        for (var i = 0; i < len; i++) {
-            var release = releases[i],
+        while (len--) {
+            var release = releases[len],
                 text = release.getElementsByTagName('a')[0].textContent;
             if(watchList.indexOf(processText(text)) > -1) {
-                release.className += HIGHLIGHT_CLASS;
-                RELEASE_COUNT++;
+                newReleaseContainer.insertBefore(release, newReleaseContainer.firstChild);
             }
         }
-        newReleaseContainer.textContent = `Found ${RELEASE_COUNT} anime from your current watch list.`;
-        content.insertBefore(newReleaseContainer, content.childNodes[0]);
+        content.insertBefore(newReleaseContainer, content.firstChild);
     }
 	
 	function kissanimeScrollerControls(scroller) {
@@ -118,8 +114,7 @@
     
     function getProcessor() {
         var host = window.location.host;
-        var domain = host.replace(REGEX_EXTRACTER, '') || 'kissanime';
-        return domain;
+        return host.replace(REGEX_EXTRACTER, '');
     }
     
     function extractReleases(response) {
