@@ -12,33 +12,55 @@
 (function() {
     'use strict';
     
-    var images = document.getElementsByTagName('img');
+    var REGEX_EXTRACT_NUMBER = /.*\w(-)/g
+	    CONTAINER_ID_PREFIX = 'userscript-idh-container-',
+		BUTTON_ID_PREFIX = 'userscript-idh-download-button-',
+	    images = document.getElementsByTagName('img'),
+		downloads = [];
     addDownloadButtons();
+	
+	function pad(number, width, padChar) {
+	  padChar = padChar || '0';
+	  number = number + '';
+	  return number.length >= width ? number : new Array(width - number.length + 1).join(padChar) + number;
+	}
     
-    function createDownloadIcon(i) {
-        var element = document.createElement('span');
-        element.id = `userscript-idh-download-button-${i}`;
-        element.style.cssText = `
+    function createDownloadWrapper(i) {
+        console.log('createDownloadWrapper');
+		var container = document.createElement('span'),
+		    checkbox = document.createElement('input');
+        container.id = `${CONTAINER_ID_PREFIX}${i}`;
+		container.style.cssText = `
+		 position: relative;
+		`;
+		
+		checkbox.id = `${BUTTON_ID_PREFIX}${i}`;
+		checkbox.type = 'checkbox';
+        checkbox.style.cssText = `
          position: absolute;
          top: 2px;
          right: 2px;
-         width: 5px;
-         height: 5px;
-         background: white;
+         width: 10px;
+         height: 10px;
          border: 1px solid #aaa;
          cursor: pointer;
+		 z-index: 1000;
         `;
-        element.addEventListener('click', processDownload);
-        return element;
+        checkbox.addEventListener('click', processDownload);
+		container.appendChild(checkbox, container.firstChild);
+		console.log('create container: ', container);
+        return container;
     }
     
     function addDownloadButtons() {
-        for(var i = 0, length = images; i < length; i++) {
+        for(var i = 0, length = images.length; i < length; i++) {
             var image = images[i],
-                downloadIcon = createDownloadIcon(i);
-            image.insertBefore(downloadIcon, image.firstChild);
+				parent = image.parentNode,
+                downloadWrapper = createDownloadWrapper(i);
+			parent.replaceChild(downloadWrapper, image);
+			downloadWrapper.appendChild(image);
         }
-        console.log(images);
+        console.log('wrap image: ', images);
     }
     
     function downloadImage(imageUrl, imageName) {
@@ -58,7 +80,11 @@
     }
     
     function processDownload(event) {
-        console.log('process dl: ', event);
+		var target = event.target,
+		    id = target.id;
+        console.log('process dl: ', id, target, target.nextSibling);
+		if(target.checked) downloads.push({ url: target.nextSibling.src, name: pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3) });
+		console.log('downloads: ', downloads);
     }
     
 })();
