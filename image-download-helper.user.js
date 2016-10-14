@@ -12,11 +12,29 @@
 (function() {
     'use strict';
     
-    var REGEX_EXTRACT_NUMBER = /.*\w(-)/g
-	    CONTAINER_ID_PREFIX = 'userscript-idh-container-',
-		BUTTON_ID_PREFIX = 'userscript-idh-download-button-',
-	    images = document.getElementsByTagName('img'),
-		downloads = [];
+    var CHECKBOX_ID_PREFIX = 'userscript-idh-download-checkbox-',
+        CONTAINER_ID_PREFIX = 'userscript-idh-container-',
+        body = document.body,
+        downloads = [],
+        extensions = ['.jpg', '.png', '.gif'],
+        images = document.getElementsByTagName('img'),
+        REGEX_EXTRACT_EXTENSION = /.*(?=\.)/g,
+        REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
+    
+    var downloadButton = document.createElement('input');
+    downloadButton.id = 'userscript-idh-download-button';
+    downloadButton.type = 'button';
+    downloadButton.textContent = 'Download images';
+    downloadButton.style.cssText = `
+     position: fixed;
+     top: 5px;
+     right: 5px;
+     width: 50px;
+     height: 20px;
+    `;
+    downloadButton.addEventListener('click', processDownloads);
+    body.insertBefore(downloadButton, body.firstChild);
+
     addDownloadButtons();
 	
 	function pad(number, width, padChar) {
@@ -26,7 +44,6 @@
 	}
     
     function createDownloadWrapper(i) {
-        console.log('createDownloadWrapper');
 		var container = document.createElement('span'),
 		    checkbox = document.createElement('input');
         container.id = `${CONTAINER_ID_PREFIX}${i}`;
@@ -34,7 +51,7 @@
 		 position: relative;
 		`;
 		
-		checkbox.id = `${BUTTON_ID_PREFIX}${i}`;
+		checkbox.id = `${CHECKBOX_ID_PREFIX}${i}`;
 		checkbox.type = 'checkbox';
         checkbox.style.cssText = `
          position: absolute;
@@ -46,9 +63,7 @@
          cursor: pointer;
 		 z-index: 1000;
         `;
-        checkbox.addEventListener('click', processDownload);
 		container.appendChild(checkbox, container.firstChild);
-		console.log('create container: ', container);
         return container;
     }
     
@@ -60,31 +75,45 @@
 			parent.replaceChild(downloadWrapper, image);
 			downloadWrapper.appendChild(image);
         }
-        console.log('wrap image: ', images);
     }
     
-    function downloadImage(imageUrl, imageName) {
+    function downloadImage(download) {
+        var url = download.url,
+            name = download.name;
         GM_download({
-            url: imageUrl,
-            name: imageName,
+            url: url,
+            name: name,
             header: {
                 "Referer": window.host
             },
             onload: function(response){
-                alert(`Downloaded ${imageName} successfully!`);
+                alert(`Downloaded ${name} successfully!`);
             },
             onerror: function(){
-                alert(`Download of ${imageName} failed!\n${imageUrl}`);
+                alert(`Download of ${name} failed!\n${url}`);
             }
         });
     }
     
-    function processDownload(event) {
-		var target = event.target,
-		    id = target.id;
-        console.log('process dl: ', id, target, target.nextSibling);
-		if(target.checked) downloads.push({ url: target.nextSibling.src, name: pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3) });
-		console.log('downloads: ', downloads);
+    function queueDowload(element) {
+        if(element === null) return;
+		var id = element.id,
+            imageSrc = element.nextSibling.src,
+            extension = imageSrc.replace(REGEX_EXTRACT_EXTENSION, '');
+        extension = extensions.indexOf(extension) === -1 ? '' : extension;
+		if(element.checked) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
+    }
+    
+    function processDownloads() {
+        for(var i = 0, length = images.length; i < length; i++) {
+            var image = images[i],
+                checkbox = image.previousSibling;
+            queueDowload(checkbox);
+        }
+        var count = downloads.length;
+        while(count--) {
+            downloadImage(downloads[count]);
+        }
     }
     
 })();
