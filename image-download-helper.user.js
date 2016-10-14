@@ -12,30 +12,64 @@
 (function() {
     'use strict';
     
-    var CHECKBOX_ID_PREFIX = 'userscript-idh-download-checkbox-',
+    var body = document.body,
+        buttonCssText = `
+         width: 50px;
+         height: 20px;
+        `,
+        CHECKBOX_ID_PREFIX = 'userscript-idh-download-checkbox-',
         CONTAINER_ID_PREFIX = 'userscript-idh-container-',
-        body = document.body,
+        controlsConstantCssText = `
+         position: fixed;
+         bottom: 0;
+         width: 110px;
+         height: 20px;
+         z-index: 1000;
+        `,
         downloads = [],
         extensions = ['.jpg', '.png', '.gif'],
         images = document.getElementsByTagName('img'),
         REGEX_EXTRACT_EXTENSION = /.*(?=\.)/g,
         REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
     
-    var downloadButton = document.createElement('input');
+    var controls = document.createElement('div'),
+        downloadButton = document.createElement('input'),
+        activateButton = document.createElement('input'),
+        expandButton = document.createElement('span');
+    
+    function toggleControls(forceControlState) {
+        var showControls = controls.style.left === '-100px' || forceControlState;
+        if(showControls) controls.style.cssText = `${controlsConstantCssText} left: 0;`;
+        if(!showControls) controls.style.cssText = `${controlsConstantCssText} left: -100px;`;
+    }
+    toggleControls(false);
+    
     downloadButton.id = 'userscript-idh-download-button';
     downloadButton.type = 'button';
-    downloadButton.textContent = 'Download images';
-    downloadButton.style.cssText = `
-     position: fixed;
-     top: 5px;
-     right: 5px;
-     width: 50px;
-     height: 20px;
-    `;
+    downloadButton.textContent = 'DL';
+    downloadButton.style.cssText = buttonCssText;
     downloadButton.addEventListener('click', processDownloads);
-    body.insertBefore(downloadButton, body.firstChild);
-
-    addDownloadButtons();
+    
+    activateButton.id = 'userscript-idh-add-checkboxes-button';
+    activateButton.type = 'button';
+    downloadButton.textContent = 'Start';
+    activateButton.style.cssText = buttonCssText;
+    activateButton.addEventListener('click', addDownloadButtons);
+    
+    expandButton.id = 'userscript-idh-expand-button';
+    expandButton.textContent = '>>';
+    expandButton.style.cssText = `
+     display: inline-block;
+     width: 10px;
+     height: 20px;
+     background: #fff;
+    `;
+    expandButton.addEventListener('click', toggleControls);
+    
+    controls.appendChild(downloadButton);
+    controls.appendChild(activateButton);
+    controls.appendChild(expandButton);
+    body.insertBefore(controls, body.firstChild);
 	
 	function pad(number, width, padChar) {
 	  padChar = padChar || '0';
@@ -49,16 +83,18 @@
         container.id = `${CONTAINER_ID_PREFIX}${i}`;
 		container.style.cssText = `
 		 position: relative;
+         display: block;
 		`;
 		
 		checkbox.id = `${CHECKBOX_ID_PREFIX}${i}`;
 		checkbox.type = 'checkbox';
         checkbox.style.cssText = `
          position: absolute;
-         top: 2px;
-         right: 2px;
+         top: 0;
+         right: 0;
          width: 10px;
          height: 10px;
+         margin: 0;
          border: 1px solid #aaa;
          cursor: pointer;
 		 z-index: 1000;
