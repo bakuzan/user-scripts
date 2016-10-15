@@ -6,6 +6,7 @@
 // @author       Bakuzan
 // @include      http*
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/GM_download-polyfill.js
+// @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -22,7 +23,7 @@
         controlsConstantCssText = `
          position: fixed;
          bottom: 0;
-         width: 110px;
+         width: 117px;
          height: 20px;
          z-index: 1000;
         `,
@@ -60,9 +61,10 @@
     expandButton.textContent = '>>';
     expandButton.style.cssText = `
      display: inline-block;
-     width: 10px;
+     width: 15px;
      height: 20px;
      background: #fff;
+	 border: 1px solid #aaa;
     `;
     expandButton.addEventListener('click', toggleControls);
     
@@ -137,7 +139,7 @@
             imageSrc = element.nextSibling.src,
             extension = imageSrc.replace(REGEX_EXTRACT_EXTENSION, '');
         extension = extensions.indexOf(extension) === -1 ? '' : extension;
-		if(element.checked) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
+		if(element.checked && findWithAttr(downloads, 'url', imageSrc) === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
     }
     
     function processDownloads() {
