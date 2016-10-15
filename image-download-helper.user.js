@@ -8,6 +8,7 @@
 // @exclude      http://localhost*
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/GM_download-polyfill.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
+// @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/messageAlertService.js
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -28,6 +29,7 @@
          height: 32px;
 		 background: #fff;
 		 color: #aaa;
+		 border-top-right-radius: 10px;
 		 font-size: 13px;
 		 font-weight: bold;
 		 font-family: Arial,Helvetica,sans-serif;
@@ -36,6 +38,7 @@
         `,
         downloads = [],
         extensions = ['.jpg', '.png', '.gif'],
+		hasDownloadButtons = false,
         images = document.getElementsByTagName('img'),
         REGEX_EXTRACT_EXTENSION = /.*(?=\.)/g,
         REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
@@ -54,17 +57,20 @@
     
     downloadButton.id = 'userscript-idh-download-button';
     downloadButton.type = 'button';
+	downloadButton.title = 'Download selected images';
     downloadButton.value = 'DL';
     downloadButton.style.cssText = buttonCssText;
     downloadButton.addEventListener('click', processDownloads);
     
     activateButton.id = 'userscript-idh-add-checkboxes-button';
     activateButton.type = 'button';
-    activateButton.value = 'Start';
+	activateButton.title = 'Toggle checkboxes';
+    activateButton.value = 'I/O';
     activateButton.style.cssText = buttonCssText;
     activateButton.addEventListener('click', addDownloadButtons);
     
     expandButton.id = 'userscript-idh-expand-button';
+	expandButton.title = 'Toggle image controls';
     expandButton.textContent = '>>';
     expandButton.style.cssText = `
      display: inline-block;
@@ -72,6 +78,7 @@
      height: 30px;
      background: #fff;
 	 border: 1px solid #aaa;
+	 border-top-right-radius: 10px;
 	 line-height: 30px;
 	 cursor: pointer;
     `;
@@ -116,13 +123,22 @@
     }
     
     function addDownloadButtons() {
-        for(var i = 0, length = images.length; i < length; i++) {
-            var image = images[i],
-				parent = image.parentNode,
-                downloadWrapper = createDownloadWrapper(i);
-			parent.replaceChild(downloadWrapper, image);
-			downloadWrapper.appendChild(image);
-        }
+		if(!hasDownloadButtons) {
+			for(var i = 0, length = images.length; i < length; i++) {
+				var image = images[i],
+					parent = image.parentNode,
+					downloadWrapper = createDownloadWrapper(i);
+				parent.replaceChild(downloadWrapper, image);
+				downloadWrapper.appendChild(image);
+			}
+			hasDownloadButtons = true;
+		} else {
+			for(var i = 0, length = images.length; i < length; i++) {
+				var image = images[i],
+					checkbox = image.previousSibling;
+				checkbox.style.display = checkbox.style.display === 'none' ? 'block' : 'none';
+			}
+		}
     }
     
     function downloadImage(download) {
@@ -135,15 +151,16 @@
                 "Referer": window.host
             },
             onload: function(response){
-                alert(`Downloaded ${name} successfully!`);
+                mas.displayMessage(`Downloaded ${name} successfully!`);
             },
             onerror: function(){
-                alert(`Download of ${name} failed!\n${url}`);
+                mas.displayError(`Download of ${name} failed!\n${url}`);
             }
         });
     }
     
     function toggleQueueDowload(event) {
+		event.stopPropagation();
 		var target = event.target,
 		    id = target.id,
             imageSrc = target.nextSibling.src,
