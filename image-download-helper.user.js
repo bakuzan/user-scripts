@@ -160,7 +160,7 @@
             imageSrc = target.nextSibling.src,
             extension = imageSrc.replace(REGEX_EXTRACT_EXTENSION, ''),
 			index = findWithAttr(downloads, 'url', imageSrc);
-        extension = extensions.indexOf(extension) === -1 ? '' : extension;
+        extension = extensions.indexOf(extension) === -1 ? '.jpg' : extension;
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
     }
