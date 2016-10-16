@@ -1,0 +1,47 @@
+#userscript-idh-controls {
+	position: fixed;
+	bottom: 0;
+	width: 117px;
+	height: 32px;
+	background: #fff;
+	color: #aaa;
+	border-top-right-radius: 10px;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Arial,Helvetica,sans-serif;
+	text-align: center;
+	z-index: 1000;
+}
+
+#userscript-idh-download-button, #userscript-idh-add-checkboxes-button {
+	width: 50px;
+	height: 32px;
+}
+
+#userscript-idh-expand-button {
+	display: inline-block;
+	width: 15px;
+	height: 30px;
+	background: #fff;
+	border: 1px solid #aaa;
+	border-top-right-radius: 10px;
+	line-height: 30px;
+	cursor: pointer;
+}
+
+#userscript-idh-container-* {
+	position: relative;
+	display: block;
+}
+
+#userscript-idh-download-checkbox-* {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 10px;
+	height: 10px;
+	margin: 0;
+	border: 1px solid #aaa;
+	cursor: pointer;
+	z-index: 1000;
+}
