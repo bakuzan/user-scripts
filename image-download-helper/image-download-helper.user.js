@@ -76,6 +76,16 @@
 		container.appendChild(checkbox, container.firstChild);
         return container;
     }
+	
+	function toggleParentHref(parentAnchor) {
+		var href = parentAnchor.getAttribute('href');
+		if(href) {
+			parentAnchor.setAttribute('userscript-idh-href', href);
+			parentAnchor.removeAttribute('href');
+		} else if (!href) {
+			parentAnchor.setAttribute('href', parentAnchor.getAttribute('userscript-idh-href'));
+		}
+	}
     
     function addDownloadButtons() {
 		if(!hasDownloadButtons) {
@@ -83,6 +93,7 @@
 				var image = images[i],
 					parent = image.parentNode,
 					downloadWrapper = createDownloadWrapper(i);
+				toggleParentHref(parent);
 				parent.replaceChild(downloadWrapper, image);
 				downloadWrapper.appendChild(image);
 			}
@@ -90,7 +101,9 @@
 		} else {
 			for(var i = 0, length = images.length; i < length; i++) {
 				var image = images[i],
+					originalParent = image.parentNode.parentNode,
 					checkbox = image.previousSibling;
+				toggleParentHref(originalParent);
 				checkbox.style.display = checkbox.style.display === 'none' ? 'block' : 'none';
 			}
 		}
