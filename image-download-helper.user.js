@@ -8,7 +8,7 @@
 // @exclude      http://localhost*
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/GM_download-polyfill.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
-// @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/messageAlertService.js
+// @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/pad.js
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -89,12 +89,6 @@
     controls.appendChild(expandButton);
     body.insertBefore(controls, body.firstChild);
 	
-	function pad(number, width, padChar) {
-	  padChar = padChar || '0';
-	  number = number + '';
-	  return number.length >= width ? number : new Array(width - number.length + 1).join(padChar) + number;
-	}
-    
     function createDownloadWrapper(i) {
 		var container = document.createElement('span'),
 		    checkbox = document.createElement('input');
@@ -151,10 +145,10 @@
                 "Referer": window.host
             },
             onload: function(response){
-                mas.displayMessage(`Downloaded ${name} successfully!`);
+                alert(`Downloaded ${name} successfully!`);
             },
             onerror: function(){
-                mas.displayError(`Download of ${name} failed!\n${url}`);
+                alert(`Download of ${name} failed!\n${url}`);
             }
         });
     }
