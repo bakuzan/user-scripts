@@ -29,12 +29,12 @@
 	cursor: pointer;
 }
 
-#userscript-idh-container-* {
+span[id^='userscript-idh-container-'] {
 	position: relative;
 	display: block;
 }
 
-#userscript-idh-download-checkbox-* {
+input[id^='userscript-idh-download-checkbox-'] {
 	position: absolute;
 	top: 0;
 	right: 0;
