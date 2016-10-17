@@ -7,11 +7,17 @@
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
+// @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-release-highlighter.css
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 (function() {
     'use strict';
+	
+	var cssTxt  = GM_getResourceText ("stylesheet");
+	GM_addStyle (cssTxt);
 	  	    
 	var CONTAINER_ID = 'userscript-arh-container',
         HIGHLIGHT_CLASS = ' userscript-arh-highlight',
