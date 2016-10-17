@@ -4,13 +4,19 @@
 // @version      0.2.2
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox]
 // @author       Bakuzan
-// @match		     http://mangafox.me/releases/*
+// @match		 http://mangafox.me/releases/*
 // @incude       http://mangafox.me/releases/*
+// @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/manga-release-checker/manga-release-checker.css
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 (function() {
     'use strict';
+	
+	var cssTxt  = GM_getResourceText ("stylesheet");
+	GM_addStyle (cssTxt);
 	
     var readingList = [],
 		REGEX = /\W/g,
