@@ -1,26 +1,22 @@
-@namespace url(http://www.w3.org/1999/xhtml);
+#userscript-mrc-container {
+  padding: 10px;
+}
 
-@-moz-document url("http://mangafox.me/releases/"), url-prefix("http://mangafox.me/releases/"){
-  #userscript-mrc-container {
-    padding: 10px;
-  }
+.userscript-mrc-highlight {
+  padding: 5px;
+  list-style-type: none;
+}
 
-  .userscript-mrc-highlight {
-    padding: 5px;
-    list-style-type: none;
-  }
+#userscript-mrc-container #nav {
+  width: 100%;
+  padding-bottom: 20px;
+}
 
-  #userscript-mrc-container #nav {
-    width: 100%;
-    padding-bottom: 20px;
-  }
-  
-  #userscript-mrc-container #nav .page_parts {
-    display: none;
-  }
-  
-  #nav li {
-    display: inline;
-    float: none;
-  }
+#userscript-mrc-container #nav .page_parts {
+  display: none;
+}
+
+#nav li {
+  display: inline;
+  float: none;
 }
