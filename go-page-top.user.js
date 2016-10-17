@@ -4,7 +4,7 @@
 // @authour     Bakuzan
 // @description Link to scroll to the top of the page.
 // @include     http*
-// @version     0.1.0
+// @version     0.1.1
 // @grant       none
 // ==/UserScript==
 
@@ -23,7 +23,7 @@
    height: 20px;
    padding: 5px;
    line-height: 10px;
-   background-color: rgb(255, 255, 255);
+   background-color: #fff;
    color: #aaa;
    border: 1px solid #aaa;
    cursor: pointer;
@@ -31,6 +31,7 @@
    font-weight: bold;
    font-family: Arial,Helvetica,Sans-Serif;
    text-align: center;
+   box-sizing: content-box;
   `;
    button.textContent = '^\nTOP';
   
