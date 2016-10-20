@@ -6,22 +6,15 @@
 // @author       Bakuzan
 // @include      http*
 // @exclude      http://localhost:*
-// @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/open-new-tab-video/open-new-tab-video.css
-// @grant        GM_addStyle
-// @grant        GM_getResourceText
+// @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
-	
-	var cssTxt  = GM_getResourceText ("stylesheet");
-	GM_addStyle (cssTxt);
-	
+
     //As a start handle html5 videos.
     var NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-',
-		NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button',
         NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-',
-		NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container',
         videos = document.getElementsByTagName('video');
     
     if(!videos.length) return;
@@ -33,29 +26,18 @@
     
     function openVideoInNewTab(event) {
         var target = event.target;
-        window.open(target.getAttribute('video-link'), '_blank');
+        window.open(target.getAttribute('video-src'), '_blank');
         console.log('open video: ', event);
     }
-	
-	function toggleButtonVisibility(event) {
-		var target = event.target;
-		console.log('toggle show: ', target);
-		target.previousSibling.style.display = target.previousSibling.style.display === 'none' ? 'block' : 'none';
-	}
     
     function createOpenInNewTabButton(index, video) {
-        var container = document.createElement('div');
+        var container = document.createElement('span');
         container.id = `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`;
-		container.className = NEW_TAB_CONTAINER_CLASS;
-		video.addEventListener('mouseenter', toggleButtonVisibility);
-		video.addEventListener('mouseleave', toggleButtonVisibility);
-		
-        var newTabButton = document.createElement('input');
+        
+        var newTabButton = document.createElement('button');
         newTabButton.id = `${NEW_TAB_BUTTON_ID_PREFIX}${index}`;
-		newTabButton.className = NEW_TAB_BUTTON_CLASS;
-		newTabButton.type = 'button';
-        newTabButton.value = 'View video';
-        newTabButton.setAttribute('video-link', video.src);
+        newTabButton.value = 'Open in new tab';
+        newTabButton.setAttribute('video-src', video.src);
         newTabButton.addEventListener('click', openVideoInNewTab);
         
         container.appendChild(newTabButton);
