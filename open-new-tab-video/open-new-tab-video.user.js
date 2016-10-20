@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.1
+// @version      0.0.3
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -36,19 +36,11 @@
         window.open(target.getAttribute('video-link'), '_blank');
         console.log('open video: ', event);
     }
-	
-	function toggleButtonVisibility(event) {
-		var target = event.target;
-		console.log('toggle show: ', target);
-		target.previousSibling.style.display = target.previousSibling.style.display === 'none' ? 'block' : 'none';
-	}
     
     function createOpenInNewTabButton(index, video) {
         var container = document.createElement('div');
         container.id = `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`;
 		container.className = NEW_TAB_CONTAINER_CLASS;
-		video.addEventListener('mouseenter', toggleButtonVisibility);
-		video.addEventListener('mouseleave', toggleButtonVisibility);
 		
         var newTabButton = document.createElement('input');
         newTabButton.id = `${NEW_TAB_BUTTON_ID_PREFIX}${index}`;
