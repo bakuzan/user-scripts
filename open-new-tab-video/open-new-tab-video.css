@@ -3,11 +3,13 @@
 }
 
 .userscript-ontv-button {
-	display: none;
-	position: absolute;
-	top: 0;
-	right: -50px;
-	width: 50px;
+    display: block;
+    position: absolute;
+    right: -60px;
+    top: 0;
+    width: 60px;
 	height: 20px;
+    padding: 0;
 	cursor: pointer;
+    z-index: 999;
 }
