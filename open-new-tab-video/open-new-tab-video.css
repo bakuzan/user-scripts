@@ -10,18 +10,19 @@
 	top: 20px;
 	right: 20px;
 	width: 150px;
-	height: 50px;
+	height: 0;
 	background: #fff;
 	color: #aaa;
 	padding: 0;
 	border: 1px solid #aaa;
 	cursor: pointer;
 	z-index: 999;
+	opacity: 0;
 }
 #userscript-ontv-button:hover {
 	background: #eee;
 }
-/*
+
 .userscript-ontv-button {
 	display: block;
 	position: absolute;
@@ -36,4 +37,11 @@
 	cursor: pointer;
 	z-index: 999;
 }
-*/
+
+.userscript-ontv-transition {
+	-webkit-transition: opacity 2s ease-in-out;
+	-moz-transition: opacity 2s ease-in-out;
+	-o-transition: opacity 2s ease-in-out;
+	-ms-transition: opacity 2s ease-in-out;
+	transition: opacity 2s ease-in-out;
+}
