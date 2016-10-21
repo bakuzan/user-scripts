@@ -76,6 +76,7 @@
 		onPlayButton.type = 'button';
 		onPlayButton.value = 'Open video in new tab?';
 		onPlayButton.addEventListener('click', onPlayOpenInNewTab);
+		document.body.appendChild(onPlayButton);
 		
 		for(var i = 0, length = videos.length; i < length; i++) {
 			var video = videos[i],
