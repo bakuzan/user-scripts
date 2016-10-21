@@ -4,6 +4,24 @@
 	width: 100%;
 }
 
+#userscript-ontv-button {
+	display: block;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 150px;
+	height: 50px;
+	background: #fff;
+	color: #aaa;
+	padding: 0;
+	border: 1px solid #aaa;
+	cursor: pointer;
+	z-index: 999;
+}
+#userscript-ontv-button:hover {
+	background: #eee;
+}
+/*
 .userscript-ontv-button {
 	display: block;
 	position: absolute;
@@ -18,3 +36,4 @@
 	cursor: pointer;
 	z-index: 999;
 }
+*/
