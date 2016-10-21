@@ -48,7 +48,7 @@
 		var target = event.target;
 		console.log('played target: ', target, onPlayButton);
 		onPlayButton.style.cssText = 'opacity: 1; height: 50px';
-		onPlayButton.setAttribute('video-link', target.getAttribute('src'))
+		onPlayButton.setAttribute('video-link', target.getAttribute('src'));
 		setTimeOut(function() {
 			onPlayButton.style.cssText = 'opacity: 0; height: 0';
 		}, 5000);
