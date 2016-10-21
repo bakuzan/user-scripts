@@ -23,6 +23,7 @@
         NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-',
 	    NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container',
 	    onPlayButton = document.createElement('input'),
+		TRANSITION_CLASS = 'userscript-ontv-transition',
         videos = document.getElementsByTagName('video');
     
     if(!videos.length) return;
@@ -46,10 +47,10 @@
 	function showOnPlayButton(event) {
 		var target = event.target;
 		console.log('played target: ', target, onPlayButton);
-		onPlayButton.style.display = 'block';
+		onPlayButton.style.cssText = 'opacity: 1; height: 50px';
 		onPlayButton.setAttribute('video-link', target.getAttribute('src'))
 		setTimeOut(function() {
-			onPlayButton.style.display = 'none';
+			onPlayButton.style.cssText = 'opacity: 0; height: 0';
 		}, 5000);
 	}
     
@@ -71,6 +72,7 @@
 	
     (function() {
 		onPlayButton.id = `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`;
+		onPlayButton.className = 'userscript-ontv-transition';
 		onPlayButton.type = 'button';
 		onPlayButton.value = 'Open video in new tab?';
 		onPlayButton.addEventListener('click', onPlayOpenInNewTab);
