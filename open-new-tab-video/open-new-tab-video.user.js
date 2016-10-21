@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.6
+// @version      0.0.7
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -40,16 +40,15 @@
     
     function openVideoInNewTab(event) {
         var target = event.target,
-			video = target.parent.getElementsByTagName('video')[0];
-        window.open(video.getAttribute('src'), '_blank');
+			video = target.parentNode.getElementsByTagName('video')[0];
+        window.open(video.getAttribute('src') || video.firstChild.getAttribute('src'), '_blank');
     }
 	
 	function showOnPlayButton(event) {
 		var target = event.target;
-		console.log('played target: ', target, onPlayButton);
 		onPlayButton.style.cssText = 'opacity: 1; height: 50px';
-		onPlayButton.setAttribute('video-link', target.getAttribute('src'));
-		setTimeOut(function() {
+		onPlayButton.setAttribute('video-link', target.getAttribute('src') || target.firstChild.getAttribute('src'));
+		setTimeout(function() {
 			onPlayButton.style.cssText = 'opacity: 0; height: 0';
 		}, 5000);
 	}
@@ -76,7 +75,7 @@
 		onPlayButton.type = 'button';
 		onPlayButton.value = 'Open video in new tab?';
 		onPlayButton.addEventListener('click', onPlayOpenInNewTab);
-		document.body.appendChild(onPlayButton);
+        document.body.appendChild(onPlayButton);
 		
 		for(var i = 0, length = videos.length; i < length; i++) {
 			var video = videos[i],
