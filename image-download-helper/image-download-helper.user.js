@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -32,17 +32,18 @@
         REGEX_EXTRACT_EXTENSION = /.*(?=\.)/g,
         REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
     
-    var controls = document.createElement('div'),
+    var activateButton = document.createElement('input'),
+		alert = document.createElement('div'),
+		controls = document.createElement('div'),
         downloadButton = document.createElement('input'),
-        activateButton = document.createElement('input'),
-        searchButton = document.createElement('input'),
-        expandButton = document.createElement('div');
+        expandButton = document.createElement('div'),
+		searchButton = document.createElement('input');
     
 	controls.id = 'userscript-idh-controls';
-	controls.style.left = '-150px';
+	controls.style.left = '-182px';
     function toggleControls() {
-        var showControls = controls.style.left === '-150px';
-		controls.style.left = showControls ? '0' : '-150px';
+        var showControls = controls.style.left === '-182px';
+		controls.style.left = showControls ? '0' : '-182px';
     }
     
     downloadButton.id = 'userscript-idh-download-button';
@@ -156,6 +157,9 @@
     }
     
     function activateReverseImageSearch(event) {
+		alert.id = 'userscript-idh-reverse-search-alert';
+		alert.textContent = 'Click an image to send to reverse search.';
+		body.insertBefore(alert, body.firstChild);
         body.addEventListener('click', searchImage);
     }
 
@@ -193,6 +197,7 @@
             } else {
                 GM_openInTab(`https://www.google.com/searchbyimage?image_url=${encodeURIComponent(imageURL)}`);
             }
+			body.removeChild(alert);
             body.removeEventListener('click', searchImage);
         }
     }

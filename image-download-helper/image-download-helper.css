@@ -1,32 +1,33 @@
 #userscript-idh-controls {
 	position: fixed;
-	bottom: 0;
-	width: 167px;
-	height: 32px;
-	background: #fff;
-	color: #aaa;
-	border-top-right-radius: 10px;
-	font-size: 13px;
-	font-weight: bold;
-	font-family: Arial,Helvetica,sans-serif;
-	text-align: center;
-	z-index: 1000;
+    bottom: 0;
+    width: 202px;
+    height: 25px;
+    background: #fff;
+    color: #aaa;
+    border-top-right-radius: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Arial,Helvetica,sans-serif;
+    text-align: center;
+    z-index: 1000;
 }
 
 #userscript-idh-download-button, #userscript-idh-add-checkboxes-button, #userscript-idh-reverse-search-button {
-	width: 50px;
-	height: 32px;
+	width: 60px;
+	height: 25px;
 }
 
 #userscript-idh-expand-button {
 	display: inline-block;
-	width: 15px;
-	height: 30px;
-	background: #fff;
-	border: 1px solid #aaa;
-	border-top-right-radius: 10px;
-	line-height: 30px;
-	cursor: pointer;
+    width: 20px;
+    height: 25px;
+    background: #fff;
+    border: 1px solid #aaa;
+    border-top-right-radius: 10px;
+    line-height: 24px;
+    cursor: pointer;
+    text-align: center;
 }
 
 span[id^='userscript-idh-container-'] {
@@ -44,4 +45,16 @@ input[id^='userscript-idh-download-checkbox-'] {
 	border: 1px solid #aaa;
 	cursor: pointer;
 	z-index: 1000;
+}
+
+#userscript-idh-reverse-search-alert {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	width: 150px;
+	height: 20px;
+	background: #fff;
+	color: #aaa;
+	line-height: 20px;
+	border: 1px solid #aaa;
 }
