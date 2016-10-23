@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.1
+// @version      0.2.2
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -173,7 +173,7 @@
 
     function searchImage(event) {
         var target = event.target;
-        if(target.nodeName === 'img') {
+        if(target.nodeName === 'IMG') {
             var imageURL = event.target.getAttribute("src");
             if (imageURL.indexOf("data:") === 0) {
                 var base64Offset = imageURL.indexOf(",");

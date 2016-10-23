@@ -49,12 +49,14 @@ input[id^='userscript-idh-download-checkbox-'] {
 
 #userscript-idh-reverse-search-alert {
 	position: fixed;
-	top: 20px;
-	right: 20px;
-	width: 150px;
-	height: 20px;
-	background: #fff;
-	color: #aaa;
-	line-height: 20px;
-	border: 1px solid #aaa;
+    top: 20px;
+    right: 20px;
+    height: 20px;
+    background: #fff;
+    color: #aaa;
+    padding: 2px;
+    font: 10px/16px 'Calibri', sans-serif;
+    letter-spacing: 1px;
+    line-height: 20px;
+    border: 1px solid #aaa;
 }
