@@ -78,11 +78,11 @@
 		onPlayButton.value = 'Open video in new tab?';
 		onPlayButton.addEventListener('click', onPlayOpenInNewTab);
         body.appendChild(onPlayButton);
-		body.addEventListener('play', showOnPlayButton);
 		
 		for(var i = 0, length = videos.length; i < length; i++) {
 			var video = videos[i],
 				openInNewTabButton = createOpenInNewTabButton(i, video);
+			video.addEventListener('play', showOnPlayButton);
 			wrapElementWithNewParent(openInNewTabButton, video);
 		}
 	})();
