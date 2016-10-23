@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.3
+// @version      0.2.0
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -13,6 +13,7 @@
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
+// @grant		 GM_openInTab
 // ==/UserScript==
 
 (function() {
@@ -34,13 +35,14 @@
     var controls = document.createElement('div'),
         downloadButton = document.createElement('input'),
         activateButton = document.createElement('input'),
+        searchButton = document.createElement('input'),
         expandButton = document.createElement('div');
     
 	controls.id = 'userscript-idh-controls';
-	controls.style.left = '-100px';
+	controls.style.left = '-150px';
     function toggleControls() {
-        var showControls = controls.style.left === '-100px';
-		controls.style.left = showControls ? '0' : '-100px';
+        var showControls = controls.style.left === '-150px';
+		controls.style.left = showControls ? '0' : '-150px';
     }
     
     downloadButton.id = 'userscript-idh-download-button';
@@ -55,6 +57,12 @@
     activateButton.value = 'I/O';
     activateButton.addEventListener('click', addDownloadButtons);
     
+    searchButton.id = 'userscript-idh-reverse-search-button';
+    searchButton.type = 'button';
+    searchButton.title = 'Reverse image search';
+    searchButton.value = 'Search';
+    searchButton.addEventListener('click', activateReverseImageSearch);
+    
     expandButton.id = 'userscript-idh-expand-button';
 	expandButton.title = 'Toggle image controls';
     expandButton.textContent = '>>';
@@ -62,6 +70,7 @@
     
     controls.appendChild(downloadButton);
     controls.appendChild(activateButton);
+    controls.appendChild(searchButton);
     controls.appendChild(expandButton);
     body.insertBefore(controls, body.firstChild);
 	
@@ -143,6 +152,48 @@
         var count = downloads.length;
         while(count--) {
             downloadImage(downloads[count]);
+        }
+    }
+    
+    function activateReverseImageSearch(event) {
+        body.addEventListener('click', searchImage);
+    }
+
+    function addParamsToForm(aForm, aKey, aValue) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", aKey);
+        hiddenField.setAttribute("value", aValue);
+        aForm.appendChild(hiddenField);
+    }
+
+    function searchImage(event) {
+        var target = event.target;
+        if(target.nodeName === 'img') {
+            var imageURL = event.target.getAttribute("src");
+            if (imageURL.indexOf("data:") === 0) {
+                var base64Offset = imageURL.indexOf(",");
+                if (base64Offset != -1) {
+                    var inlineImage = imageURL.substring(base64Offset + 1)
+                    .replace(/\+/g, "-")
+                    .replace(/\//g, "_")
+                    .replace(/\./g, "=");
+
+                    var form = document.createElement("form");
+                    form.setAttribute("method", "POST");
+                    form.setAttribute("action", "//www.google.com/searchbyimage/upload");
+                    form.setAttribute("enctype", "multipart/form-data");
+                    form.setAttribute("target", "_blank");
+                    addParamsToForm(form, "image_content", inlineImage);
+                    addParamsToForm(form, "filename", "");
+                    addParamsToForm(form, "image_url", "");
+                    body.appendChild(form);
+                    form.submit();
+                }
+            } else {
+                GM_openInTab(`https://www.google.com/searchbyimage?image_url=${encodeURIComponent(imageURL)}`);
+            }
+            body.removeEventListener('click', searchImage);
         }
     }
     

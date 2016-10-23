@@ -1,7 +1,7 @@
 #userscript-idh-controls {
 	position: fixed;
 	bottom: 0;
-	width: 117px;
+	width: 167px;
 	height: 32px;
 	background: #fff;
 	color: #aaa;
@@ -13,7 +13,7 @@
 	z-index: 1000;
 }
 
-#userscript-idh-download-button, #userscript-idh-add-checkboxes-button {
+#userscript-idh-download-button, #userscript-idh-add-checkboxes-button, #userscript-idh-reverse-search-button {
 	width: 50px;
 	height: 32px;
 }
@@ -38,8 +38,8 @@ input[id^='userscript-idh-download-checkbox-'] {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 10px;
-	height: 10px;
+	width: 15px;
+	height: 15px;
 	margin: 0;
 	border: 1px solid #aaa;
 	cursor: pointer;
