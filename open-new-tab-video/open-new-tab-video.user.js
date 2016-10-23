@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.7
+// @version      0.0.9
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -19,7 +19,8 @@
 	GM_addStyle (cssTxt);
 	
     //As a start handle html5 videos.
-    var NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-',
+    var body = document.body,
+		NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-',
 	    NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button',
         NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-',
 	    NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container',
@@ -76,12 +77,12 @@
 		onPlayButton.type = 'button';
 		onPlayButton.value = 'Open video in new tab?';
 		onPlayButton.addEventListener('click', onPlayOpenInNewTab);
-        document.body.appendChild(onPlayButton);
+        body.appendChild(onPlayButton);
+		body.addEventListener('play', showOnPlayButton);
 		
 		for(var i = 0, length = videos.length; i < length; i++) {
 			var video = videos[i],
 				openInNewTabButton = createOpenInNewTabButton(i, video);
-			video.addEventListener('play', showOnPlayButton);
 			wrapElementWithNewParent(openInNewTabButton, video);
 		}
 	})();
