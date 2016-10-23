@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.9
+// @version      0.0.10
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
