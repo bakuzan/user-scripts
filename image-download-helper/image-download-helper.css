@@ -47,7 +47,7 @@
     text-align: center;
 }
 
-span[id^='userscript-idh-container-'] {
+span.userscript-idh-wrapper {
 	position: relative;
 	display: block;
 }

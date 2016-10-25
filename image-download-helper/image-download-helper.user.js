@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.1
+// @version      0.3.2
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -27,7 +27,7 @@
 	
 	var body = document.body,
 		CHECKBOX_ID_PREFIX = 'userscript-idh-download-checkbox-',
-		CONTAINER_ID_PREFIX = 'userscript-idh-container-',
+		CONTAINER_CLASS = 'userscript-idh-wrapper',
 		downloads = [],
 		extensions = ['.jpg', '.png', '.gif'],
 		hasDownloadButtons = false,
@@ -83,7 +83,7 @@
 	function createDownloadWrapper(i) {
 		var container = document.createElement('span'),
 			checkbox = document.createElement('input');
-		container.id = `${CONTAINER_ID_PREFIX}${i}`;
+		container.className = `${CONTAINER_CLASS}`;
 		
 		checkbox.id = `${CHECKBOX_ID_PREFIX}${i}`;
 		checkbox.type = 'checkbox';
