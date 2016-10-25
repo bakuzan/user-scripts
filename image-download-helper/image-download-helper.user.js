@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.4
+// @version      0.3.0
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -9,6 +9,7 @@
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/polyfills/GM_download-polyfill.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/pad.js
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/cssSelectorPath.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/image-download-helper/image-download-helper.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -36,6 +37,8 @@
 	
 	var activateButton = document.createElement('input'),
 		alert = document.createElement('div'),
+		checkAll = document.createElement('div'),
+		checkAllButton = document.createElement('input'),
 		controls = document.createElement('div'),
 		downloadButton = document.createElement('input'),
 		expandButton = document.createElement('div'),
@@ -139,6 +142,37 @@
 		});
 	}
 	
+	function checkAllSimilarImages(event) {
+		var exampleSrc = downloads[0],
+			exampleImg = document.querySelector(`img[src='${exampleSrc}']`),
+			checkAllSelector = buildSelectorPath(exampleImg);
+		console.log(exampleSrc, exampleImg, checkAllSelector);
+		var checkAllImages = document.querySelectorAll(checkAllSelector);
+		for(var i = 0, len = checkAllImages.length; i < len; i++) {
+			var image = checkAllImages[i],
+				checkbox = image.previousSibling;
+			checkbox.setAttribute('checked', true);
+			checkbox.click();
+		}
+		console.log('dls :', downloads);
+	}
+	
+	function displayCheckAllOption() {
+		var displayCheckAll = downloads.length > 0;
+		if(displayCheckAll) {
+			checkAll.id = 'userscript-idh-check-all';
+			checkAllButton.id = 'userscript-idh-check-all-button';
+			checkAllButton.type = 'button';
+			checkAllButton.value = 'Check all similar images?';
+			checkAllButton.addEventListener('click', checkAllSimilarImages);
+			
+			checkAll.appendChild(checkAllButton);
+			body.appendChild(checkAll);
+		} else {
+			body.removeChild(checkAll);
+		}
+	}
+	
 	function toggleQueueDowload(event) {
 		event.stopPropagation();
 		var target = event.target,
@@ -149,6 +183,7 @@
 		extension = extensions.indexOf(extension) === -1 ? '.jpg' : extension;
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
+		displayCheckAllOption();
 	}
 	
 	function processDownloads() {
