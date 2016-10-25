@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.10
+// @version      0.0.12
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -18,72 +18,76 @@
 	var cssTxt  = GM_getResourceText ("stylesheet");
 	GM_addStyle (cssTxt);
 	
-    //As a start handle html5 videos.
-    var body = document.body,
-		NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-',
-	    NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button',
-        NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-',
-	    NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container',
-	    onPlayButton = document.createElement('input'),
-		TRANSITION_CLASS = 'userscript-ontv-transition',
-        videos = document.getElementsByTagName('video');
-    
-    if(!videos.length) return;
-    
-    function wrapElementWithNewParent(newParent, child) {
-        child.parentNode.replaceChild(newParent, child);
-        newParent.appendChild(child);
-    }
-	
-	function onPlayOpenInNewTab(event) {
-		var target = event.target;
-		window.open(target.getAttribute('video-link'), '_blank');
-	}
-    
-    function openVideoInNewTab(event) {
-        var target = event.target,
-			video = target.parentNode.getElementsByTagName('video')[0];
-        window.open(video.getAttribute('src') || video.firstChild.getAttribute('src'), '_blank');
-    }
-	
-	function showOnPlayButton(event) {
-		var target = event.target;
-		onPlayButton.style.cssText = 'opacity: 1; height: 50px';
-		onPlayButton.setAttribute('video-link', target.getAttribute('src') || target.firstChild.getAttribute('src'));
-		setTimeout(function() {
-			onPlayButton.style.cssText = 'opacity: 0; height: 0';
-		}, 5000);
-	}
-    
-    function createOpenInNewTabButton(index, video) {
-        var container = document.createElement('div');
-        container.id = `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`;
-		container.className = NEW_TAB_CONTAINER_CLASS;
+	if (window.top === window.self) {
+		var body = document.body,
+			NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-',
+			NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button',
+			NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-',
+			NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container',
+			onPlayButton = document.createElement('input'),
+			TRANSITION_CLASS = 'userscript-ontv-transition',
+			videos = document.getElementsByTagName('video');
 		
-        var newTabButton = document.createElement('input');
-        newTabButton.id = `${NEW_TAB_BUTTON_ID_PREFIX}${index}`;
-		newTabButton.className = NEW_TAB_BUTTON_CLASS;
-		newTabButton.type = 'button';
-        newTabButton.value = 'View video';
-        newTabButton.addEventListener('click', openVideoInNewTab);
-        
-        container.appendChild(newTabButton);
-        return container;
-    }
-	
-    (function() {
-		onPlayButton.id = `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`;
-		onPlayButton.className = 'userscript-ontv-transition';
-		onPlayButton.type = 'button';
-		onPlayButton.value = 'Open video in new tab?';
-		onPlayButton.addEventListener('click', onPlayOpenInNewTab);
-        body.appendChild(onPlayButton);
+		if(!videos.length) return;
 		
-		for(var i = 0, length = videos.length; i < length; i++) {
-			var video = videos[i],
-				openInNewTabButton = createOpenInNewTabButton(i, video);
-			video.addEventListener('play', showOnPlayButton);
-			wrapElementWithNewParent(openInNewTabButton, video);
+		function wrapElementWithNewParent(newParent, child) {
+			child.parentNode.replaceChild(newParent, child);
+			newParent.appendChild(child);
 		}
-	})();
+		
+		function onPlayOpenInNewTab(event) {
+			var target = event.target;
+			window.open(target.getAttribute('video-link'), '_blank');
+		}
+		
+		function openVideoInNewTab(event) {
+			var target = event.target,
+				video = target.parentNode.getElementsByTagName('video')[0];
+			window.open(video.getAttribute('src') || video.firstChild.getAttribute('src'), '_blank');
+		}
+		
+		function showOnPlayButton(event) {
+			var target = event.target;
+			onPlayButton.style.cssText = 'opacity: 1; height: 50px';
+			onPlayButton.setAttribute('video-link', target.getAttribute('src') || target.firstChild.getAttribute('src'));
+			setTimeout(function() {
+				onPlayButton.style.cssText = 'opacity: 0; height: 0';
+			}, 5000);
+		}
+		
+		function createOpenInNewTabButton(index, video) {
+			var container = document.createElement('div');
+			container.id = `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`;
+			container.className = NEW_TAB_CONTAINER_CLASS;
+			
+			var newTabButton = document.createElement('input');
+			newTabButton.id = `${NEW_TAB_BUTTON_ID_PREFIX}${index}`;
+			newTabButton.className = NEW_TAB_BUTTON_CLASS;
+			newTabButton.type = 'button';
+			newTabButton.value = 'View video';
+			newTabButton.addEventListener('click', openVideoInNewTab);
+			
+			container.appendChild(newTabButton);
+			return container;
+		}
+		
+		(function() {
+			onPlayButton.id = `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`;
+			onPlayButton.className = 'userscript-ontv-transition';
+			onPlayButton.type = 'button';
+			onPlayButton.value = 'Open video in new tab?';
+			onPlayButton.addEventListener('click', onPlayOpenInNewTab);
+			body.appendChild(onPlayButton);
+			
+			for(var i = 0, length = videos.length; i < length; i++) {
+				var video = videos[i],
+					openInNewTabButton = createOpenInNewTabButton(i, video);
+				video.addEventListener('play', showOnPlayButton);
+				wrapElementWithNewParent(openInNewTabButton, video);
+			}
+		})();
+	} else {
+		var iframeVideos = document.querySelectorAll('video, object');
+		console.log('i am a nasty iframe with videos : ', iframeVideos);
+	}
 })();
