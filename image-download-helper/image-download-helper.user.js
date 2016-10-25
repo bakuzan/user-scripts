@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.0
+// @version      0.3.1
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -144,7 +144,7 @@
 	
 	function checkAllSimilarImages(event) {
 		var exampleSrc = downloads[0],
-			exampleImg = document.querySelector(`img[src='${exampleSrc}']`),
+			exampleImg = document.querySelector(`img[src='${exampleSrc.url}']`),
 			checkAllSelector = buildSelectorPath(exampleImg);
 		console.log(exampleSrc, exampleImg, checkAllSelector);
 		var checkAllImages = document.querySelectorAll(checkAllSelector);

@@ -31,6 +31,9 @@
     border-color: buttonface;
     border-image: initial;
 }
+#userscript-idh-check-all-button {
+	width: 170px;
+}
 
 #userscript-idh-expand-button {
 	display: inline-block;
@@ -77,4 +80,5 @@ input[id^='userscript-idh-download-checkbox-'] {
 
 #userscript-idh-check-all {
 	top: 45%;
+	height: 25px;
 }
