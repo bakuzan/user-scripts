@@ -15,10 +15,10 @@
 (function() {
     'use strict';
 	
-	var cssTxt  = GM_getResourceText ("stylesheet");
-	GM_addStyle (cssTxt);
-	
 	if (window.top === window.self) {
+		var cssTxt  = GM_getResourceText ("stylesheet");
+		GM_addStyle (cssTxt);
+		
 		var body = document.body,
 			NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-',
 			NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button',

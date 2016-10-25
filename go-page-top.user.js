@@ -4,54 +4,55 @@
 // @authour     Bakuzan
 // @description Link to scroll to the top of the page.
 // @include     http*
-// @version     0.1.1
+// @version     0.1.3
 // @grant       none
 // ==/UserScript==
 
 (function() {
   'use strict';
   
+  if (!(window.top === window.self)) return;
+  
   var body = document.body,
       button = document.createElement('span');
-  button.id = 'userscript-gpt-button';
-  button.style.cssText = `
-   display: none;
-   position: fixed;
-   right: 25px;
-   bottom: 25px;
-   width: 30px;
-   height: 20px;
-   padding: 5px;
-   line-height: 10px;
-   background-color: #fff;
-   color: #aaa;
-   border: 1px solid #aaa;
-   cursor: pointer;
-   font-size: 13px;
-   font-weight: bold;
-   font-family: Arial,Helvetica,Sans-Serif;
-   text-align: center;
-   box-sizing: content-box;
-  `;
-   button.textContent = '^\nTOP';
-  
-  function buttonDisplayStatus(status) {
-    button.style.display = status ? 'block' : 'none';
-  }
-  
-  function scrollPageTop() {
-    window.scrollTo(0,0);
-  }
-  
-  function toggleScrollPageTopButton() {
-    var distanceScrolledDown = window.scrollY;
-    console.log('distance: ', distanceScrolledDown);
-    if (distanceScrolledDown > 100) buttonDisplayStatus(true);
-    if (distanceScrolledDown < 100) buttonDisplayStatus(false);
-  }
-  
-  button.addEventListener('click', scrollPageTop);
-  window.addEventListener('scroll', toggleScrollPageTopButton);
-  body.appendChild(button);
-  
+	button.id = 'userscript-gpt-button';
+	button.style.cssText = `
+		display: none;
+		position: fixed;
+		right: 25px;
+		bottom: 25px;
+		width: 30px;
+		height: 20px;
+		padding: 5px;
+		line-height: 10px;
+		background-color: #fff;
+		color: #aaa;
+		border: 1px solid #aaa;
+		cursor: pointer;
+		font-size: 13px;
+		font-weight: bold;
+		font-family: Arial,Helvetica,Sans-Serif;
+		text-align: center;
+		box-sizing: content-box;
+	`;
+	button.textContent = '^\nTOP';
+
+	function buttonDisplayStatus(status) {
+		button.style.display = status ? 'block' : 'none';
+	}
+
+	function scrollPageTop() {
+		window.scrollTo(0,0);
+	}
+
+	function toggleScrollPageTopButton() {
+		var distanceScrolledDown = window.scrollY;
+		if (distanceScrolledDown > 100) buttonDisplayStatus(true);
+		if (distanceScrolledDown < 100) buttonDisplayStatus(false);
+	}
+
+	button.addEventListener('click', scrollPageTop);
+	window.addEventListener('scroll', toggleScrollPageTopButton);
+	body.appendChild(button);
+	
 })();
