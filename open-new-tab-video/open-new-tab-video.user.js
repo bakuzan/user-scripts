@@ -99,7 +99,7 @@
 		
 		(function(open) {
 			XMLHttpRequest.prototype.open = function() {
-				this.addEventListener("readystatechange", function() {
+				this.addEventListener('readystatechange', function() {
 					console.log(this.readyState, arguments);
 				}, false);
 				open.apply(this, arguments);

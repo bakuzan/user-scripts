@@ -148,10 +148,10 @@
 			checkAllSelector = buildSelectorPath(exampleImg);
 		console.log(exampleSrc, exampleImg, checkAllSelector);
 		var checkAllImages = document.querySelectorAll(checkAllSelector);
-		checkAllImages.splice(checkAllImages.indexOf(exampleImg), 1)
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
+			if(image.src === exampleImg.src) continue;
 			checkbox.setAttribute('checked', true);
 			checkbox.click();
 		}
