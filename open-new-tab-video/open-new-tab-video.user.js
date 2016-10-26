@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.13
+// @version      0.0.14
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -98,12 +98,12 @@
 		}
 		
 		(function(open) {
-			XMLHttpRequest.prototype.open = function() {
+			window.XMLHttpRequest.prototype.open = function() {
 				this.addEventListener('readystatechange', function() {
-					console.log(this.readyState, arguments);
+					console.log(arguments);
 				}, false);
 				open.apply(this, arguments);
 			};
-		})(XMLHttpRequest.prototype.open);
+		})(window.XMLHttpRequest.prototype.open);
 	}
 })();
