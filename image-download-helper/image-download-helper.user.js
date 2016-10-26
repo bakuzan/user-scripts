@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.2
+// @version      0.3.3
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -20,7 +20,7 @@
 (function() {
     'use strict';
     
-	if (!(window.top === window.self)) return;
+   if (window.top !== window.self) return;
 	
 	var cssTxt  = GM_getResourceText ("stylesheet");
 	GM_addStyle (cssTxt);
@@ -148,6 +148,7 @@
 			checkAllSelector = buildSelectorPath(exampleImg);
 		console.log(exampleSrc, exampleImg, checkAllSelector);
 		var checkAllImages = document.querySelectorAll(checkAllSelector);
+		checkAllImages.splice(checkAllImages.indexOf(exampleImg), 1)
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
@@ -183,7 +184,7 @@
 		extension = extensions.indexOf(extension) === -1 ? '.jpg' : extension;
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
-		displayCheckAllOption();
+		if(event.which) displayCheckAllOption();
 	}
 	
 	function processDownloads() {

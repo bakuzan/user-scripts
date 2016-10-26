@@ -4,14 +4,14 @@
 // @authour     Bakuzan
 // @description Link to scroll to the top of the page.
 // @include     http*
-// @version     0.1.3
+// @version     0.1.4
 // @grant       none
 // ==/UserScript==
 
 (function() {
   'use strict';
   
-  if (!(window.top === window.self)) return;
+  if (window.top !== window.self) return;
   
   var body = document.body,
       button = document.createElement('span');
