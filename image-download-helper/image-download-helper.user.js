@@ -145,9 +145,9 @@
 	function checkAllSimilarImages(event) {
 		var exampleSrc = downloads[0],
 			exampleImg = document.querySelector(`img[src='${exampleSrc.url}']`),
-			checkAllSelector = buildSelectorPath(exampleImg);
-		console.log(exampleSrc, exampleImg, checkAllSelector);
-		var checkAllImages = document.querySelectorAll(checkAllSelector);
+			checkAllSelector = buildSelectorPath(exampleImg),
+			checkAllImages = document.querySelectorAll(checkAllSelector);
+		console.log(exampleImg, checkAllSelector, checkAllImages);
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
@@ -184,7 +184,10 @@
 		extension = extensions.indexOf(extension) === -1 ? '.jpg' : extension;
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
-		if(event.which) displayCheckAllOption();
+		if(event.which) {
+			console.log(event, event.which);
+			displayCheckAllOption();
+		}
 	}
 	
 	function processDownloads() {
