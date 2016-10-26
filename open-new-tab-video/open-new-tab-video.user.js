@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.15
+// @version      0.0.16
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -64,17 +64,21 @@
 		return container;
 	}
 	
+	function receiveMessageFromFrame(event) {
+		console.log('from event: ', event);
+		var message = event.data;
+	}
+	
+	function sendMessageFromAnIframe(message) {
+		window.top.postMessage(message, window.top.location.origin);
+	}
+	
 	if (window.top === window.self) {
 		var cssTxt  = GM_getResourceText ("stylesheet");
 		GM_addStyle (cssTxt);
 		
 		var videos = document.getElementsByTagName('video');	
 		if(!videos.length) return;
-		
-		function receiveMessageFromFrame(event) {
-			console.log('from event: ', event);
-			var message = event.data;
-		}
 		
 		(function() {
 			onPlayButton.id = `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`;
@@ -93,9 +97,6 @@
 			window.addEventListener('message', receiveMessageFromFrame, false);
 		})();
 	} else {
-		function sendMessageFromAnIframe(message) {
-			window.top.postMessage(message, window.top.location.origin);
-		}
 		
 		(function(open) {
 			window.XMLHttpRequest.prototype.open = function() {
