@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.6
+// @version      0.3.7
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -184,10 +184,7 @@
 		extension = extensions.indexOf(extension) === -1 ? '.jpg' : extension;
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
-		if(event.which) {
-			console.log(event, event.which);
-			displayCheckAllOption();
-		}
+		if(event.detail) displayCheckAllOption();
 	}
 	
 	function processDownloads() {
