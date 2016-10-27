@@ -105,6 +105,7 @@
 
 			XHR.prototype.open = function(method, url, async, user, pass) {
 				this._url = url;
+				console.log(method, url, async, user, pass);
 				open.call(this, method, url, async, user, pass);
 			};
 
@@ -134,7 +135,7 @@
 					}
 				}
 				send.call(this, data);
-			}
+			};
 		})(XMLHttpRequest);
 	}
 })();

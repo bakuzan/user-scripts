@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.7
+// @version      0.3.8
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -36,13 +36,15 @@
 		REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
 	
 	var activateButton = document.createElement('input'),
-		alert = document.createElement('div'),
+		alertMessage = document.createElement('div'),
 		checkAll = document.createElement('div'),
 		checkAllButton = document.createElement('input'),
 		controls = document.createElement('div'),
 		downloadButton = document.createElement('input'),
 		expandButton = document.createElement('div'),
 		searchButton = document.createElement('input');
+    
+    console.log('get idh');
 	
 	controls.id = 'userscript-idh-controls';
 	controls.style.left = '-182px';
@@ -114,12 +116,14 @@
 			}
 			hasDownloadButtons = true;
 		} else {
-			for(var i = 0, length = images.length; i < length; i++) {
-				var image = images[i],
-					originalParent = image.parentNode.parentNode,
-					checkbox = image.previousSibling;
+			for(var j = 0, count = images.length; j < count; j++) {
+				var imageForToggle = images[j],
+					originalParent = imageForToggle.parentNode.parentNode,
+					checkbox = imageForToggle.previousSibling;
 				toggleParentHref(originalParent);
 				checkbox.style.display = checkbox.style.display === 'none' ? 'block' : 'none';
+                checkbox.checked = false;
+                downloads = [];
 			}
 		}
 	}
@@ -134,6 +138,8 @@
 				"Referer": window.host
 			},
 			onload: function(response){
+                downloads.splice(findWithAttr(downloads, 'url', url), 1);
+                if(downloads.length) downloadImage(downloads[0]);
 				alert(`Downloaded ${name} successfully!`);
 			},
 			onerror: function(){
@@ -147,7 +153,6 @@
 			exampleImg = document.querySelector(`img[src='${exampleSrc.url}']`),
 			checkAllSelector = buildSelectorPath(exampleImg),
 			checkAllImages = document.querySelectorAll(checkAllSelector);
-		console.log(exampleImg, checkAllSelector, checkAllImages);
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
@@ -188,16 +193,17 @@
 	}
 	
 	function processDownloads() {
-		var count = downloads.length;
-		while(count--) {
-			downloadImage(downloads[count]);
+		if(downloads.length) {
+			downloadImage(downloads[0]);
+		} else {
+			alert('Nothing selected for download.');
 		}
 	}
 	
 	function activateReverseImageSearch(event) {
-		alert.id = 'userscript-idh-reverse-search-alert';
-		alert.textContent = 'Click an image to send to reverse search.';
-		body.insertBefore(alert, body.firstChild);
+		alertMessage.id = 'userscript-idh-reverse-search-alert';
+		alertMessage.textContent = 'Click an image to send to reverse search.';
+		body.insertBefore(alertMessage, body.firstChild);
 		body.addEventListener('click', searchImage);
 	}
 
@@ -235,7 +241,7 @@
 			} else {
 				GM_openInTab(`https://www.google.com/searchbyimage?image_url=${encodeURIComponent(imageURL)}`);
 			}
-			body.removeChild(alert);
+			body.removeChild(alertMessage);
 			body.removeEventListener('click', searchImage);
 		}
 	}
