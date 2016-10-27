@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.8
+// @version      0.3.9
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -44,8 +44,6 @@
 		expandButton = document.createElement('div'),
 		searchButton = document.createElement('input');
     
-    console.log('get idh');
-	
 	controls.id = 'userscript-idh-controls';
 	controls.style.left = '-182px';
 	function toggleControls() {
@@ -140,7 +138,7 @@
 			onload: function(response){
                 downloads.splice(findWithAttr(downloads, 'url', url), 1);
                 if(downloads.length) downloadImage(downloads[0]);
-				alert(`Downloaded ${name} successfully!`);
+				//alert(`Downloaded ${name} successfully!`);
 			},
 			onerror: function(){
 				alert(`Download of ${name} failed!\n${url}`);
