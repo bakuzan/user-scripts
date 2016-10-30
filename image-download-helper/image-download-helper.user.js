@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.0
+// @version      0.4.1
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -129,7 +129,7 @@
 	}
 	
 	function downloadImage(downloads) {
-		if(download.length === 1) {
+		if(downloads.length === 1) {
 			var url = downloads[0].url,
 				name = downloads[0].name;
 			downloads = downloads[0];
