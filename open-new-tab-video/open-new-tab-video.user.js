@@ -69,8 +69,9 @@
 		var message = event.data;
 	}
 	
-	function sendMessageFromAnIframe(message) {
-		window.top.postMessage(message, window.top.location.origin);
+	function sendMessageFromAnIframe(event) {
+		var target = event.target;
+		window.top.postMessage(target.getAttribute('src') || target.firstChild.getAttribute('src'), window.top.location.origin);
 	}
 	
 	if (window.top === window.self) {
@@ -97,6 +98,7 @@
 			window.addEventListener('message', receiveMessageFromFrame, false);
 		})();
 	} else {	
+	/*
 		(function(open){
             XMLHttpRequest.prototype.open = function () {
                 console.log('cept open : ', this, arguments);
@@ -108,5 +110,18 @@
                 open.call(this, arguments);
             };
         })(XMLHttpRequest.prototype.open);
+	*/	
+		var videos = document.getElementById('video');
+		for(var i = 0, length = videos.length; i < length; i++) {
+			var video = videos[i];
+			video.addEventListener('play', sendMessageFromAnIframe);
+		}
+		
+		var flashVars = document.querySelectorAll('object[type="application/x-shockwave-flash"] > param[name="flashvars"]');
+		for(var i = 0, length = flashVars.length; i < length; i++) {
+			var param = flashVars[i],
+				file = param.value.match(/file=(.*?)(?:&)/g);
+			console.log(file);
+		}
 	}
 })();

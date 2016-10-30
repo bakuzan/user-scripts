@@ -1,0 +1,79 @@
+/* 	SW_download
+ *  
+ *  @description  GM_download replacement with built in zipping.
+ *  @author       Bakuzan
+ *  @version      1.0
+ */
+
+// must include "@grant GM_xmlhttpRequest" at userscript metadata block
+// must include "@require FileSaver" at userscript metadata block
+// must include "@require jszip" at userscript metadata block
+
+if (typeof GM_download !== 'function') {
+    if (typeof GM_xmlhttpRequest !== 'function') {
+        throw new Error('GM_xmlhttpRequest is undefined. Please set @grant GM_xmlhttpRequest at metadata block.');
+    }
+	
+	function initiateDownload(res) {
+		var blob = new Blob([res.response], {type: 'application/octet-stream'});
+		var url = URL.createObjectURL(blob); // blob url
+		
+		saveAs(url, data.name);
+
+		if (typeof data.onafterload === 'function') data.onafterload(); // call onload function
+	}
+	
+	function addDownloadItemToZip(res) {
+		zip.file(data.name, res.response, {base64: true});
+	}
+	
+	function downloadZipFile(zip, requestData) {
+		zip.generateAsync({type:"blob"}).then(function(content) {
+			saveAs(content, 'idh-multiple-file-download.zip');
+			if (typeof requestData.onafterload === 'function') requestData.onafterload(); // call onload function
+		});
+	}
+	
+    function SW_download (urls, options) {
+        if (urls === null) return;
+		
+		var downloads = [],
+			data = {
+				method: 'GET',
+				responseType: 'arraybuffer',
+				onload: function() { }
+			};
+		
+		for (var i in options) {
+			if (i !== 'onload') data[i] = options[i];
+		}
+		
+		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
+			var zip = new JSZip();
+			for(var i = 0, length = urls.length; i < length; i++) {
+				var download = urls[i];
+				if (download.url === null) continue;
+				
+				data.url = download.url;
+				data.name = download.name;
+				data.onload = addDownloadItemToZip;
+				
+				GM_xmlhttpRequest(data);
+			}
+			data.onafterload = options.onload; // onload function support
+			downloadZipFile(zip, data);
+		} else {
+			if (urls instanceof Object === false) return;
+
+            if (urls.url == null) return;
+			
+			data.name = urls.name;
+			data.url = urls.url;
+			data.onload = initiateDownload;
+			
+			data.onafterload = options.onload; // onload function support
+			
+			return GM_xmlhttpRequest(data);
+		}
+    }
+}

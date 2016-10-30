@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.9
+// @version      0.4.0
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
 // @exclude      http://localhost*
-// @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/polyfills/GM_download-polyfill.js
+// @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/includes/FileSaver.min.js
+// @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/includes/jszip.min.js
+// @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/polyfills/SW_download.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/pad.js
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/cssSelectorPath.js
@@ -126,19 +128,21 @@
 		}
 	}
 	
-	function downloadImage(download) {
-		var url = download.url,
-			name = download.name;
-		GM_download({
-			url: url,
-			name: name,
+	function downloadImage(downloads) {
+		if(download.length === 1) {
+			var url = downloads[0].url,
+				name = downloads[0].name;
+			downloads = downloads[0];
+		}
+		
+		SW_download(downloads, {
+			url: url || null,
+			name: name || null,
 			header: {
 				"Referer": window.host
 			},
-			onload: function(response){
-                downloads.splice(findWithAttr(downloads, 'url', url), 1);
-                if(downloads.length) downloadImage(downloads[0]);
-				//alert(`Downloaded ${name} successfully!`);
+			onload: function(){
+				alert(`Downloaded ${name} successfully!`);
 			},
 			onerror: function(){
 				alert(`Download of ${name} failed!\n${url}`);
@@ -192,7 +196,7 @@
 	
 	function processDownloads() {
 		if(downloads.length) {
-			downloadImage(downloads[0]);
+			downloadImage(downloads);
 		} else {
 			alert('Nothing selected for download.');
 		}
