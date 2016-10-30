@@ -2,7 +2,7 @@
  *  
  *  @description  GM_download replacement with built in zipping.
  *  @author       Bakuzan
- *  @version      1.0
+ *  @version      1.2
  */
 
 // must include "@grant GM_xmlhttpRequest" at userscript metadata block
@@ -14,19 +14,6 @@ if (typeof GM_download !== 'function') {
         throw new Error('GM_xmlhttpRequest is undefined. Please set @grant GM_xmlhttpRequest at metadata block.');
     }
 	
-	function initiateDownload(res) {
-		var blob = new Blob([res.response], {type: 'application/octet-stream'});
-		var url = URL.createObjectURL(blob); // blob url
-		
-		saveAs(url, data.name);
-
-		if (typeof data.onafterload === 'function') data.onafterload(); // call onload function
-	}
-	
-	function addDownloadItemToZip(res) {
-		zip.file(data.name, res.response, {base64: true});
-	}
-	
 	function downloadZipFile(zip, requestData) {
 		zip.generateAsync({type:"blob"}).then(function(content) {
 			saveAs(content, 'idh-multiple-file-download.zip');
@@ -37,12 +24,11 @@ if (typeof GM_download !== 'function') {
     function SW_download (urls, options) {
         if (urls === null) return;
 		
-		var downloads = [],
-			data = {
-				method: 'GET',
-				responseType: 'arraybuffer',
-				onload: function() { }
-			};
+		var data = {
+			method: 'GET',
+			responseType: 'arraybuffer',
+			onload: function() { }
+		};
 		
 		for (var i in options) {
 			if (i !== 'onload') data[i] = options[i];
@@ -56,7 +42,9 @@ if (typeof GM_download !== 'function') {
 				
 				data.url = download.url;
 				data.name = download.name;
-				data.onload = addDownloadItemToZip;
+				data.onload = function addDownloadItemToZip(res) {
+					zip.file(data.name, res.response, {base64: true});
+				}
 				
 				GM_xmlhttpRequest(data);
 			}
@@ -69,8 +57,14 @@ if (typeof GM_download !== 'function') {
 			
 			data.name = urls.name;
 			data.url = urls.url;
-			data.onload = initiateDownload;
-			
+			data.onload = function initiateDownload(res) {
+				var blob = new Blob([res.response], {type: 'application/octet-stream'});
+				var url = URL.createObjectURL(blob); // blob url
+				
+				saveAs(url, data.name);
+
+				if (typeof data.onafterload === 'function') data.onafterload(); // call onload function
+			}
 			data.onafterload = options.onload; // onload function support
 			
 			return GM_xmlhttpRequest(data);
