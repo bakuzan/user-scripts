@@ -47,7 +47,7 @@ if (typeof GM_download !== 'function') {
 						console.log(name, res, zip);
 						zip.file(name, res.response);
 					}
-				}(zip, data.name)
+				}(zip, download.name)
 				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
