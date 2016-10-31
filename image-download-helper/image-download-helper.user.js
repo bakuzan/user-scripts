@@ -130,14 +130,10 @@
 	
 	function downloadImage(downloads) {
 		if(downloads.length === 1) {
-			var url = downloads[0].url,
-				name = downloads[0].name;
 			downloads = downloads[0];
 		}
 		
 		SW_download(downloads, {
-			url: url || null,
-			name: name || null,
 			header: {
 				"Referer": window.host
 			},
