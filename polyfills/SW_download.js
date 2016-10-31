@@ -62,9 +62,9 @@ if (typeof GM_download !== 'function') {
 			data.onload = function initiateDownload(name) {
 				return function(res) {
 					var blob = new Blob([res.response], {type: 'application/octet-stream'});
-					var url = URL.createObjectURL(blob); // blob url
+					//var url = URL.createObjectURL(blob); // blob url
 
-					saveAs(url, name);
+					saveAs(blob, name);
 
 					if (typeof data.onafterload === 'function') data.onafterload(); // call onload function
 				}
