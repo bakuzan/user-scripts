@@ -39,15 +39,17 @@ if (typeof GM_download !== 'function') {
 			for(var i = 0, length = urls.length; i < length; i++) {
 				var download = urls[i];
 				if (download.url === null) continue;
-				
-				data.url = download.url;
-				data.name = download.name;
+				var url = download.url,
+					name = download.name;
+					
+				data.url = url;
+				data.name = name;
 				data.onload = function addDownloadItemToZip(zip, name) {
 					return function(res) {
 						console.log(name, res, zip);
 						zip.file(name, res.response);
 					}
-				}(zip, download.name)
+				}(zip, name)
 				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
