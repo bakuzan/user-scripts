@@ -42,11 +42,11 @@ if (typeof GM_download !== 'function') {
 				
 				data.url = download.url;
 				data.name = download.name;
-				data.onload = function addDownloadItemToZip(res) {
-					//Go to this url, test the way shown there.
-					//http://stackoverflow.com/questions/526128/is-there-a-way-to-pass-a-value-to-gm-xmlhttprequest/526282
-					zip.file(data.name, res.response, {base64: true});
-				}
+				data.onload = function addDownloadItemToZip(zip, name) {
+					return function(res) {
+						zip.file(name, res.response, {base64: true});
+					}
+				}(zip, data.name)
 				
 				GM_xmlhttpRequest(data);
 			}
@@ -59,14 +59,16 @@ if (typeof GM_download !== 'function') {
 			
 			data.name = urls.name;
 			data.url = urls.url;
-			data.onload = function initiateDownload(res) {
-				var blob = new Blob([res.response], {type: 'application/octet-stream'});
-				var url = URL.createObjectURL(blob); // blob url
-				
-				saveAs(url, data.name);
+			data.onload = function initiateDownload(name) {
+				return function(res) {
+					var blob = new Blob([res.response], {type: 'application/octet-stream'});
+					var url = URL.createObjectURL(blob); // blob url
 
-				if (typeof data.onafterload === 'function') data.onafterload(); // call onload function
-			}
+					saveAs(url, name);
+
+					if (typeof data.onafterload === 'function') data.onafterload(); // call onload function
+				}
+			}(data.name)
 			data.onafterload = options.onload; // onload function support
 			
 			return GM_xmlhttpRequest(data);
