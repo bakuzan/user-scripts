@@ -44,6 +44,7 @@ if (typeof GM_download !== 'function') {
 				data.name = download.name;
 				data.onload = function addDownloadItemToZip(zip, name) {
 					return function(res) {
+						console.log(name, res, zip);
 						zip.file(name, res.response);
 					}
 				}(zip, data.name)
@@ -61,7 +62,6 @@ if (typeof GM_download !== 'function') {
 			data.onload = function initiateDownload(name) {
 				return function(res) {
 					var blob = new Blob([res.response], {type: 'application/octet-stream'});
-					//var url = URL.createObjectURL(blob); // blob url
 
 					saveAs(blob, name);
 
