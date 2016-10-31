@@ -43,6 +43,8 @@ if (typeof GM_download !== 'function') {
 				data.url = download.url;
 				data.name = download.name;
 				data.onload = function addDownloadItemToZip(res) {
+					//Go to this url, test the way shown there.
+					//http://stackoverflow.com/questions/526128/is-there-a-way-to-pass-a-value-to-gm-xmlhttprequest/526282
 					zip.file(data.name, res.response, {base64: true});
 				}
 				
