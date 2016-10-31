@@ -44,10 +44,9 @@ if (typeof GM_download !== 'function') {
 				data.name = download.name;
 				data.onload = function addDownloadItemToZip(zip, name) {
 					return function(res) {
-						zip.file(name, res.response, {base64: true});
+						zip.file(name, res.response);
 					}
 				}(zip, data.name)
-				
 				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
