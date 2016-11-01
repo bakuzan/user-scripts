@@ -31,7 +31,7 @@ if (typeof GM_download !== 'function') {
         //var promise = new Promise(function (resolve, reject) { resolve(result) });
 	  	//var transportData = JSON.stringify(result.response);
 		var array = Array.apply(null, new Uint8Array(result.response))
-		console.log('getDataToAddToZip: ', result.response, typeof array);
+		console.log('getDataToAddToZip: ', result.response, array);
 		return array;
 	}
 	
