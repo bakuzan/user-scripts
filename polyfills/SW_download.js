@@ -13,15 +13,6 @@ if (typeof GM_download !== 'function') {
     if (typeof GM_xmlhttpRequest !== 'function') {
         throw new Error('GM_xmlhttpRequest is undefined. Please set @grant GM_xmlhttpRequest at metadata block.');
     }
-    
-    function _arrayBufferToBase64(buffer) {
-        var binary = '',
-            bytes = new Uint8Array(buffer);
-        for (var i = 0, length = bytes.byteLength; i < length; i++) {
-            binary += String.fromCharCode(bytes[i]);
-        }
-        return window.btoa(binary);
-    }
 	
 	function downloadAndFinish(requestData, downloadContent, downloadName) {
 		saveAs(downloadContent, downloadName);
@@ -37,9 +28,9 @@ if (typeof GM_download !== 'function') {
 	function getDataToAddToZip(result) {
         //var blob = new Blob([result.response], {type: 'application/octet-stream'});
         //var bytes = new Uint8Array(result.response);
-        var base64String = _arrayBufferToBase64(result.response);
-		console.log('getDataToAddToZip: ', base64String);
-		return base64String
+        var promise = new Promise(function (resolve, reject) { resolve(result) });
+		console.log('getDataToAddToZip: ', promise);
+		return promise;
 	}
 	
 	function initiateDownload(requesetData) {
