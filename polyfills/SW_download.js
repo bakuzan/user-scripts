@@ -26,13 +26,18 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function getDataToAddToZip(result) {
-        //var blob = new Blob([result.response], {type: 'application/octet-stream'});
-        //var bytes = new Uint8Array(result.response);
-        //var promise = new Promise(function (resolve, reject) { resolve(result) });
-	  	//var transportData = JSON.stringify(result.response);
+			console.log(result, result.response, result.responseText);
+        var blob = new blob([result.response], {type: 'application/octet-stream'});
+			console.log('blob: ', blob, typeof blob);
+        var bytes = new uint8array(result.response);
+			console.log('bytes: ', bytes, typeof bytes);
+        var promise = new promise(function (resolve, reject) { resolve(result) });
+			console.log('promise: ', promise, typeof promise);
+	  	var transportdata = json.stringify(result.response);
+			console.log('transportdata: ', transportdata, typeof transportdata);
 		var array = Array.apply(null, new Uint8Array(result.response))
-		console.log('getDataToAddToZip: ', result.response, array);
-		return array;
+			console.log('array: ', array, typeof array);
+		return result.responseText;
 	}
 	
 	function initiateDownload(requesetData) {
