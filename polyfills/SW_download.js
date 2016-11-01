@@ -27,7 +27,7 @@ if (typeof GM_download !== 'function') {
 	
 	function getDataToAddToZip(result) {
 		console.log('addDownloadItemToZip: ', result);
-		return result;
+		return result.response;
 	}
 	
 	function initiateDownload(requesetData) {
@@ -61,6 +61,7 @@ if (typeof GM_download !== 'function') {
 				data.name = name;
 				data.onload = getDataToAddToZip;
 				var result = GM_xmlhttpRequest(data);
+                console.log(i, name, result);
 				zip.file(name, result);
 			}
 			data.onafterload = options.onload; // onload function support
