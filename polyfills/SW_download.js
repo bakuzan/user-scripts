@@ -27,7 +27,7 @@ if (typeof GM_download !== 'function') {
 	
 	function getDataToAddToZip(result) {
 		console.log('addDownloadItemToZip: ', result);
-		return result.response;
+		return new Blob([result.response], {type: 'application/octet-stream'});
 	}
 	
 	function initiateDownload(requesetData) {
