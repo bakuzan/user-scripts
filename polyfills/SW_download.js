@@ -59,7 +59,7 @@ if (typeof GM_download !== 'function') {
 				var name = download.name;			
 				data.url = download.url;
 				data.name = name;
-				data.onload = getDataToAddToZip(zip, name);
+				data.onload = getDataToAddToZip;
 				var result = GM_xmlhttpRequest(data);
 				zip.file(name, result);
 			}
