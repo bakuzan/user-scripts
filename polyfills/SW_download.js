@@ -26,15 +26,15 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function addDownloadItemToZip(zip, name) {
-		return function(res) {
-			console.log(name, res, zip);
-			zip.file(name, res.response);
+		return function(result) {
+			console.log('addDownloadItemToZip: ', name, result, zip);
+			zip.file(name, result.response);
 		}
 	}
 	
 	function initiateDownload(data) {
-		return function(res) {
-			var blob = new Blob([res.response], {type: 'application/octet-stream'});
+		return function(result) {
+			var blob = new Blob([result.response], {type: 'application/octet-stream'});
 			downloadAndFinish(data, blob, data.name);
 		}
 	}
@@ -53,8 +53,9 @@ if (typeof GM_download !== 'function') {
 		}
 		
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
-			var zip = new JSZip();
-			for(var i = 0, length = urls.length; i < length; i++) {
+			var zip = new JSZip(),
+				length = urls.length;
+			for(let i = 0; i < length; i++) {
 				var download = urls[i];
 				if (download.url === null) continue;
 				
