@@ -27,7 +27,7 @@ if (typeof GM_download !== 'function') {
 	
 	function getDataToAddToZip(result) {
 		console.log(result, result.response);
-		return new ArrayBuffer(result.response);
+		return [].slice.call(result.response);
 	}
 	
 	function initiateDownload(requesetData) {
