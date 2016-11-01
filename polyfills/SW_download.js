@@ -60,8 +60,9 @@ if (typeof GM_download !== 'function') {
 				data.url = download.url;
 				data.name = name;
 				data.onload = getDataToAddToZip;
-                console.log(i, name, data);
-				zip.file(name, GM_xmlhttpRequest(data));
+				var res = GM_xmlhttpRequest(data);
+                console.log(name, res);
+				zip.file(name, res);
 			}
 			data.onafterload = options.onload; // onload function support
 			downloadZipFile(zip, data);
