@@ -1,4 +1,4 @@
-/* 	SW_download
+/*  SW_download
  *  
  *  @description  GM_download replacement with built in zipping.
  *  @author       Bakuzan
@@ -12,6 +12,15 @@
 if (typeof GM_download !== 'function') {
     if (typeof GM_xmlhttpRequest !== 'function') {
         throw new Error('GM_xmlhttpRequest is undefined. Please set @grant GM_xmlhttpRequest at metadata block.');
+    }
+    
+    function _arrayBufferToBase64(buffer) {
+        var binary = '',
+            bytes = new Uint8Array(buffer);
+        for (var i = 0, length = bytes.byteLength; i < length; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
     }
 	
 	function downloadAndFinish(requestData, downloadContent, downloadName) {
@@ -27,9 +36,10 @@ if (typeof GM_download !== 'function') {
 	
 	function getDataToAddToZip(result) {
         //var blob = new Blob([result.response], {type: 'application/octet-stream'});
-        var bytes = new Uint8Array(result.response);
-		console.log('getDataToAddToZip: ', bytes);
-		return bytes;
+        //var bytes = new Uint8Array(result.response);
+        var base64String = _arrayBufferToBase64(result.response);
+		console.log('getDataToAddToZip: ', base64String);
+		return base64String
 	}
 	
 	function initiateDownload(requesetData) {
@@ -62,7 +72,7 @@ if (typeof GM_download !== 'function') {
 				data.url = download.url;
 				data.name = name;
 				data.onload = getDataToAddToZip;
-        console.log(i, name, data);
+                console.log(i, name, data);
 				zip.file(name, GM_xmlhttpRequest(data));
 			}
 			data.onafterload = options.onload; // onload function support
