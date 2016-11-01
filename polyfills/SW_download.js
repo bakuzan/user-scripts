@@ -25,13 +25,9 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
-	function addDownloadItemToZip(zip, name) {
-		var zipFolder = zip,
-			downloadName = name;
-		return function(result) {
-			console.log('addDownloadItemToZip: ', downloadName, result, zipFolder);
-			zipFolder.file(downloadName, result.response, { binary: true });
-		}
+	function getDataToAddToZip(result) {
+		console.log('addDownloadItemToZip: ', result);
+		return result.response;
 	}
 	
 	function initiateDownload(requesetData) {
@@ -63,8 +59,9 @@ if (typeof GM_download !== 'function') {
 				var name = download.name;			
 				data.url = download.url;
 				data.name = name;
-				data.onload = addDownloadItemToZip(zip, name);
-				GM_xmlhttpRequest(data);
+				data.onload = getDataToAddToZip(zip, name);
+				var result = GM_xmlhttpRequest(data);
+				zip.file(name, result);
 			}
 			data.onafterload = options.onload; // onload function support
 			downloadZipFile(zip, data);
