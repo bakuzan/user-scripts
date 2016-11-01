@@ -25,7 +25,9 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
-	function addDownloadItemToZip(zipFolder, downloadName) {
+	function addDownloadItemToZip(zip, name) {
+		var zipFolder = zip,
+			downloadName = name;
 		return function(result) {
 			console.log('addDownloadItemToZip: ', downloadName, result, zipFolder);
 			zipFolder.file(downloadName, result.response, { binary: true });
@@ -53,9 +55,8 @@ if (typeof GM_download !== 'function') {
 		}
 		
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
-			var zip = new JSZip(),
-				length = urls.length;
-			for(let i = 0; i < length; i++) {
+			var zip = new JSZip();
+			for(var i = 0, length = urls.length; i < length; i++) {
 				var download = urls[i];
 				if (download.url === null) continue;
 				
