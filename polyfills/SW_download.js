@@ -28,9 +28,9 @@ if (typeof GM_download !== 'function') {
 	function getDataToAddToZip(result) {
         //var blob = new Blob([result.response], {type: 'application/octet-stream'});
         //var bytes = new Uint8Array(result.response);
-        var promise = new Promise(function (resolve, reject) { resolve(result) });
-		console.log('getDataToAddToZip: ', promise);
-		return promise;
+        //var promise = new Promise(function (resolve, reject) { resolve(result) });
+		console.log('getDataToAddToZip: ', result.response, typeof result.response);
+		return result.response; //arraybuffer
 	}
 	
 	function initiateDownload(requesetData) {
