@@ -2,7 +2,7 @@
  *  
  *  @description  GM_download replacement with built in zipping.
  *  @author       Bakuzan
- *  @version      1.8
+ *  @version      1.12
  */
 
 // must include "@grant GM_xmlhttpRequest" at userscript metadata block
@@ -26,9 +26,10 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function getDataToAddToZip(result) {
-        var blob = new Blob([result.response], {type: 'application/octet-stream'});
-		console.log('getDataToAddToZip: ', result, result.response, typeof result.response);
-		return result.response;
+        //var blob = new Blob([result.response], {type: 'application/octet-stream'});
+        var bytes = new Uint8Array(result.response);
+		console.log('getDataToAddToZip: ', bytes);
+		return bytes;
 	}
 	
 	function initiateDownload(requesetData) {
