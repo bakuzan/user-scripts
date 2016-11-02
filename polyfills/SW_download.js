@@ -26,9 +26,10 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function getDataForZipping(result, zip, name) {
-		var arraybuffer = result.response;
-		console.log(`${name}`, zip, arraybuffer);
-		zip.file(name, arraybuffer, { binary: true });	
+		var arraybuffer = result.response,
+			fileName = result.name;
+		console.log(`${name} ? ${fileName}`, zip, result);
+		zip.file(fileName, arraybuffer, { binary: true });	
 	}
 	/*
 	function getDataToAddToZip(zip, name) {
