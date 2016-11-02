@@ -25,10 +25,24 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
+	function getZippedFilePromise(value, zip, fileName) {
+		JSZipUtils.getBinaryContent(value.value, function (err, data){
+			return new Promise(function(resolve, reject) {
+				if(err) {
+					reject(err);
+				}
+				else {
+					zip.file(fileName, data, {binary:true});
+					resolve(data);
+				}
+			});
+        });
+	}
+	
 	function getDataForZipping(result, zip, name) {
 		var arraybuffer = result.response;
 		console.log(`${name}`, zip, result);
-		zip.file(name, arraybuffer, { binary: true });	
+		return getZippedFilePromise(arraybuffer, zip, name);
 	}
 	/*
 	function getDataToAddToZip(zip, name) {
@@ -62,7 +76,8 @@ if (typeof GM_download !== 'function') {
 		}
 		
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
-			var zip = new JSZip();
+			var zip = new JSZip(),
+				deffereds = [];
 			for(let i = 0, length = urls.length; i < length; i++) {
 				let download = urls[i];
 				if (download.url === null) continue;
@@ -70,14 +85,16 @@ if (typeof GM_download !== 'function') {
 				data.url = download.url;
 				data.name = download.name;
 				data.onload = function(result) {
-					getDataForZipping(result, zip, download.name);
+					return getDataForZipping(result, zip, download.name);
 				};
 				console.log(i, download, data);
-				GM_xmlhttpRequest(data);
+				deffereds.push(GM_xmlhttpRequest(data));
 			}
-			data.onafterload = options.onload; // onload function support
-			console.log(zip);
-			downloadZipFile(zip, data);
+			Promise.all(deffereds).then(function(values) {
+				data.onafterload = options.onload; // onload function support
+				console.log(zip);
+				downloadZipFile(zip, data);
+			});
 		} else {
 			if (urls instanceof Object === false) return;
             if (urls.url === null) return;
