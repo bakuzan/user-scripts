@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.1
+// @version      0.4.2
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -138,7 +138,7 @@
 				"Referer": window.host
 			},
 			onload: function(){
-				alert(`Downloaded ${name} successfully!`);
+				addDownloadButtons();
 			},
 			onerror: function(){
 				alert(`Download of ${name} failed!\n${url}`);
