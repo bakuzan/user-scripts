@@ -52,33 +52,31 @@ if (typeof GM_download !== 'function') {
 			onload: function() { }
 		};
 		
-		for (var i in options) {
-			if (i !== 'onload') data[i] = options[i];
+		for (var o in options) {
+			if (o !== 'onload') data[o] = options[o];
 		}
 		
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
 			var zip = new JSZip();
 			for(var i = 0, length = urls.length; i < length; i++) {
-				(function() {
-					var download = urls[i];
-					if (download.url === null) continue;
+				let download = urls[i];
+				if (download.url === null) continue;
 
-					var name = download.name;			
-					data.url = download.url;
-					data.name = name;
-					data.onload = function(result) {
-						var arraybuffer = result.response;
-						console.log(`${name}`, zip, arraybuffer);
-						zip.file(name, arraybuffer, { binary: true });
-					};
-					GM_xmlhttpRequest(data);
-		    	})();
+				let name = download.name;			
+				data.url = download.url;
+				data.name = name;
+				data.onload = function(result) {
+					var arraybuffer = result.response;
+					console.log(`${name}`, zip, arraybuffer);
+					zip.file(name, arraybuffer, { binary: true });
+				};
+				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
 			downloadZipFile(zip, data);
 		} else {
 			if (urls instanceof Object === false) return;
-            if (urls.url == null) return;
+            if (urls.url === null) return;
 			
 			data.name = urls.name;
 			data.url = urls.url;
