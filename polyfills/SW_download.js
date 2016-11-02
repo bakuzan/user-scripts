@@ -25,10 +25,6 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
-	function getDataToAddToZip(result) {
-		return result.response; //arraybuffer
-	}
-	
 	function initiateDownload(requesetData) {
 		return function(result) {
 			var blob = new Blob([result.response], {type: 'application/octet-stream'});
@@ -58,10 +54,12 @@ if (typeof GM_download !== 'function') {
 				var name = download.name;			
 				data.url = download.url;
 				data.name = name;
-				data.onload = getDataToAddToZip;
-				var res = GM_xmlhttpRequest(data);
-                console.log(name, res);
-				zip.file(name, res, { binary: true });
+				data.onload = function getDataToAddToZip(result) {
+					var arraybuffer = result.response;
+					console.log(name, arraybuffer);
+					zip.file(name, arraybuffer, { binary: true });
+				}
+				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
 			downloadZipFile(zip, data);
