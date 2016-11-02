@@ -25,18 +25,6 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
-	function getDataToAddToZip(result, zip, name) {
-		var arraybuffer = result.response;
-		console.log(`${name}`, zip, arraybuffer);
-		zip.file(name, arraybuffer, { binary: true });
-	}
-	
-	function makeDataToAddToZip(zip, name) {
-		return function (result) {
-			getDataToAddToZip(result, zip, name);
-		}
-	}
-	
 	function initiateDownload(requesetData) {
 		return function(result) {
 			var blob = new Blob([result.response], {type: 'application/octet-stream'});
@@ -60,13 +48,19 @@ if (typeof GM_download !== 'function') {
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
 			var zip = new JSZip();
 			for(var i = 0, length = urls.length; i < length; i++) {
-				var download = urls[i];
+				let download = urls[i];
 				if (download.url === null) continue;
 				
-				var name = download.name;			
+				let name = download.name;			
 				data.url = download.url;
 				data.name = name;
-				data.onload = makeDataToAddToZip(zip, name);
+				data.onload = function () {
+					return function getDataToAddToZip(result) {
+						var arraybuffer = result.response;
+						console.log(`${name}`, zip, arraybuffer);
+						zip.file(name, arraybuffer, { binary: true });
+					}
+				}
 				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
