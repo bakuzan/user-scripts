@@ -56,9 +56,10 @@ if (typeof GM_download !== 'function') {
 				data.name = name;
 				data.onload = (function getDataToAddToZip(name) {
 					return function (result) {
-						var arraybuffer = result.response;
-						console.log(name, arraybuffer);
-						zip.file(name, arraybuffer, { binary: true });
+						var fileName = name,
+							arraybuffer = result.response;
+						console.log(`${name} > ${fileName}`, arraybuffer);
+						zip.file(fileName, arraybuffer, { binary: true });
 					}
 				})(name);
 				GM_xmlhttpRequest(data);
