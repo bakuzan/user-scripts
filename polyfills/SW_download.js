@@ -26,10 +26,9 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function getDataForZipping(result, zip, name) {
-		var arraybuffer = result.response,
-			fileName = result.name;
-		console.log(`${name} ? ${fileName}`, zip, result);
-		zip.file(fileName, arraybuffer, { binary: true });	
+		var arraybuffer = result.response;
+		console.log(`${name}`, zip, result);
+		zip.file(name, arraybuffer, { binary: true });	
 	}
 	/*
 	function getDataToAddToZip(zip, name) {
@@ -64,7 +63,7 @@ if (typeof GM_download !== 'function') {
 		
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
 			var zip = new JSZip();
-			for(var i = 0, length = urls.length; i < length; i++) {
+			for(let i = 0, length = urls.length; i < length; i++) {
 				let download = urls[i];
 				if (download.url === null) continue;
 
