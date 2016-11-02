@@ -25,36 +25,15 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
-	function getZippedFilePromise(value, zip, fileName) {
-		JSZipUtils.getBinaryContent(value.value, function (err, data){
-			return new Promise(function(resolve, reject) {
-				if(err) {
-					reject(err);
-				}
-				else {
-					zip.file(fileName, data, {binary:true});
-					resolve(data);
-				}
-			});
-        });
-	}
-	
 	function getDataForZipping(result, zip, name) {
 		var arraybuffer = result.response;
 		console.log(`${name}`, zip, result);
-		return getZippedFilePromise(arraybuffer, zip, name);
-	}
-	/*
-	function getDataToAddToZip(zip, name) {
-		console.log(`${name}`, zip);
-		return function (result) {
-			var arraybuffer = result.response;
-			console.log(`${name}`, zip, arraybuffer);
+		return new Promise(function(resolve, reject) {
 			zip.file(name, arraybuffer, { binary: true });
-		}
+			resolve(arraybuffer);
+		});
 	}
-	*/
-	
+
 	function initiateDownload(requesetData) {
 		return function(result) {
 			var blob = new Blob([result.response], {type: 'application/octet-stream'});
@@ -77,7 +56,7 @@ if (typeof GM_download !== 'function') {
 		
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
 			var zip = new JSZip(),
-				deffereds = [];
+				promises = [];
 			for(let i = 0, length = urls.length; i < length; i++) {
 				let download = urls[i];
 				if (download.url === null) continue;
@@ -88,9 +67,9 @@ if (typeof GM_download !== 'function') {
 					return getDataForZipping(result, zip, download.name);
 				};
 				console.log(i, download, data);
-				deffereds.push(GM_xmlhttpRequest(data));
+				promises.push(GM_xmlhttpRequest(data));
 			}
-			Promise.all(deffereds).then(function(values) {
+			Promise.all(promises).then(function(values) {
 				data.onafterload = options.onload; // onload function support
 				console.log(zip);
 				downloadZipFile(zip, data);
