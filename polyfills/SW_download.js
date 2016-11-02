@@ -66,16 +66,17 @@ if (typeof GM_download !== 'function') {
 			for(let i = 0, length = urls.length; i < length; i++) {
 				let download = urls[i];
 				if (download.url === null) continue;
-
-				let name = download.name;			
+			
 				data.url = download.url;
-				data.name = name;
+				data.name = download.name;
 				data.onload = function(result) {
-					getDataForZipping(result, zip, name);
+					getDataForZipping(result, zip, download.name);
 				};
+				console.log(i, download, data);
 				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
+			console.log(zip);
 			downloadZipFile(zip, data);
 		} else {
 			if (urls instanceof Object === false) return;
