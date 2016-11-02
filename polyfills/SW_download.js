@@ -25,6 +25,11 @@ if (typeof GM_download !== 'function') {
 		});
 	}
 	
+	function getDataForZipping(result, zip, name) {
+		var arraybuffer = result.response;
+		console.log(`${name}`, zip, arraybuffer);
+		zip.file(name, arraybuffer, { binary: true });	
+	}
 	/*
 	function getDataToAddToZip(zip, name) {
 		console.log(`${name}`, zip);
@@ -66,9 +71,7 @@ if (typeof GM_download !== 'function') {
 				data.url = download.url;
 				data.name = name;
 				data.onload = function(result) {
-					var arraybuffer = result.response;
-					console.log(`${name}`, zip, arraybuffer);
-					zip.file(name, arraybuffer, { binary: true });
+					getDataForZipping(result, zip, name);
 				};
 				GM_xmlhttpRequest(data);
 			}
