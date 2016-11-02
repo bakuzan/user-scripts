@@ -54,8 +54,8 @@ if (typeof GM_download !== 'function') {
 				let name = download.name;			
 				data.url = download.url;
 				data.name = name;
-				data.onload = function () {
-					return function getDataToAddToZip(result) {
+				data.onload = function getDataToAddToZip() {
+					return function (result) {
 						var arraybuffer = result.response;
 						console.log(`${name}`, zip, arraybuffer);
 						zip.file(name, arraybuffer, { binary: true });
