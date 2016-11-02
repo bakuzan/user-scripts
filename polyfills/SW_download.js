@@ -54,11 +54,13 @@ if (typeof GM_download !== 'function') {
 				var name = download.name;			
 				data.url = download.url;
 				data.name = name;
-				data.onload = function getDataToAddToZip(result) {
-					var arraybuffer = result.response;
-					console.log(name, arraybuffer);
-					zip.file(name, arraybuffer, { binary: true });
-				}
+				data.onload = (function getDataToAddToZip(name) {
+					return function (result) {
+						var arraybuffer = result.response;
+						console.log(name, arraybuffer);
+						zip.file(name, arraybuffer, { binary: true });
+					}
+				})(name);
 				GM_xmlhttpRequest(data);
 			}
 			data.onafterload = options.onload; // onload function support
