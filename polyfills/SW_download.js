@@ -71,8 +71,8 @@ if (typeof GM_download !== 'function') {
 				promises.push(GM_xmlhttpRequest(data));
 			}
 			Promise.all(promises).then(function(values) {
+				console.log(zip, promises, values);
 				data.onafterload = options.onload; // onload function support
-				console.log(zip);
 				downloadZipFile(zip, data);
 			});
 		} else {
