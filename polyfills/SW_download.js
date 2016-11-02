@@ -26,7 +26,7 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function getDataToAddToZip(result) {
-		return String.fromCharCode.apply(null, new Uint16Array(result.response));
+		return result.response; //arraybuffer
 	}
 	
 	function initiateDownload(requesetData) {
@@ -61,7 +61,7 @@ if (typeof GM_download !== 'function') {
 				data.onload = getDataToAddToZip;
 				var res = GM_xmlhttpRequest(data);
                 console.log(name, res);
-				zip.file(name, res);
+				zip.file(name, res, { binary: true });
 			}
 			data.onafterload = options.onload; // onload function support
 			downloadZipFile(zip, data);
