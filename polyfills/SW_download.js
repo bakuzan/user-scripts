@@ -26,10 +26,11 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function getDataForZipping(result, zip, name) {
-		var arraybuffer = result.response;
-		console.log(`${name}`, zip, result);
+		var arraybuffer = result.response,
+			fileName = result.finalUrl.replace(/^.*[\\\/]/, '');
+		console.log(`${name} ? ${fileName}`, zip, result);
 		return new Promise(function(resolve, reject) {
-			zip.file(name, arraybuffer, { binary: true });
+			zip.file(fileName, arraybuffer, { binary: true });
 			resolve(arraybuffer);
 		});
 	}
