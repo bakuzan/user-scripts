@@ -57,14 +57,20 @@ if (typeof GM_download !== 'function') {
 		if(Object.prototype.toString.call(urls) === '[object Array]' ) {
 			var zip = new JSZip();
 			for(var i = 0, length = urls.length; i < length; i++) {
-				let download = urls[i];
-				if (download.url === null) continue;
-				
-				let name = download.name;			
-				data.url = download.url;
-				data.name = name;
-				data.onload = getDataToAddToZip(zip, name);
-				GM_xmlhttpRequest(data);
+				(function() {
+					var download = urls[i];
+					if (download.url === null) continue;
+
+					var name = download.name;			
+					data.url = download.url;
+					data.name = name;
+					data.onload = function(result) {
+						var arraybuffer = result.response;
+						console.log(`${name}`, zip, arraybuffer);
+						zip.file(name, arraybuffer, { binary: true });
+					}
+					GM_xmlhttpRequest(data);
+		    	})();
 			}
 			data.onafterload = options.onload; // onload function support
 			downloadZipFile(zip, data);
