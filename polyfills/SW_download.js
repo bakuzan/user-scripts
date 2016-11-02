@@ -24,7 +24,7 @@ if (typeof GM_download !== 'function') {
 			downloadAndFinish(requestData, content, 'idh-multiple-file-download.zip');
 		});
 	}
-	
+	/*
 	function getDataToAddToZip(zip, name) {
 		console.log(`${name}`, zip);
 		return function (result) {
@@ -33,6 +33,7 @@ if (typeof GM_download !== 'function') {
 			zip.file(name, arraybuffer, { binary: true });
 		}
 	}
+	*/
 	
 	function initiateDownload(requesetData) {
 		return function(result) {
@@ -68,7 +69,7 @@ if (typeof GM_download !== 'function') {
 						var arraybuffer = result.response;
 						console.log(`${name}`, zip, arraybuffer);
 						zip.file(name, arraybuffer, { binary: true });
-					}
+					};
 					GM_xmlhttpRequest(data);
 		    	})();
 			}
