@@ -2,7 +2,7 @@
  *  
  *  @description  GM_download replacement with built in zipping.
  *  @author       Bakuzan
- *  @version      1.12
+ *  @version      1.15
  */
 
 // must include "@grant GM_xmlhttpRequest" at userscript metadata block
@@ -29,8 +29,8 @@ if (typeof GM_download !== 'function') {
 		var arraybuffer = result.response,
 			fileName = result.finalUrl.replace(/^.*[\\\/]/, '');
 		console.log(`${name} ? ${fileName}`, zip, result);
+        zip.file(fileName, arraybuffer, { binary: true });
 		return new Promise(function(resolve, reject) {
-			zip.file(fileName, arraybuffer, { binary: true });
 			resolve(arraybuffer);
 		});
 	}
