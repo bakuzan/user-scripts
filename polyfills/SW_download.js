@@ -30,9 +30,7 @@ if (typeof GM_download !== 'function') {
 			fileName = result.finalUrl.replace(/^.*[\\\/]/, '');
 		console.log(`${name} ? ${fileName}`, zip, result);
         zip.file(fileName, arraybuffer, { binary: true });
-		return new Promise(function(resolve, reject) {
-			resolve(arraybuffer);
-		});
+		return arraybuffer;
 	}
 
 	function initiateDownload(requesetData) {
@@ -67,8 +65,11 @@ if (typeof GM_download !== 'function') {
 				data.onload = function(result) {
 					return getDataForZipping(result, zip, download.name);
 				};
-				console.log(i, download, data);
-				promises.push(GM_xmlhttpRequest(data));
+				var promise = new Promise(function(resolve, reject) { 
+					resolve(GM_xmlhttpRequest(data)); 
+				});
+				console.log(i, promise);
+				promises.push(promise);
 			}
 			Promise.all(promises).then(function(values) {
 				console.log(zip, promises, values);
