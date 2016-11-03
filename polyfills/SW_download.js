@@ -20,10 +20,12 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function downloadZipFile(zip, requestData) {
-		console.log('dl zip ', zip);
+		var numberOfEntries = Object.keys(zip.files).length
+		console.log('dl zip ', numberOfEntries, zip);
 		zip.generateAsync({type:"blob"}).then(function(content) {
 			console.log('zip content : ', content);
-			downloadAndFinish(requestData, content, 'idh-multiple-file-download.zip');
+			if(content.size === 22) alert('Empty zip file.');
+			else downloadAndFinish(requestData, content, 'idh-multiple-file-download.zip');
 		});
 	}
 	
@@ -65,11 +67,12 @@ if (typeof GM_download !== 'function') {
 				data.url = download.url;
 				data.name = download.name;
 				data.onload = function(result) {
-					return getDataForZipping(result, zip, download.name);
+					var promise = new Promise(function(resolve, reject) { 
+						resolve(getDataForZipping(result, zip, download.name));
+					});
+					return promise;
 				};
-				var promise = new Promise(function(resolve, reject) { 
-					resolve(GM_xmlhttpRequest(data)); 
-				});
+				var promise = GM_xmlhttpRequest(data);
 				console.log(i, promise);
 				promises.push(promise);
 			}
