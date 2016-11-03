@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.3
+// @version      0.4.5
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -159,7 +159,6 @@
 			checkbox.setAttribute('checked', true);
 			checkbox.click();
 		}
-		console.log('dls :', downloads);
 	}
 	
 	function displayCheckAllOption() {
@@ -174,7 +173,7 @@
 			checkAll.appendChild(checkAllButton);
 			body.appendChild(checkAll);
 		} else {
-			body.removeChild(checkAll);
+			if(checkAll.parentNode) body.removeChild(checkAll);
 		}
 	}
 	
