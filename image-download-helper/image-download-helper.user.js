@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.2
+// @version      0.4.3
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -124,6 +124,7 @@
 				checkbox.style.display = checkbox.style.display === 'none' ? 'block' : 'none';
                 checkbox.checked = false;
                 downloads = [];
+				displayCheckAllOption();
 			}
 		}
 	}
@@ -141,7 +142,7 @@
 				addDownloadButtons();
 			},
 			onerror: function(){
-				alert(`Download of ${name} failed!\n${url}`);
+				alert(`Attempted download(s) failed!`);
 			}
 		});
 	}
