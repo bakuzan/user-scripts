@@ -2,7 +2,7 @@
  *  
  *  @description  GM_download replacement with built in zipping.
  *  @author       Bakuzan
- *  @version      1.15
+ *  @version      2.0
  */
 
 // must include "@grant GM_xmlhttpRequest" at userscript metadata block
@@ -14,34 +14,22 @@ if (typeof GM_download !== 'function') {
         throw new Error('GM_xmlhttpRequest is undefined. Please set @grant GM_xmlhttpRequest at metadata block.');
     }
 	
-	function downloadAndFinish(requestData, downloadContent, downloadName) {
+	function downloadAndFinish(options, downloadContent, downloadName) {
 		saveAs(downloadContent, downloadName);
-		if (typeof requestData.onafterload === 'function') requestData.onafterload(); // call onload function
+		if (typeof options.onload === 'function') options.onload(); // call onload function
 	}
 	
-	function downloadZipFile(zip, requestData) {
-		var numberOfEntries = Object.keys(zip.files).length
-		console.log('dl zip ', numberOfEntries, zip);
+	function downloadZipFile(zip, options) {
 		zip.generateAsync({type:"blob"}).then(function(content) {
-			console.log('zip content : ', content);
-			if(content.size === 22) alert('Empty zip file.');
-			else downloadAndFinish(requestData, content, 'idh-multiple-file-download.zip');
+			if(content.size === 22) alert('The zip is empty.');
+			else downloadAndFinish(options, content, 'idh-multiple-file-download.zip');
 		});
 	}
 	
 	function getDataForZipping(result, zip, name) {
-		var arraybuffer = result.response,
-			fileName = result.finalUrl.replace(/^.*[\\\/]/, '');
-		console.log(`${name} ? ${fileName}`, zip, result);
-        zip.file(fileName, arraybuffer, { binary: true });
+		var arraybuffer = result.response;
+        zip.file(name, arraybuffer, { binary: true });
 		return arraybuffer;
-	}
-
-	function initiateDownload(requesetData) {
-		return function(result) {
-			var blob = new Blob([result.response], {type: 'application/octet-stream'});
-			downloadAndFinish(requesetData, blob, requesetData.name);
-		};
 	}
 	
     function SW_download (urls, options) {
@@ -74,13 +62,11 @@ if (typeof GM_download !== 'function') {
 						}
 					});
 				});
-				console.log(i, promise);
 				promises.push(promise);
 			}
+			//Pretty sweet way to force zipping process to wait until data has been retrieved.
 			Promise.all(promises).then(function(values) {
-				console.log(zip, promises, values);
-				data.onafterload = options.onload; // onload function support
-				downloadZipFile(zip, data);
+				downloadZipFile(zip, options);
 			});
 		} else {
 			if (urls instanceof Object === false) return;
@@ -88,9 +74,11 @@ if (typeof GM_download !== 'function') {
 			
 			data.name = urls.name;
 			data.url = urls.url;
-			data.onload = initiateDownload(data);
-			data.onafterload = options.onload; // onload function support
-			
+			data.onload = function (result) {
+				var blob = new Blob([result.response], {type: 'application/octet-stream'});
+				downloadAndFinish(data, blob, data.name);
+			}
+			data.onafterload = options.onload; // onload function support		
 			return GM_xmlhttpRequest(data);
 		}
     }
