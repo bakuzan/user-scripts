@@ -20,7 +20,9 @@ if (typeof GM_download !== 'function') {
 	}
 	
 	function downloadZipFile(zip, requestData) {
+		console.log('dl zip ', zip);
 		zip.generateAsync({type:"blob"}).then(function(content) {
+			console.log('zip content : ', content);
 			downloadAndFinish(requestData, content, 'idh-multiple-file-download.zip');
 		});
 	}
