@@ -63,16 +63,14 @@ if (typeof GM_download !== 'function') {
 			for(let i = 0, length = urls.length; i < length; i++) {
 				let download = urls[i];
 				if (download.url === null) continue;
-			
-				data.url = download.url;
-				data.name = download.name;
-				data.onload = function(result) {
-					var promise = new Promise(function(resolve, reject) { 
+				var promise = new Promise(function(resolve, reject) { 
+					data.url = download.url;
+					data.name = download.name;
+					data.onload = function(result) {
 						resolve(getDataForZipping(result, zip, download.name));
-					});
-					return promise;
-				};
-				var promise = GM_xmlhttpRequest(data);
+					};
+				});
+				GM_xmlhttpRequest(data);
 				console.log(i, promise);
 				promises.push(promise);
 			}
