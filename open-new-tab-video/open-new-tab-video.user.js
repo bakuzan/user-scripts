@@ -7,6 +7,7 @@
 // @include      http*
 // @exclude      http://localhost:*
 // @exclude		 *://gfcat.com/*
+// @exclude		 *googlevideo.com*
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/open-new-tab-video/open-new-tab-video.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
