@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.2
+// @version      0.0.3
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
-// @include      http://kissanime.tv/anime/episode*
+// @include      http://kissanime.to/anime/*/episode-*
 // @grant        none
 // ==/UserScript==
 
