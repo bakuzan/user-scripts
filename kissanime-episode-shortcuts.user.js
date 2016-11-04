@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.0
+// @version      0.1.5
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -13,12 +13,13 @@
 
     var body = document.body,
         EPISODE_TRIM_REGEX = /\/(?=[^\/]*$).*/,
-        HOME_KEY_CODE = 192,
+		FULLSCREEN_KEY_CODE = 70,	// f
+        HOME_KEY_CODE = 192,		// '@
         NEXT_ID = 'btnNext',
-        NEXT_KEY_CODE = 190,
-		PLAY_KEY_CODE = 32,
+        NEXT_KEY_CODE = 190,		// .>
+		PLAY_KEY_CODE = 32,  		// SPACEBAR
         PREV_ID = 'btnPrevious',
-        PREV_KEY_CODE = 188,
+        PREV_KEY_CODE = 188, 		// ,<
 		video = document.getElementById('my_video_1_html5_api');
     
     function goToSeriesEpisodeList() {
@@ -26,17 +27,29 @@
         window.location.href = currentPage.replace(EPISODE_TRIM_REGEX, '');
     }
 	
+	function toggleFullscreenMode() {
+		if (video.requestFullscreen) {
+		  video.displayingFullscreen ? video.exitFullscreen() : video.requestFullscreen();
+		} else if (video.mozRequestFullScreen) {
+		  video.mozDisplayingFullscreen ? video.mozExitFullscreen() ? video.mozRequestFullScreen();
+		} else if (video.webkitRequestFullscreen) {
+		  video.webkitDisplayingFullscreen ? video.webkitExitFullscreen() : video.webkitRequestFullscreen();
+		}
+	}
+	
 	function togglePlayVideo() {
-		video.paused ? video.play() : video.pause();
+		return video.paused ? video.play() : video.pause();
 	}
     
     function performClickOnElementById(id) {
         document.getElementById(id).click();
     }
-    
-    body.addEventListener('keydown', function(event) {
+	
+	function shortcutHandler(event) {
 		event.preventDefault();
-        var keyCode = event.which;
+        var keyCode = event.which,
+			ctrlKey = event.ctrlKey,
+			shiftKey = event.shiftKey;
         if(keyCode === NEXT_KEY_CODE) {
             performClickOnElementById(NEXT_ID);
         } else if (keyCode === PREV_KEY_CODE) {
@@ -45,6 +58,10 @@
             goToSeriesEpisodeList();
         } else if (keyCode === PLAY_KEY_CODE) {
 			togglePlayVideo();
-		}
-    });
+		} else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
+		    toggleFullscreenMode();
+	    }
+    }
+    
+    body.addEventListener('keydown', shortcutHandler);
 })();
