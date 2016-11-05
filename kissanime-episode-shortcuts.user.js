@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.13
+// @version      0.1.15
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -15,7 +15,6 @@
         EPISODE_TRIM_REGEX = /\/(?=[^\/]*$).*/,
 		FULLSCREEN_KEY_CODE = 70,	// f
         HOME_KEY_CODE = 192,		// '@
-		justEntered = true,
         NEXT_ID = 'btnNext',
         NEXT_KEY_CODE = 190,		// .>
 		PLAY_KEY_CODE = 32,  		// SPACEBAR
@@ -34,19 +33,18 @@
 		} else if (video.mozRequestFullScreen) {
 		  return video.mozDisplayingFullscreen ? video.mozExitFullscreen() : video.mozRequestFullScreen();
 		} else if (video.webkitRequestFullscreen) {
-			console.log('fullscreen : ', document.webkitIsFullScreen);
 		  return document.webkitIsFullScreen ? document.webkitCancelFullScreen() : video.webkitRequestFullscreen();
 		}
 	}
 	
 	function togglePlayVideo() {
-		var isPaused = video.paused;
-		console.log('play? : ', isPaused, justEntered, isPaused || justEntered ? 'play' : 'pause', video);
-		return isPaused || justEntered ? video.play() : video.pause();
+		var isPlaying = !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+    };
+		console.log('play? : ', isPlaying, isPlaying ? 'pause' : 'play');
+		return isPlaying ? video.pause() : video.play();
 	}
     
     function performClickOnElementById(id) {
-		console.log(`click > ${id}`);
         document.getElementById(id).click();
     }
 	
@@ -63,7 +61,6 @@
             goToSeriesEpisodeList();
         } else if (keyCode === PLAY_KEY_CODE) {
 			togglePlayVideo();
-			if (justEntered) justEntered = !justEntered;
 		} else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
 	    }
