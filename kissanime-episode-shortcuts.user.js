@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.1
+// @version      0.3.2
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -24,8 +24,8 @@
 		PLAY_KEY_CODE = 32,			// SAPCEBAR
         PREV_ID = 'btnPrevious',
         PREV_KEY_CODE = 188, 		// ,<
-		SEEK_BACKWARD_KEY = 100,	// NUM 4
-		SEEK_FORWARD_KEY = 102,		// NUM 6
+		SEEK_BACKWARD_KEY = 220,	// \|
+		SEEK_FORWARD_KEY = 191,		// /?
 		SEEK_LARGE_CHANGE = 30,
 		SEEK_NORMAL_CHANGE = 10,
 		SEEK_SMALL_CHANGE = 5,
