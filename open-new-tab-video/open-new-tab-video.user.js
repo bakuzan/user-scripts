@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.28
+// @version      0.0.30
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -50,6 +50,7 @@
 	}
 	
 	function createOpenInNewTabButton(index, video) {
+		if(!video.paused) video.pause();
 		var container = document.createElement('div');
 		container.id = `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`;
 		container.className = NEW_TAB_CONTAINER_CLASS;
