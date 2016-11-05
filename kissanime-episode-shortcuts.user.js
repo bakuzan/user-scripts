@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.5
+// @version      0.2.7
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -20,6 +20,7 @@
         HOME_KEY_CODE = 192,		// '@
         NEXT_ID = 'btnNext',
         NEXT_KEY_CODE = 190,		// .>
+		PLAY_KEY_CODE = 32,			// SAPCEBAR
         PREV_ID = 'btnPrevious',
         PREV_KEY_CODE = 188, 		// ,<
 		SEEK_BACKWARD_KEY = 37,		// LEFT ARROW
@@ -30,8 +31,7 @@
 		video = document.getElementsByTagName('video')[0];
 		if(video === undefined) return;
 	} else {
-		//This will return SPACEBAR to its rightful ability to play/pause.
-		document.getElementByClassName('vjs-control-bar')[0].style.display = 'none';
+		document.getElementsByClassName('vjs-control-bar')[0].style.display = 'none';
 		video.setAttribute('controls', true);
 	}
     
@@ -53,7 +53,6 @@
 	function seekToPoint(moveInSeconds) {
 		var seekToTime = video.currentTime + moveInSeconds;
 		if (seekToTime < 0 || seekToTime > video.duration) seekToTime = 0;
-
 		video.currentTime = seekToTime;
 	}
     
@@ -71,6 +70,9 @@
             performClickOnElementById(PREV_ID);
         } else if (keyCode === HOME_KEY_CODE) {
             goToSeriesEpisodeList();
+		} else if(keyCode === PLAY_KEY_CODE) { 
+			event.preventDefault(); 
+			video.focus();
         } else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
 	    } else if (ctrlKey && shiftKey && keyCode === SEEK_FORWARD_KEY) {
