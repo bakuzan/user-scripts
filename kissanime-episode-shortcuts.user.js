@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.18
+// @version      0.1.19
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -41,7 +41,7 @@
 		var isPlaying = !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
 		var testValues = {
 			currentTime: video.currentTime,
-			currentTimeValid: video.currentTime > 0
+			currentTimeValid: video.currentTime > 0,
 			paused: video.paused,
 			pausedValid: !video.paused,
 			ended: video.ended,
