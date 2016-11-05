@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.9
+// @version      0.1.10
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -50,7 +50,7 @@
     }
 	
 	function shortcutHandler(event) {
-		console.log('handler : ', evemt);
+		console.log('handler : ', event);
 		event.preventDefault();
         var keyCode = event.which,
 			ctrlKey = event.ctrlKey,
