@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.7
+// @version      0.2.8
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
 // @include		 *googlevideo.com*
-// @include		 file:///*.mp4
-// @include		 file:///*.webm
+// @include		 *.mp4
+// @include		 *.webm
 // @grant        none
 // ==/UserScript==
 
@@ -27,7 +27,7 @@
 		SEEK_FORWARD_KEY = 39,		// RIGHT ARROW
 		video = document.getElementById('my_video_1_html5_api');
 	
-	if(video === undefined) {
+	if(video === null) {
 		video = document.getElementsByTagName('video')[0];
 		if(video === undefined) return;
 	} else {
@@ -56,6 +56,10 @@
 		video.currentTime = seekToTime;
 	}
     
+    function togglePlay() {
+        return video.paused ? video.play() : video.pause();
+    }
+    
     function performClickOnElementById(id) {
         document.getElementById(id).click();
     }
@@ -73,6 +77,7 @@
 		} else if(keyCode === PLAY_KEY_CODE) { 
 			event.preventDefault(); 
 			video.focus();
+            if(window.location.host !== 'kissanime.to') togglePlay();
         } else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
 	    } else if (ctrlKey && shiftKey && keyCode === SEEK_FORWARD_KEY) {
