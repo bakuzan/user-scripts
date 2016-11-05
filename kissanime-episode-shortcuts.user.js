@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.0
+// @version      0.2.2
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -20,9 +20,10 @@
         HOME_KEY_CODE = 192,		// '@
         NEXT_ID = 'btnNext',
         NEXT_KEY_CODE = 190,		// .>
-		PLAY_KEY_CODE = 32,  		// SPACEBAR
         PREV_ID = 'btnPrevious',
         PREV_KEY_CODE = 188, 		// ,<
+		SEEK_BACKWARD_KEY = 37,		// LEFT ARROW
+		SEEK_FORWARD_KEY = 39,		// RIGHT ARROW
 		video = document.getElementById('my_video_1_html5_api');
 	
 	if(video === undefined) {
@@ -45,9 +46,11 @@
 		}
 	}
 	
-	function togglePlayVideo() {
-		var isPlaying = !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);;
-		return isPlaying ? video.pause() : video.play();
+	function seekToPoint(moveInSeconds) {
+		var seekToTime = video.currentTime + moveInSeconds;
+		if (seekToTime < 0 || seekToTime > video.duration) seekToTime = 0;
+
+		video.currentTime = seekToTime;
 	}
     
     function performClickOnElementById(id) {
@@ -58,17 +61,19 @@
         var keyCode = event.which,
 			ctrlKey = event.ctrlKey,
 			shiftKey = event.shiftKey;
-        if(keyCode === NEXT_KEY_CODE) {
+        if (keyCode === NEXT_KEY_CODE) {
             performClickOnElementById(NEXT_ID);
         } else if (keyCode === PREV_KEY_CODE) {
             performClickOnElementById(PREV_ID);
         } else if (keyCode === HOME_KEY_CODE) {
             goToSeriesEpisodeList();
-        } else if (keyCode === PLAY_KEY_CODE) {
-			//togglePlayVideo();
-		} else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
+        } else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
-	    }
+	    } else if (ctrlKey && shiftKey && keyCode === SEEK_FORWARD_KEY) {
+			seekToPoint(10);
+		} else if (ctrlKey && shiftKey && keyCode === SEEK_BACKWARD_KEY) {
+			seekToPoint(-10);
+		}
     }
     
     body.addEventListener('keydown', shortcutHandler);
