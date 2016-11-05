@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.11
+// @version      0.3.0
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -24,8 +24,11 @@
 		PLAY_KEY_CODE = 32,			// SAPCEBAR
         PREV_ID = 'btnPrevious',
         PREV_KEY_CODE = 188, 		// ,<
-		SEEK_BACKWARD_KEY = 37,		// LEFT ARROW
-		SEEK_FORWARD_KEY = 39,		// RIGHT ARROW
+		SEEK_BACKWARD_KEY = 100,	// NUM 4
+		SEEK_FORWARD_KEY = 102,		// NUM 6
+		SEEK_LARGE_CHANGE = 30,
+		SEEK_NORMAL_CHANGE = 10,
+		SEEK_SMALL_CHANGE = 5,
 		video = document.getElementById('my_video_1_html5_api');
 	
 	if(video === null) {
@@ -42,13 +45,9 @@
     }
 	
 	function toggleFullscreenMode() {
-		if (video.requestFullscreen) {
-		  return video.displayingFullscreen ? video.exitFullscreen() : video.requestFullscreen();
-		} else if (video.mozRequestFullScreen) {
-		  return video.mozDisplayingFullscreen ? video.mozExitFullscreen() : video.mozRequestFullScreen();
-		} else if (video.webkitRequestFullscreen) {
-		  return document.webkitIsFullScreen ? document.webkitCancelFullScreen() : video.webkitRequestFullscreen();
-		}
+		if (video.requestFullscreen) return video.displayingFullscreen ? video.exitFullscreen() : video.requestFullscreen();
+		if (video.mozRequestFullScreen) return video.mozDisplayingFullscreen ? video.mozExitFullscreen() : video.mozRequestFullScreen();
+		if (video.webkitRequestFullscreen) return document.webkitIsFullScreen ? document.webkitCancelFullScreen() : video.webkitRequestFullscreen();
 	}
 	
 	function seekToPoint(moveInSeconds) {
@@ -83,10 +82,14 @@
             video.blur();
         } else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
-	    } else if (ctrlKey && keyCode === SEEK_FORWARD_KEY) {
-			seekToPoint(10);
-		} else if (ctrlKey && keyCode === SEEK_BACKWARD_KEY) {
-			seekToPoint(-10);
+	    } else if (keyCode === SEEK_FORWARD_KEY) {
+			if (ctrlKey && shiftKey) return seekToPoint(SEEK_LARGE_CHANGE);
+			if (ctrlKey) return seekToPoint(SEEK_NORMAL_CHANGE);
+			return seekToPoint(SEEK_SMALL_CHANGE);
+		} else if (keyCode === SEEK_BACKWARD_KEY) {
+			if (ctrlKey && shiftKey) return seekToPoint(-SEEK_LARGE_CHANGE);
+			if (ctrlKey) return seekToPoint(-SEEK_NORMAL_CHANGE);
+			return seekToPoint(-SEEK_SMALL_CHANGE);
 		}
     }
     
