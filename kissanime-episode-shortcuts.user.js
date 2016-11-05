@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.8
+// @version      0.1.9
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -33,19 +33,24 @@
 		} else if (video.mozRequestFullScreen) {
 		  return video.mozDisplayingFullscreen ? video.mozExitFullscreen() : video.mozRequestFullScreen();
 		} else if (video.webkitRequestFullscreen) {
+			console.log('fullscreen : ', Document.fullscreenElement);
 		  return Document.fullscreenElement ? Document.exitFullscreen() : video.webkitRequestFullscreen();
 		}
 	}
 	
 	function togglePlayVideo() {
-		return video.paused ? video.play() : video.pause();
+		var isPaused = video.paused;
+		console.log('play? : ', isPaused, isPaused ? 'play' : 'pause', video);
+		return isPaused ? video.play() : video.pause();
 	}
     
     function performClickOnElementById(id) {
+		console.log(`click > ${id}`);
         document.getElementById(id).click();
     }
 	
 	function shortcutHandler(event) {
+		console.log('handler : ', evemt);
 		event.preventDefault();
         var keyCode = event.which,
 			ctrlKey = event.ctrlKey,
