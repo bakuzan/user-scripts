@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.10
+// @version      0.1.13
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -15,6 +15,7 @@
         EPISODE_TRIM_REGEX = /\/(?=[^\/]*$).*/,
 		FULLSCREEN_KEY_CODE = 70,	// f
         HOME_KEY_CODE = 192,		// '@
+		justEntered = true,
         NEXT_ID = 'btnNext',
         NEXT_KEY_CODE = 190,		// .>
 		PLAY_KEY_CODE = 32,  		// SPACEBAR
@@ -33,15 +34,15 @@
 		} else if (video.mozRequestFullScreen) {
 		  return video.mozDisplayingFullscreen ? video.mozExitFullscreen() : video.mozRequestFullScreen();
 		} else if (video.webkitRequestFullscreen) {
-			console.log('fullscreen : ', Document.fullscreenElement);
-		  return Document.fullscreenElement ? Document.exitFullscreen() : video.webkitRequestFullscreen();
+			console.log('fullscreen : ', document.webkitIsFullScreen);
+		  return document.webkitIsFullScreen ? document.webkitCancelFullScreen() : video.webkitRequestFullscreen();
 		}
 	}
 	
 	function togglePlayVideo() {
 		var isPaused = video.paused;
-		console.log('play? : ', isPaused, isPaused ? 'play' : 'pause', video);
-		return isPaused ? video.play() : video.pause();
+		console.log('play? : ', isPaused, justEntered, isPaused || justEntered ? 'play' : 'pause', video);
+		return isPaused || justEntered ? video.play() : video.pause();
 	}
     
     function performClickOnElementById(id) {
@@ -50,7 +51,6 @@
     }
 	
 	function shortcutHandler(event) {
-		console.log('handler : ', event);
 		event.preventDefault();
         var keyCode = event.which,
 			ctrlKey = event.ctrlKey,
@@ -63,6 +63,7 @@
             goToSeriesEpisodeList();
         } else if (keyCode === PLAY_KEY_CODE) {
 			togglePlayVideo();
+			if (justEntered) justEntered = !justEntered;
 		} else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
 	    }
