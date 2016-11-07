@@ -13,7 +13,7 @@
     z-index: 1000;
 }
 
-#userscript-idh-download-button, #userscript-idh-add-checkboxes-button, #userscript-idh-reverse-search-button, #userscript-idh-check-all-button {
+#userscript-idh-download-button, #userscript-idh-add-checkboxes-button, #userscript-idh-reverse-search-button, #userscript-idh-check-all-button, #userscript-idh-check-similar-button {
 	width: 60px;
     height: 25px;
     margin: 0;
@@ -31,7 +31,7 @@
     border-color: buttonface;
     border-image: initial;
 }
-#userscript-idh-check-all-button {
+#userscript-idh-check-all-button, #userscript-idh-check-similar-button {
 	width: 170px;
 }
 
@@ -80,5 +80,5 @@ input[id^='userscript-idh-download-checkbox-'] {
 
 #userscript-idh-check-all {
 	top: 45%;
-	height: 25px;
+	height: 50px;
 }
