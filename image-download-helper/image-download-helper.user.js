@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.5
+// @version      0.4.6
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -29,6 +29,7 @@
 	
 	var body = document.body,
 		CHECKBOX_ID_PREFIX = 'userscript-idh-download-checkbox-',
+        CHECK_SIMILAR_ID = 'userscript-idh-check-similar-button',
 		CONTAINER_CLASS = 'userscript-idh-wrapper',
 		downloads = [],
 		extensions = ['.jpg', '.png', '.gif'],
@@ -39,8 +40,9 @@
 	
 	var activateButton = document.createElement('input'),
 		alertMessage = document.createElement('div'),
-		checkAll = document.createElement('div'),
+		checkAllContainer = document.createElement('div'),
 		checkAllButton = document.createElement('input'),
+        checkSimilarButton = document.createElement('input'),
 		controls = document.createElement('div'),
 		downloadButton = document.createElement('input'),
 		expandButton = document.createElement('div'),
@@ -115,16 +117,18 @@
 				downloadWrapper.appendChild(image);
 			}
 			hasDownloadButtons = true;
+            displayCheckAllOption(true);
 		} else {
 			for(var j = 0, count = images.length; j < count; j++) {
 				var imageForToggle = images[j],
 					originalParent = imageForToggle.parentNode.parentNode,
 					checkbox = imageForToggle.previousSibling;
 				toggleParentHref(originalParent);
-				checkbox.style.display = checkbox.style.display === 'none' ? 'block' : 'none';
+                var makeCheckboxesVisible = checkbox.style.display === 'none';
+				checkbox.style.display = makeCheckboxesVisible ? 'block' : 'none';
                 checkbox.checked = false;
                 downloads = [];
-				displayCheckAllOption();
+				displayCheckAllOption(makeCheckboxesVisible);
 			}
 		}
 	}
@@ -148,33 +152,45 @@
 	}
 	
 	function checkAllSimilarImages(event) {
-		var exampleSrc = downloads[0],
-			exampleImg = document.querySelector(`img[src='${exampleSrc.url}']`),
-			checkAllSelector = buildSelectorPath(exampleImg),
-			checkAllImages = document.querySelectorAll(checkAllSelector);
+        var checkType = event.target.id, exampleSrc, exampleImg, checkAllSelector, checkAllImages = images;
+        if(checkType === CHECK_SIMILAR_ID) {
+            exampleSrc = downloads[0];
+            exampleImg = document.querySelector(`img[src='${exampleSrc.url}']`);
+            checkAllSelector = buildSelectorPath(exampleImg);
+            checkAllImages = document.querySelectorAll(checkAllSelector);
+        }
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
-			if(image.src === exampleImg.src) continue;
+			if(exampleImg !== undefined && image.src === exampleImg.src) continue;
 			checkbox.setAttribute('checked', true);
 			checkbox.click();
 		}
 	}
+    
+    function checkAllSetup() {
+        checkAllContainer.id = 'userscript-idh-check-all';
+        
+        checkAllButton.id = 'userscript-idh-check-all-button';
+        checkAllButton.type = 'button';
+        checkAllButton.value = 'Toggle Check ALL images';
+        checkAllButton.addEventListener('click', checkAllSimilarImages);
+
+        checkSimilarButton.id = CHECK_SIMILAR_ID;
+        checkSimilarButton.type = 'button';
+        checkSimilarButton.value = 'Check similar images?';
+        checkSimilarButton.addEventListener('click', checkAllSimilarImages);
+        
+        checkAllContainer.appendChild(checkAllButton);
+        checkAllContainer.appendChild(checkSimilarButton);
+        body.appendChild(checkAllContainer);
+    }
 	
-	function displayCheckAllOption() {
+	function displayCheckAllOption(showCheckAllContainer) {   
+        if(!checkAllContainer.id) checkAllSetup();
 		var displayCheckAll = downloads.length > 0;
-		if(displayCheckAll) {
-			checkAll.id = 'userscript-idh-check-all';
-			checkAllButton.id = 'userscript-idh-check-all-button';
-			checkAllButton.type = 'button';
-			checkAllButton.value = 'Check all similar images?';
-			checkAllButton.addEventListener('click', checkAllSimilarImages);
-			
-			checkAll.appendChild(checkAllButton);
-			body.appendChild(checkAll);
-		} else {
-			if(checkAll.parentNode) body.removeChild(checkAll);
-		}
+		checkSimilarButton.style.display = displayCheckAll ? 'block' : 'none';
+        if(showCheckAllContainer !== undefined) checkAllContainer.style.display = showCheckAllContainer ? 'block' : 'none';
 	}
 	
 	function toggleQueueDowload(event) {
@@ -191,11 +207,8 @@
 	}
 	
 	function processDownloads() {
-		if(downloads.length) {
-			downloadImage(downloads);
-		} else {
-			alert('Nothing selected for download.');
-		}
+		if(downloads.length) downloadImage(downloads);
+		else alert('Nothing selected for download.');
 	}
 	
 	function activateReverseImageSearch(event) {
