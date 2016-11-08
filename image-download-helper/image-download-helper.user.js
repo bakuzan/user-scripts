@@ -12,6 +12,7 @@
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/pad.js
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/cssSelectorPath.js
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/image-download-helper/image-download-helper.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -38,11 +39,11 @@
 		REGEX_EXTRACT_EXTENSION = /.*(?=\.)/g,
 		REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
 	
-	var activateButton = document.createElement('input'),
-		alertMessage = document.createElement('div'),
-		checkAllContainer = document.createElement('div'),
-		checkAllButton = document.createElement('input'),
-        checkSimilarButton = document.createElement('input'),
+	var activateButton = buildElement('input', { id: 'userscript-idh-add-checkboxes-button', type: 'button', title: 'Toggle checkboxes', value: 'I/O' }),
+		alertMessage = buildElement('div', { id: 'userscript-idh-reverse-search-alert', textContent: 'Click an image to send to reverse search.' }),
+		checkAllContainer = buildElement('div', { id: 'userscript-idh-check-all' }),
+		checkAllButton = buildElement('input', { id: 'userscript-idh-check-all-button', type: 'button', value: 'Toggle Check ALL images' }),
+        checkSimilarButton = buildElement('input', { id: CHECK_SIMILAR_ID, type: 'button', value: 'Check similar images?' }),
 		controls = document.createElement('div'),
 		downloadButton = document.createElement('input'),
 		expandButton = document.createElement('div'),
@@ -60,11 +61,7 @@
 	downloadButton.title = 'Download selected images';
 	downloadButton.value = 'DL';
 	downloadButton.addEventListener('click', processDownloads);
-	
-	activateButton.id = 'userscript-idh-add-checkboxes-button';
-	activateButton.type = 'button';
-	activateButton.title = 'Toggle checkboxes';
-	activateButton.value = 'I/O';
+
 	activateButton.addEventListener('click', addDownloadButtons);
 	
 	searchButton.id = 'userscript-idh-reverse-search-button';
@@ -85,12 +82,9 @@
 	body.insertBefore(controls, body.firstChild);
 	
 	function createDownloadWrapper(i) {
-		var container = document.createElement('span'),
-			checkbox = document.createElement('input');
-		container.className = `${CONTAINER_CLASS}`;
+		var container = buildElement('span', { className: `${CONTAINER_CLASS}` }),
+			checkbox = buildElement('input', { id: `${CHECKBOX_ID_PREFIX}${i}`, type: 'checkbox' });
 		
-		checkbox.id = `${CHECKBOX_ID_PREFIX}${i}`;
-		checkbox.type = 'checkbox';
 		checkbox.addEventListener('click', toggleQueueDowload);
 		container.appendChild(checkbox, container.firstChild);
 		return container;
@@ -159,26 +153,19 @@
             checkAllSelector = buildSelectorPath(exampleImg);
             checkAllImages = document.querySelectorAll(checkAllSelector);
         }
+        console.log(checkType === CHECK_SIMILAR_ID, 'check all similar?', checkAllImages);
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
 			if(exampleImg !== undefined && image.src === exampleImg.src) continue;
-			checkbox.setAttribute('checked', true);
+			checkbox.checked = true;
 			checkbox.click();
 		}
 	}
     
-    function checkAllSetup() {
-        checkAllContainer.id = 'userscript-idh-check-all';
-        
-        checkAllButton.id = 'userscript-idh-check-all-button';
-        checkAllButton.type = 'button';
-        checkAllButton.value = 'Toggle Check ALL images';
+    function checkAllSetup() {    
         checkAllButton.addEventListener('click', checkAllSimilarImages);
 
-        checkSimilarButton.id = CHECK_SIMILAR_ID;
-        checkSimilarButton.type = 'button';
-        checkSimilarButton.value = 'Check similar images?';
         checkSimilarButton.addEventListener('click', checkAllSimilarImages);
         
         checkAllContainer.appendChild(checkAllButton);
@@ -187,7 +174,7 @@
     }
 	
 	function displayCheckAllOption(showCheckAllContainer) {   
-        if(!checkAllContainer.id) checkAllSetup();
+        if(!checkAllContainer.parentNode) checkAllSetup();
 		var displayCheckAll = downloads.length > 0;
 		checkSimilarButton.style.display = displayCheckAll ? 'block' : 'none';
         if(showCheckAllContainer !== undefined) checkAllContainer.style.display = showCheckAllContainer ? 'block' : 'none';
@@ -204,6 +191,7 @@
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
 		if(event.detail) displayCheckAllOption();
+        console.log(downloads);
 	}
 	
 	function processDownloads() {
@@ -212,17 +200,12 @@
 	}
 	
 	function activateReverseImageSearch(event) {
-		alertMessage.id = 'userscript-idh-reverse-search-alert';
-		alertMessage.textContent = 'Click an image to send to reverse search.';
 		body.insertBefore(alertMessage, body.firstChild);
 		body.addEventListener('click', searchImage);
 	}
 
 	function addParamsToForm(aForm, aKey, aValue) {
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", aKey);
-		hiddenField.setAttribute("value", aValue);
+		var hiddenField = buildElement('input', { type: 'hidden', name: aKey, value: aValue });
 		aForm.appendChild(hiddenField);
 	}
 
@@ -238,11 +221,12 @@
 					.replace(/\//g, "_")
 					.replace(/\./g, "=");
 
-					var form = document.createElement("form");
-					form.setAttribute("method", "POST");
-					form.setAttribute("action", "//www.google.com/searchbyimage/upload");
-					form.setAttribute("enctype", "multipart/form-data");
-					form.setAttribute("target", "_blank");
+					var form = buildElement('form', {
+                        method: 'POST',
+                        action: '//www.google.com/searchbyimage/upload',
+                        enctype: 'multipart/form-data',
+                        target: '_blank'
+                    });
 					addParamsToForm(form, "image_content", inlineImage);
 					addParamsToForm(form, "filename", "");
 					addParamsToForm(form, "image_url", "");
