@@ -5,6 +5,7 @@
 // @description Link to scroll to the top of the page.
 // @include     http*
 // @version     0.1.4
+// @require     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant       none
 // ==/UserScript==
 
@@ -14,8 +15,7 @@
   if (window.top !== window.self) return;
   
   var body = document.body,
-      button = document.createElement('span');
-	button.id = 'userscript-gpt-button';
+      button = buildElement('span', { id: 'userscript-gpt-button', textContent: '^\nTOP' });
 	button.style.cssText = `
 		display: none;
 		position: fixed;
@@ -35,7 +35,6 @@
 		text-align: center;
 		box-sizing: content-box;
 	`;
-	button.textContent = '^\nTOP';
 
 	function buttonDisplayStatus(status) {
 		button.style.display = status ? 'block' : 'none';
