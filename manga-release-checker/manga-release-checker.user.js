@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.2.2
+// @version      0.2.3
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox]
 // @author       Bakuzan
 // @match		 http://mangafox.me/releases/*
 // @incude       http://mangafox.me/releases/*
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/manga-release-checker/manga-release-checker.css
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
@@ -25,8 +26,7 @@
 		releaseList = document.getElementById('updates'),
         releases = releaseList.children,
 		len = releases.length,
-        newChapterContainer = document.createElement('DIV');
-    newChapterContainer.id = 'userscript-mrc-container';
+        newChapterContainer = buildElement('DIV', { id: 'userscript-mrc-container' });
 	newChapterContainer.appendChild(nav);
 	
 	function cleanText(text) {
