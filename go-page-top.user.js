@@ -4,7 +4,7 @@
 // @authour     Bakuzan
 // @description Link to scroll to the top of the page.
 // @include     http*
-// @version     0.1.4
+// @version     0.1.5
 // @require     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant       none
 // ==/UserScript==
