@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.8
+// @version      0.4.9
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
