@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.3.2
+// @version      0.3.3
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-release-highlighter.css
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
@@ -33,8 +34,7 @@
         SCROLLER_SHIFT = 675,
         watchList = [];
     
-    var newReleaseContainer = document.createElement('DIV');
-    newReleaseContainer.id = CONTAINER_ID;
+    var newReleaseContainer = buildElement('DIV', { id: CONTAINER_ID });
     
     function digitsOnly(valueWithUnits) {
         return Number(valueWithUnits.replace('px', ''));
