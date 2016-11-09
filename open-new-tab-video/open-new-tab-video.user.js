@@ -8,6 +8,8 @@
 // @exclude      http://localhost:*
 // @exclude		 *://gfcat.com/*
 // @exclude		 *googlevideo.com*
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/open-new-tab-video/open-new-tab-video.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -21,13 +23,8 @@
 		NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button',
 		NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-',
 		NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container',
-		onPlayButton = document.createElement('input'),
+		onPlayButton = buildElement('input', { id: `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`, className: 'userscript-ontv-transition', type: 'button', value: 'Open video in new tab?' }),
 		TRANSITION_CLASS = 'userscript-ontv-transition';
-	
-	function wrapElementWithNewParent(newParent, child) {
-		child.parentNode.replaceChild(newParent, child);
-		newParent.appendChild(child);
-	}
 	
 	function onPlayOpenInNewTab(event) {
 		var target = event.target;
@@ -51,15 +48,9 @@
 	
 	function createOpenInNewTabButton(index, video) {
 		if(!video.paused) video.pause();
-		var container = document.createElement('div');
-		container.id = `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`;
-		container.className = NEW_TAB_CONTAINER_CLASS;
-		
-		var newTabButton = document.createElement('input');
-		newTabButton.id = `${NEW_TAB_BUTTON_ID_PREFIX}${index}`;
-		newTabButton.className = NEW_TAB_BUTTON_CLASS;
-		newTabButton.type = 'button';
-		newTabButton.value = 'View video';
+		var container = buildElement('div', { id: `${NEW_TAB_CONTAINER_ID_PREFIX}${index}`, className: NEW_TAB_CONTAINER_CLASS });
+		var newTabButton = buildElement('input', { id: `${NEW_TAB_BUTTON_ID_PREFIX}${index}`, className: NEW_TAB_BUTTON_CLASS, type: 'button', value: 'View video' });
+
 		newTabButton.addEventListener('click', openVideoInNewTab);
 		
 		container.appendChild(newTabButton);
@@ -84,10 +75,6 @@
 		if(!videos.length) return;
 		
 		(function() {
-			onPlayButton.id = `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`;
-			onPlayButton.className = 'userscript-ontv-transition';
-			onPlayButton.type = 'button';
-			onPlayButton.value = 'Open video in new tab?';
 			onPlayButton.addEventListener('click', onPlayOpenInNewTab);
 			body.appendChild(onPlayButton);
 			
