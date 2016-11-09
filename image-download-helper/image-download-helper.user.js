@@ -13,6 +13,7 @@
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/pad.js
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/cssSelectorPath.js
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/image-download-helper/image-download-helper.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -92,8 +93,7 @@
 					parent = image.parentNode,
 					downloadWrapper = createDownloadWrapper(i);
 				toggleParentHref(parent);
-				parent.replaceChild(downloadWrapper, image);
-				downloadWrapper.appendChild(image);
+				wrapElementWithNewParent(downloadWrapper, image);
 			}
 			hasDownloadButtons = true;
             displayCheckAllOption(true);
@@ -149,7 +149,6 @@
     
     function checkAllSetup() {    
         checkAllButton.addEventListener('click', checkAllSimilarImages);
-
         checkSimilarButton.addEventListener('click', checkAllSimilarImages);
         
         checkAllContainer.appendChild(checkAllButton);
@@ -159,8 +158,8 @@
 	
 	function displayCheckAllOption(showCheckAllContainer) {   
         if(!checkAllContainer.parentNode) checkAllSetup();
-		var displayCheckAll = downloads.length > 0;
-		checkSimilarButton.style.display = displayCheckAll ? 'block' : 'none';
+		var displayCheckSimilar = downloads.length > 0;
+		checkSimilarButton.style.display = displayCheckSimilar ? 'block' : 'none';
         if(showCheckAllContainer !== undefined) checkAllContainer.style.display = showCheckAllContainer ? 'block' : 'none';
 	}
 	
