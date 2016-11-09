@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.7
+// @version      0.4.8
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -44,35 +44,20 @@
 		checkAllContainer = buildElement('div', { id: 'userscript-idh-check-all' }),
 		checkAllButton = buildElement('input', { id: 'userscript-idh-check-all-button', type: 'button', value: 'Toggle Check ALL images' }),
         checkSimilarButton = buildElement('input', { id: CHECK_SIMILAR_ID, type: 'button', value: 'Check similar images?' }),
-		controls = document.createElement('div'),
-		downloadButton = document.createElement('input'),
-		expandButton = document.createElement('div'),
-		searchButton = document.createElement('input');
+		controls = buildElement('div', { id: 'userscript-idh-controls' }),
+		downloadButton = buildElement('input', { id: 'userscript-idh-download-button', type: 'button', title: 'Download selected images', value: 'DL' }),
+		expandButton = buildElement('div', { id: 'userscript-idh-expand-button', title: 'Toggle image controls', textContent: '>>' }),
+		searchButton = buildElement('input', { id: 'userscript-idh-reverse-search-button', type: 'button', title: 'Reverse image search', value: 'Search' });
     
-	controls.id = 'userscript-idh-controls';
 	controls.style.left = '-182px';
 	function toggleControls() {
 		var showControls = controls.style.left === '-182px';
 		controls.style.left = showControls ? '0' : '-182px';
 	}
 	
-	downloadButton.id = 'userscript-idh-download-button';
-	downloadButton.type = 'button';
-	downloadButton.title = 'Download selected images';
-	downloadButton.value = 'DL';
 	downloadButton.addEventListener('click', processDownloads);
-
 	activateButton.addEventListener('click', addDownloadButtons);
-	
-	searchButton.id = 'userscript-idh-reverse-search-button';
-	searchButton.type = 'button';
-	searchButton.title = 'Reverse image search';
-	searchButton.value = 'Search';
 	searchButton.addEventListener('click', activateReverseImageSearch);
-	
-	expandButton.id = 'userscript-idh-expand-button';
-	expandButton.title = 'Toggle image controls';
-	expandButton.textContent = '>>';
 	expandButton.addEventListener('click', toggleControls);
 	
 	controls.appendChild(downloadButton);
@@ -153,12 +138,11 @@
             checkAllSelector = buildSelectorPath(exampleImg);
             checkAllImages = document.querySelectorAll(checkAllSelector);
         }
-        console.log(checkType === CHECK_SIMILAR_ID, 'check all similar?', checkAllImages);
 		for(var i = 0, len = checkAllImages.length; i < len; i++) {
 			var image = checkAllImages[i],
 				checkbox = image.previousSibling;
 			if(exampleImg !== undefined && image.src === exampleImg.src) continue;
-			checkbox.checked = true;
+			checkbox.setAttribute('checked', true);
 			checkbox.click();
 		}
 	}
@@ -191,7 +175,6 @@
 		if(target.checked && index === -1) downloads.push({ url: imageSrc, name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}` });
 		if(!target.checked && index > -1) downloads.splice(index, 1);
 		if(event.detail) displayCheckAllOption();
-        console.log(downloads);
 	}
 	
 	function processDownloads() {
