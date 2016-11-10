@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kissanime episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.2
+// @version      0.4.0
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/Episode-*
@@ -19,13 +19,15 @@
         firstClickOnKissAnime = window.location.host === 'kissanime.to',
 		FULLSCREEN_KEY_CODE = 70,	// f
         HOME_KEY_CODE = 192,		// '@
-        NEXT_ID = 'btnNext',
+        INTRO_KEY_CODE = 73,		// i
+		NEXT_ID = 'btnNext',
         NEXT_KEY_CODE = 190,		// .>
 		PLAY_KEY_CODE = 32,			// SAPCEBAR
         PREV_ID = 'btnPrevious',
         PREV_KEY_CODE = 188, 		// ,<
 		SEEK_BACKWARD_KEY = 220,	// \|
 		SEEK_FORWARD_KEY = 191,		// /?
+		SEEK_INTRO_SKIP = 90,
 		SEEK_LARGE_CHANGE = 30,
 		SEEK_NORMAL_CHANGE = 10,
 		SEEK_SMALL_CHANGE = 5,
@@ -82,6 +84,8 @@
             video.blur();
         } else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 		    toggleFullscreenMode();
+		} else if (ctrlKey && keyCode === INTRO_KEY_CODE) {
+			seekToPoint(SEEK_INTRO_SKIP)
 	    } else if (keyCode === SEEK_FORWARD_KEY) {
 			if (ctrlKey && shiftKey) return seekToPoint(SEEK_LARGE_CHANGE);
 			if (ctrlKey) return seekToPoint(SEEK_NORMAL_CHANGE);
