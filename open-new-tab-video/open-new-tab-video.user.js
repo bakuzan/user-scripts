@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.32
+// @version      0.0.33
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
 // @exclude      http://localhost:*
 // @exclude		 *://gfycat.com/*
+// @exclude      *.mixtape.moe/*
 // @exclude		 *googlevideo.com*
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
