@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Open new tab video
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.34
+// @version      0.1.15
 // @description  Allow you to open a video in a new tab.
 // @author       Bakuzan
 // @include      http*
@@ -10,6 +10,7 @@
 // @exclude      *.mixtape.moe/*
 // @exclude      http://webmshare.com/*
 // @exclude		 *googlevideo.com*
+// @exclude      *drive.google.com/*
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/open-new-tab-video/open-new-tab-video.css
@@ -89,6 +90,7 @@
 			window.addEventListener('message', receiveMessageFromFrame, false);
 		})();
 	} else {	
+        if (window.top.location.hostname === "drive.google.com") return;
 	/*
 		(function(open){
             XMLHttpRequest.prototype.open = function () {
