@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.3.1
+// @version      0.3.2
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
@@ -20,6 +20,7 @@
 	GM_addStyle (cssTxt);
 	
     var CONTAINER_ID = 'userscript-mrc-container',
+		HIGHLIGHT_CLASS = ' userscript-mrc-highlight',
         processors = {
             mangafox: mangafoxProcessor,
             eatmanga: eatmangaProcessor
@@ -71,6 +72,7 @@
             var newChapter = releases[len],
                 text = newChapter.getElementsByTagName('a')[0].textContent;
             if(readingList.indexOf(processText(text)) > -1) {
+				newChapter.className += HIGHLIGHT_CLASS;
                 newChapterContainer.insertBefore(newChapter, nav.nextSibling);
             }
         }       
