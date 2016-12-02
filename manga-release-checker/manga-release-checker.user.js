@@ -25,7 +25,7 @@
             eatmanga: eatmangaProcessor
         },
         readingList = [],
-		REGEX = /\W/g,
+		REGEX = /(\W)|(\d*$)/g,
         REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g;
 	
 	function cleanText(text) {
@@ -42,7 +42,20 @@
 	}
     
     function eatmangaProcessor() {
+        var content = document.getElementById('main_content'),
+            updates = document.getElementById('updates'),
+            releases = updates.getElementsByTagName('tr'),
+            len = releases.length,
+            newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
         
+        while (len--) {
+            var newChapter = releases[len],
+                text = newChapter.getElementsByTagName('a')[0].textContent;
+            if(readingList.indexOf(processText(text)) > -1) {
+                newChapterContainer.insertBefore(newChapter, newChapterContainer.children[0]);
+            }
+        }
+        content.insertBefore(newChapterContainer, content.children[0]);
     }
     
     function mangafoxProcessor() {
@@ -57,11 +70,9 @@
             var newChapter = releases[len],
                 text = newChapter.getElementsByTagName('a')[0].textContent;
             if(readingList.indexOf(processText(text)) > -1) {
-                newChapter.className += ' userscript-mrc-highlight';
                 newChapterContainer.insertBefore(newChapter, nav.nextSibling);
             }
-        }
-        
+        }       
         newChapterContainer.appendChild(nav);
         content.insertBefore(newChapterContainer, releaseList);
     }
