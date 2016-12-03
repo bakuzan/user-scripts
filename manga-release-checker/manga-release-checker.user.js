@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.3.3
+// @version      0.3.4
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
@@ -26,8 +26,9 @@
             eatmanga: eatmangaProcessor
         },
         readingList = [],
-		REGEX = /(\W)|(\d*$)/g,
-        REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g;
+		REGEX = /\W|\d+\D*$/g,
+        REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
+        TITLE_ID = 'userscript-mrc-title';
 	
 	function cleanText(text) {
 		return text.toLowerCase().replace(REGEX, '');
@@ -47,18 +48,21 @@
             updates = document.getElementById('updates'),
             releases = updates.getElementsByTagName('tr'),
             len = releases.length,
+            title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my manga' }),
             newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
+        newChapterContainer.appendChild(title);
         
         while (len--) {
             var newChapter = releases[len],
-				latest = newChapter.getElementsByTagName('a')[0], 
+				latest = newChapter.getElementsByTagName('a')[0],
 				text;
+
 			if(!latest) continue;
-			
+
 			text = latest.textContent;
             if(readingList.indexOf(processText(text)) > -1) {
 				newChapter.className += HIGHLIGHT_CLASS;
-                newChapterContainer.insertBefore(newChapter, newChapterContainer.children[0]);
+                newChapterContainer.insertBefore(newChapter, title.nextSibling);
             }
         }
         content.insertBefore(newChapterContainer, content.children[0]);
