@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.9
+// @version      0.5.0
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -38,7 +38,8 @@
 		hasDownloadButtons = false,
 		images = document.getElementsByTagName('img'),
 		REGEX_EXTRACT_EXTENSION = /.*(?=\.)/g,
-		REGEX_EXTRACT_NUMBER = /.*\w(-)/g;
+		REGEX_EXTRACT_NUMBER = /.*\w(-)/g,
+        REGEX_REMOVE_SIZE_SUFFIX = /.\d+x\d+(?=\.\w+$)/g;
 	
 	var activateButton = buildElement('input', { id: 'userscript-idh-add-checkboxes-button', type: 'button', title: 'Toggle checkboxes', value: 'I/O' }),
 		alertMessage = buildElement('div', { id: 'userscript-idh-reverse-search-alert', textContent: 'Click an image to send to reverse search.' }),
@@ -111,23 +112,35 @@
 			}
 		}
 	}
+    
+    function stripImageSizes(downloads) {
+        return new Promise((resolve, reject) => {
+            for(var i = 0, length = downloads.length; i < length; i++) {
+                var download = downloads[i];
+                download.url = download.url.replace(REGEX_REMOVE_SIZE_SUFFIX, '');
+            }
+            resolve(downloads);
+        });
+    }
 	
 	function downloadImage(downloads) {
-		if(downloads.length === 1) {
-			downloads = downloads[0];
-		}
-		
-		SW_download(downloads, {
-			header: {
-				"Referer": window.host
-			},
-			onload: function(){
-				addDownloadButtons();
-			},
-			onerror: function(){
-				alert(`Attempted download(s) failed!`);
-			}
-		});
+        stripImageSizes(downloads).then(result => {
+            if(result.length === 1) {
+                result = result[0];
+            }
+
+            SW_download(result, {
+                header: {
+                    "Referer": window.host
+                },
+                onload: function(){
+                    addDownloadButtons();
+                },
+                onerror: function(){
+                    alert(`Attempted download(s) failed!`);
+                }
+            });
+        });
 	}
 	
 	function checkAllSimilarImages(event) {
