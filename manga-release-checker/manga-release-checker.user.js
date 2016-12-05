@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.3.4
+// @version      0.3.5
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
@@ -26,7 +26,7 @@
             eatmanga: eatmangaProcessor
         },
         readingList = [],
-		REGEX = /\W|\d+\D*$/g,
+		REGEX = /\W|\d+ *$/g,
         REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
         TITLE_ID = 'userscript-mrc-title';
 	
