@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.5.0
+// @version      0.5.1
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -57,6 +57,7 @@
 		controls.style.left = showControls ? '0' : '-182px';
 	}
 	
+	controls.addEventListener('DOMNodeRemoved', function(e) { console.log('Oh! The idh controls have been removed!'); });
 	downloadButton.addEventListener('click', processDownloads);
 	activateButton.addEventListener('click', addDownloadButtons);
 	searchButton.addEventListener('click', activateReverseImageSearch);
