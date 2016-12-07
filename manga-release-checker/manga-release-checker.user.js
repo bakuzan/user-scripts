@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.3.5
-// @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga]
+// @version      0.4.0
+// @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga, mangatown]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
 // @include      http://eatmanga.com/latest/*
+// @include		 http://www.mangatown.com/latest/text/*
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/manga-release-checker/manga-release-checker.css
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        GM_addStyle
@@ -23,7 +24,8 @@
 		HIGHLIGHT_CLASS = ' userscript-mrc-highlight',
         processors = {
             mangafox: mangafoxProcessor,
-            eatmanga: eatmangaProcessor
+            eatmanga: eatmangaProcessor,
+			mangatown: mangatownProcessor
         },
         readingList = [],
 		REGEX = /\W|\d+ *$/g,
@@ -41,6 +43,31 @@
             itemLowerCase = itemLowerCase.substring(0, index - 1); //-1 to account for space.
         }
 		return itemLowerCase.replace(REGEX, '');
+	}
+	
+	function mangatownProcessor() {
+        var content = document.getElementsByClassName('article_content')[0],
+            updates = document.getElementsByClassName('manga_text_content')[0],
+            releases = updates.getElementsByTagName('dl'),
+            len = releases.length,
+            title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my manga' }),
+            newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
+        newChapterContainer.appendChild(title);
+		
+        while (len--) {
+            var newChapter = releases[len],
+				latest = newChapter.getElementsByTagName('a')[0],
+				text;
+
+			if(!latest) continue;
+
+			text = latest.textContent;
+            if(readingList.indexOf(processText(text)) > -1) {
+				newChapter.className += HIGHLIGHT_CLASS;
+                newChapterContainer.insertBefore(newChapter, title.nextSibling);
+            }
+        }
+        content.insertBefore(newChapterContainer, content.children[0]);		
 	}
     
     function eatmangaProcessor() {
