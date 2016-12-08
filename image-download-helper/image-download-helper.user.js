@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.6.2
+// @version      0.6.3
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -25,12 +25,20 @@
     'use strict';
     
     class ImageDownloadHelper {
+		constructor() {
+			this.initalisedCount = 0;
+		}
         reinitalise() {
 			console.info('%c reinitalising image download helper...', 'color: #0000ff; font-weight: bold');
-            return this.init();
+			setTimeout(() => {
+				return this.init();
+			}, 500);
         }
         init() {
             if (window.top !== window.self) return;
+			
+			this.initalisedCount++;
+			if (this.initalisedCount > 1) console.info(`%c initalised image download helper : ${this.initalisedCount}`, 'color: #00ffff; font-weight: bold');
 
             var cssTxt  = GM_getResourceText ("stylesheet");
             GM_addStyle (cssTxt);
@@ -245,6 +253,6 @@
         }
     }
     
-    var idh = new ImageDownloadHelper();
+    const idh = new ImageDownloadHelper();
     idh.init();
 })();
