@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.5.1
+// @version      0.5.2
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga, mangatown]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
 // @include      http://eatmanga.com/latest/*
 // @include		 http://www.mangatown.com/latest/text/*
+// @include		 http://www.readmanga.today/latest-releases/*
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/manga-release-checker/manga-release-checker.css
 // @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        GM_addStyle
@@ -25,7 +26,8 @@
         processors = {
             mangafox: mangafoxProcessor,
             eatmanga: eatmangaProcessor,
-			mangatown: mangatownProcessor
+			mangatown: mangatownProcessor,
+			readmanga: readmangaProcessor
         },
         readingList = [],
 		REGEX = /\W|\d+ *$/g,
@@ -69,6 +71,14 @@
         }
         content.insertBefore(newChapterContainer, content.children[0]);
     }
+	
+	function readmangaProcessor() {
+		coreProcessor({
+            containerSelector: '.row',
+            listSelector: '.manga_updates',
+            itemTag: 'dl'
+        });
+	}
 	
 	function mangatownProcessor() {
         coreProcessor({

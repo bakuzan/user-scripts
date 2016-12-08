@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.6.3
+// @version      0.6.4
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -38,7 +38,7 @@
             if (window.top !== window.self) return;
 			
 			this.initalisedCount++;
-			if (this.initalisedCount > 1) console.info(`%c initalised image download helper : ${this.initalisedCount}`, 'color: #00ffff; font-weight: bold');
+			if (this.initalisedCount > 1) console.info(`%c initalised image download helper : ${this.initalisedCount}`, 'color: #ff00ff; font-weight: bold');
 
             var cssTxt  = GM_getResourceText ("stylesheet");
             GM_addStyle (cssTxt);
