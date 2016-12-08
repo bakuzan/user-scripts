@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.6.0
+// @version      0.6.1
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @include      http*
@@ -26,6 +26,7 @@
     
     class ImageDownloadHelper {
         reinitalise() {
+			console.info('reinitalising image download helper...', 'oolor: #0000ff; font-weight: bold');
             return this.init();
         }
         init() {
