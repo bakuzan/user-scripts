@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.4.0
+// @version      0.5.0
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga, mangatown]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
@@ -44,36 +44,11 @@
         }
 		return itemLowerCase.replace(REGEX, '');
 	}
-	
-	function mangatownProcessor() {
-        var content = document.getElementsByClassName('article_content')[0],
-            updates = document.getElementsByClassName('manga_text_content')[0],
-            releases = updates.getElementsByTagName('dl'),
-            len = releases.length,
-            title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my manga' }),
-            newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
-        newChapterContainer.appendChild(title);
-		
-        while (len--) {
-            var newChapter = releases[len],
-				latest = newChapter.getElementsByTagName('a')[0],
-				text;
-
-			if(!latest) continue;
-
-			text = latest.textContent;
-            if(readingList.indexOf(processText(text)) > -1) {
-				newChapter.className += HIGHLIGHT_CLASS;
-                newChapterContainer.insertBefore(newChapter, title.nextSibling);
-            }
-        }
-        content.insertBefore(newChapterContainer, content.children[0]);		
-	}
     
-    function eatmangaProcessor() {
-        var content = document.getElementById('main_content'),
-            updates = document.getElementById('updates'),
-            releases = updates.getElementsByTagName('tr'),
+    function coreProcessor(options) {
+        var content = document.querySelectorAll(options.containerSelector)[0],
+            updates = document.querySelectorAll(options.listSelector)[0],
+            releases = updates.children, //getElementsByTagName(options.itemTag),
             len = releases.length,
             title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my manga' }),
             newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
@@ -94,25 +69,29 @@
         }
         content.insertBefore(newChapterContainer, content.children[0]);
     }
+	
+	function mangatownProcessor() {
+        coreProcessor({
+            containerSelector: '.article_content',
+            listSelector: '.manga_text_content',
+            itemTag: 'dl'
+        });
+	}
+    
+    function eatmangaProcessor() {
+        coreProcessor({
+            containerSelector: '#main_content',
+            listSelector: '#updates',
+            itemTag: 'tr'
+        });
+    }
     
     function mangafoxProcessor() {
-        var content = document.getElementById('content'),
-            nav = document.getElementById('nav'),
-            releaseList = document.getElementById('updates'),
-            releases = releaseList.children,
-            len = releases.length,
-            newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
-        newChapterContainer.appendChild(nav);
-		
-        while (len--) {
-            var newChapter = releases[len],
-                text = newChapter.getElementsByTagName('a')[0].textContent;
-            if(readingList.indexOf(processText(text)) > -1) {
-				newChapter.className += HIGHLIGHT_CLASS;
-                newChapterContainer.insertBefore(newChapter, nav.nextSibling);
-            }
-        }       
-        content.insertBefore(newChapterContainer, releaseList);
+        coreProcessor({
+            containerSelector: '#content',
+            listSelector: '#updates',
+            itemTag: ''
+        });
     }
     
     function getProcessor() {
