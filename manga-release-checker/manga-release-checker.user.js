@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.5.0
+// @version      0.5.1
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga, mangatown]
 // @author       Bakuzan
 // @include		 http://mangafox.me/releases/*
@@ -48,7 +48,7 @@
     function coreProcessor(options) {
         var content = document.querySelectorAll(options.containerSelector)[0],
             updates = document.querySelectorAll(options.listSelector)[0],
-            releases = updates.children, //getElementsByTagName(options.itemTag),
+            releases = updates.getElementsByTagName(options.itemTag),
             len = releases.length,
             title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my manga' }),
             newChapterContainer = buildElement('DIV', { id: CONTAINER_ID });
@@ -90,7 +90,7 @@
         coreProcessor({
             containerSelector: '#content',
             listSelector: '#updates',
-            itemTag: ''
+            itemTag: 'li'
         });
     }
     
