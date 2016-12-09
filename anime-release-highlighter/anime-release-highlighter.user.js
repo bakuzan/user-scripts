@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.4.1
+// @version      0.4.2
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
@@ -32,6 +32,7 @@
         SCROLLER_NEXT_ID = 'userscript-arh-next',
         SCROLLER_PREV_ID = 'userscript-arh-prev',
         SCROLLER_SHIFT = 675,
+        TITLE_ID = 'userscript-arh-title',
         watchList = [];
     
     var newReleaseContainer = buildElement('DIV', { id: CONTAINER_ID });
