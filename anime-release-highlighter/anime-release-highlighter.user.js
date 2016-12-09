@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.3.3
+// @version      0.4.1
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-release-highlighter.css
-// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require		   https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
@@ -27,7 +27,7 @@
             kissanime: kissanimeProcessor
         },
 		REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
-        REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2})|([.com]$)/g,
+        REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2,}$)/g,
         SCROLLER_CONTROLS_ID = 'userscript-arh-nav',
         SCROLLER_NEXT_ID = 'userscript-arh-next',
         SCROLLER_PREV_ID = 'userscript-arh-prev',
@@ -62,20 +62,36 @@
 		return itemLowerCase;
 	}
     
-    function animefreakProcessor() {
-        var content = document.getElementById('primary'),
-            releaseList = content.getElementsByTagName('tbody')[0],
-            releases = releaseList.children,
-            len = releases.length;
+    function coreProcessor(options) {
+        var content = document.querySelectorAll(options.containerSelector)[0],
+            updates = document.querySelectorAll(options.listSelector)[0],
+            releases = updates.getElementsByTagName(options.itemTag),
+            len = releases.length,
+            title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my anime' });
+        newReleaseContainer.appendChild(title);
         
         while (len--) {
             var release = releases[len],
-                text = release.getElementsByTagName('a')[0].textContent;
+				latest = release.getElementsByTagName('a')[0],
+				text;
+
+			if(!latest) continue;
+
+			text = latest.textContent;
             if(watchList.indexOf(processText(text)) > -1) {
-                newReleaseContainer.insertBefore(release, newReleaseContainer.firstChild);
+				release.className += HIGHLIGHT_CLASS;
+                newReleaseContainer.insertBefore(release, title.nextSibling);
             }
         }
         content.insertBefore(newReleaseContainer, content.firstChild);
+    }
+    
+    function animefreakProcessor() {
+        coreProcessor({
+            containerSelector: '#primary',
+            listSelector: 'tbody',
+            itemTag: 'tr'
+        });
     }
 	
 	function kissanimeScrollerControls(scroller) {
@@ -100,7 +116,7 @@
             content = document.getElementById('leftside'),
             container = content.getElementsByClassName(KA_SCROLL_INNER)[0],
             releases = container.getElementsByTagName('a'),
-            len = releases.length
+            len = releases.length;
 		newLocation.className = 'scrollable';
 		newReleaseContainer.className += KA_SCROLL_INNER;
 		
