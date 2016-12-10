@@ -75,6 +75,111 @@ h1, .view-header {
 }
 
 /* masterani styles */
+#userscript-arh-container.masterani {
+    margin: 0 -.5em;
+    width: calc(100% + 1em);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+	#userscript-arh-container.masterani .card {
+		width: calc(33% - 1em);
+	}
+}
+#userscript-arh-container.masterani .card {
+    width: calc(25% - 1em);
+    margin: .5em;
+    display: inline-block!important;
+    -webkit-transition: box-shadow .3s cubic-bezier(.25,.8,.25,1);
+    transition: box-shadow .3s cubic-bezier(.25,.8,.25,1);
+    position: relative;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 1em;
+    margin: .875em .5em;
+    float: none;
+    max-width: 100%;
+    position: relative;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-height: 0;
+    background: #1b1c1d;
+    padding: 0;
+    border: none;
+    z-index: '';
+}
+
+#userscript-arh-container.masterani .card .content {
+    font-size: .7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    -webkit-transition: background-color .3s ease-in-out;
+    transition: background-color .3s ease-in-out;
+    position: relative;
+    padding: 0 0 56.25%;
+    overflow: hidden;
+    background-color: #1b1c1d;
+    border-radius: 0!important;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    border: none;
+    background: 0 0;
+    margin: 0;
+    box-shadow: none;
+    border-top: none!important;
+}
+#userscript-arh-container.masterani .card .content .cover {
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid #171717;
+    border-right: none;
+    border-bottom: none;
+}
+#userscript-arh-container.masterani .card .content .thumb {
+    z-index: 0;
+    position: absolute;
+    width: 100%;
+    height: auto;
+}
+#userscript-arh-container.masterani .card .content .title {
+    bottom: 0;
+    width: calc(100% - 47px);
+    padding: 15px 10px 5px;
+}
+#userscript-arh-container.masterani .card .content .details {
+    font-size: .65rem;
+    top: 0;
+    width: 100%;
+    padding: 5px 10px 10px;
+}
+#userscript-arh-container.masterani .card .content .details, #userscript-arh-container.masterani .card .content .title {
+	background: -webkit-linear-gradient(bottom,transparent,rgba(0,0,0,.8));
+    background: linear-gradient(0deg,transparent 0,rgba(0,0,0,.8));
+    z-index: 1;
+    position: absolute;
+    left: 0;
+}
+#userscript-arh-container.masterani .card .content .details .time {
+    float: right;
+}
+#userscript-arh-container.masterani .card .content .title .limit {
+    max-height: 1.25rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
 /* Kissanime styles */
 .banner {
