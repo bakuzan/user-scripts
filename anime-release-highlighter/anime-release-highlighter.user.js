@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.4.2
+// @version      0.4.5
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
+// @include		 http://www1.gogoanime.tv/
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-release-highlighter.css
-// @require		   https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
@@ -22,9 +23,11 @@
 	  	    
 	var CONTAINER_ID = 'userscript-arh-container',
         HIGHLIGHT_CLASS = ' userscript-arh-highlight',
+		host = '',
         processors = {
             animefreak: animefreakProcessor,
-            kissanime: kissanimeProcessor
+            kissanime: kissanimeProcessor,
+			gogoanime: gogoanimeProcessor
         },
 		REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
         REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2,}$)/g,
@@ -70,15 +73,16 @@
             len = releases.length,
             title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my anime' });
         newReleaseContainer.appendChild(title);
+		newReleaseContainer.className = host;
         
         while (len--) {
             var release = releases[len],
-				latest = release.getElementsByTagName('a')[0],
+				latest = release.getElementsByTagName('a'),
 				text;
 
 			if(!latest) continue;
 
-			text = latest.textContent;
+			text = latest[0].textContent || latest[1].textContent;
             if(watchList.indexOf(processText(text)) > -1) {
 				release.className += HIGHLIGHT_CLASS;
                 newReleaseContainer.insertBefore(release, title.nextSibling);
@@ -86,6 +90,14 @@
         }
         content.insertBefore(newReleaseContainer, content.firstChild);
     }
+	
+	function gogoanimeProcessor() {
+		coreProcessor({
+            containerSelector: '.content_left',
+            listSelector: '.items',
+            itemTag: 'li'
+        });
+	}
     
     function animefreakProcessor() {
         coreProcessor({
@@ -136,7 +148,7 @@
     }
     
     function getProcessor() {
-        var host = window.location.host;
+        host = window.location.host;
         return host.replace(REGEX_EXTRACTER, '');
     }
     
