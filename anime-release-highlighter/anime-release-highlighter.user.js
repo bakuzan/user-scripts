@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.4.7
+// @version      0.4.8
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
@@ -27,7 +27,8 @@
         processors = {
             animefreak: animefreakProcessor,
             kissanime: kissanimeProcessor,
-			gogoanime: gogoanimeProcessor
+			gogoanime: gogoanimeProcessor,
+			masterani: masteraniProcessor
         },
 		REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
         REGEX_EXTRACTER = /([w]{3}(\d*)([.]))|(([.])\w{2,}$)/g,
@@ -77,12 +78,12 @@
         
         while (len--) {
             var release = releases[len],
-				latest = release.getElementsByTagName('a'),
+				latest = release.querySelector(options.textSelector),
 				text;
 
 			if(!latest) continue;
 
-			text = latest[0].textContent.match(/\w+/g) !== null ? latest[0].textContent : latest[1].textContent;
+			text = latest.textContent;
             if(watchList.indexOf(processText(text)) > -1) {
 				release.className += HIGHLIGHT_CLASS;
                 newReleaseContainer.insertBefore(release, title.nextSibling);
@@ -91,11 +92,21 @@
         content.insertBefore(newReleaseContainer, content.firstChild);
     }
 	
+	function masteraniProcessor() {
+		coreProcessor({
+            containerSelector: '#home',
+            listSelector: '.cards',
+            itemTag: 'div',
+			textSelector: 'div.limit'
+        });
+	}
+	
 	function gogoanimeProcessor() {
 		coreProcessor({
             containerSelector: '.content_left',
             listSelector: '.items',
-            itemTag: 'li'
+            itemTag: 'li',
+			textSelector: 'p.name > a'
         });
 	}
     
@@ -103,7 +114,8 @@
         coreProcessor({
             containerSelector: '#primary',
             listSelector: 'tbody',
-            itemTag: 'tr'
+            itemTag: 'tr',
+			textSelector: 'td.views-field-title > a'
         });
     }
 	
