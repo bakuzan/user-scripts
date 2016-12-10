@@ -48,6 +48,11 @@ h1, .view-header {
     max-width: 100%;
     height: auto;
 }
+#userscript-arh-container.gogoanime li .img:before {
+    content: "";
+    display: block;
+    padding-top: 125%;
+}
 #userscript-arh-container.gogoanime li p.name {
     line-height: 16px;
     height: 34px;
