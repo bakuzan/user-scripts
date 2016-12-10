@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.4.9
+// @version      0.5.0
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
@@ -48,11 +48,8 @@
     
     function scrollerMovement(event) {
         var id = event.target.id;
-        if(id === SCROLLER_NEXT_ID) {
-            newReleaseContainer.style.left = `${digitsOnly(newReleaseContainer.style.left) - SCROLLER_SHIFT}px`;
-        } else if (id === SCROLLER_PREV_ID) {
-            newReleaseContainer.style.left = (digitsOnly(newReleaseContainer.style.left) + SCROLLER_SHIFT > 0) ? 0 : `${digitsOnly(newReleaseContainer.style.left) + SCROLLER_SHIFT}px`;
-        }
+        if (id === SCROLLER_NEXT_ID) return newReleaseContainer.style.left = `${digitsOnly(newReleaseContainer.style.left) - SCROLLER_SHIFT}px`;
+		if (id === SCROLLER_PREV_ID) return newReleaseContainer.style.left = (digitsOnly(newReleaseContainer.style.left) + SCROLLER_SHIFT > 0) ? 0 : `${digitsOnly(newReleaseContainer.style.left) + SCROLLER_SHIFT}px`;
     }
 	
     function cleanText(text) {
@@ -69,9 +66,9 @@
 	}
     
     function coreProcessor(options) {
-        var content = document.querySelectorAll(options.containerSelector)[0],
-            updates = document.querySelectorAll(options.listSelector)[0],
-            releases = updates.getElementsByTagName(options.itemTag),
+        var content = document.querySelector(options.containerSelector),
+            updates = document.querySelector(options.listSelector),
+            releases = updates.querySelectorAll(options.itemSelector),
             len = releases.length,
             title = buildElement('H2', { id: TITLE_ID, textContent: 'Latest from my anime' });
         newReleaseContainer.appendChild(title);
@@ -97,7 +94,7 @@
 		coreProcessor({
             containerSelector: '#home',
             listSelector: '.cards',
-            itemTag: 'div',
+            itemSelector: 'div.card',
 			textSelector: 'div.limit'
         });
 	}
@@ -106,7 +103,7 @@
 		coreProcessor({
             containerSelector: '.content_left',
             listSelector: '.items',
-            itemTag: 'li',
+            itemSelector: 'li',
 			textSelector: 'p.name > a'
         });
 	}
@@ -115,7 +112,7 @@
         coreProcessor({
             containerSelector: '#primary',
             listSelector: 'tbody',
-            itemTag: 'tr',
+            itemSelector: 'tr',
 			textSelector: 'td.views-field-title > a'
         });
     }
