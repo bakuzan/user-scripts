@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.4.5
+// @version      0.4.6
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
@@ -30,7 +30,7 @@
 			gogoanime: gogoanimeProcessor
         },
 		REGEX_CLEANER = /\W|(?:sub)\)|(?:tv)\)/g,
-        REGEX_EXTRACTER = /([w]{3}([.]))|(([.])\w{2,}$)/g,
+        REGEX_EXTRACTER = /([w]{3}(\d*)([.]))|(([.])\w{2,}$)/g,
         SCROLLER_CONTROLS_ID = 'userscript-arh-nav',
         SCROLLER_NEXT_ID = 'userscript-arh-next',
         SCROLLER_PREV_ID = 'userscript-arh-prev',
