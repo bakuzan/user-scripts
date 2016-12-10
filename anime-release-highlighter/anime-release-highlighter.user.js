@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.4.6
+// @version      0.4.7
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
@@ -82,7 +82,7 @@
 
 			if(!latest) continue;
 
-			text = latest[0].textContent || latest[1].textContent;
+			text = latest[0].textContent.match(/\w+/g) !== null ? latest[0].textContent : latest[1].textContent;
             if(watchList.indexOf(processText(text)) > -1) {
 				release.className += HIGHLIGHT_CLASS;
                 newReleaseContainer.insertBefore(release, title.nextSibling);
@@ -148,8 +148,8 @@
     }
     
     function getProcessor() {
-        host = window.location.host;
-        return host.replace(REGEX_EXTRACTER, '');
+        host = window.location.host.replace(REGEX_EXTRACTER, '');
+        return host;
     }
     
     function extractReleases(response) {
