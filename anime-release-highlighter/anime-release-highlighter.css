@@ -150,6 +150,27 @@ h1, .view-header {
     border-right: none;
     border-bottom: none;
 }
+#userscript-arh-container.masterani .card .content .overlay {
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-transition: opacity .3s ease-in-out;
+    transition: opacity .3s ease-in-out;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
 #userscript-arh-container.masterani .card .content .overlay a {
     width: 100%;
 }
