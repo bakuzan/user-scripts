@@ -150,6 +150,9 @@ h1, .view-header {
     border-right: none;
     border-bottom: none;
 }
+#userscript-arh-container.masterani .card:hover .content .overlay {
+    opacity: 1;
+}
 #userscript-arh-container.masterani .card .content .overlay {
     z-index: 1;
     display: -webkit-box;
