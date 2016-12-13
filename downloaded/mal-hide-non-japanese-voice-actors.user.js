@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name        MAL Hide non-Japanese voice actors
 // @namespace   MAL
-// @include     /^http:\/\/myanimelist\.net\/(anime|character)(\.php\?id=|\/)\d+/
+// @include     /^https:\/\/myanimelist\.net\/(anime|character)(\.php\?id=|\/)\d+/
 // @description Hides non-Japanese voice actors from show page
-// @version     1.5.12
+// @version     1.5.13
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 
