@@ -79,8 +79,7 @@ h1, .view-header {
 
 /* masterani styles */
 #userscript-arh-container.masterani {
-    margin: 0 -.5em;
-    width: calc(100% + 1em);
+    margin: 0 3.5em;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -89,13 +88,8 @@ h1, .view-header {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
-@media only screen and (max-width: 991px) and (min-width: 768px) {
-	#userscript-arh-container.masterani .card {
-		width: calc(33% - 1em);
-	}
-}
 #userscript-arh-container.masterani .card {
-    width: calc(20% - 1em);
+    width: calc(25% - 1em);
     margin: .5em;
     display: inline-block!important;
     -webkit-transition: box-shadow .3s cubic-bezier(.25,.8,.25,1);
@@ -119,7 +113,11 @@ h1, .view-header {
     border: none;
     z-index: '';
 }
-
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+	#userscript-arh-container.masterani .card {
+		width: calc(33% - 1em);
+	}
+}
 #userscript-arh-container.masterani .card .content {
     font-size: .7rem;
     text-transform: uppercase;
@@ -127,7 +125,7 @@ h1, .view-header {
     -webkit-transition: background-color .3s ease-in-out;
     transition: background-color .3s ease-in-out;
     position: relative;
-    padding: 0 0 35%;
+    padding: 0 0 50%;
     overflow: hidden;
     background-color: #1b1c1d;
     border-radius: 0!important;
