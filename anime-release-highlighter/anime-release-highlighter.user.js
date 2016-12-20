@@ -7,6 +7,7 @@
 // @include      http://animefreak.tv/tracker
 // @include      http://www.animefreak.tv/tracker
 // @include      http://kissanime.to/
+// @include      http://kissanime.ru/
 // @include		 http://www1.gogoanime.tv/
 // @include		 http://www.masterani.me/
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/anime-release-highlighter/anime-release-highlighter.css

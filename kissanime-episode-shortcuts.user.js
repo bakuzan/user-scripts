@@ -5,6 +5,7 @@
 // @description  Some conveinent keyboard shortcuts for kissanime episode pages.
 // @author       Bakuzan
 // @include      http://kissanime.to/Anime/*/*?id=*
+// @include      http://kissanime.ru/Anime/*/*?id=*
 // @include		 *googlevideo.com*
 // @include		 *.mp4
 // @include		 *.webm
