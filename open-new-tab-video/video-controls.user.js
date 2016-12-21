@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.2
+// @version      0.0.3
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @include      http*
@@ -34,7 +34,7 @@
 	const TRANSITION_CLASS = 'userscript-ontv-transition';
 	
 	const FULLSCREEN_KEY_CODE = 70;	// f
-    const INTRO_KEY_CODE = 73;		// i
+  const INTRO_KEY_CODE = 73;		// i
 	const PLAY_KEY_CODE = 32;		// SAPCEBAR
 	const SEEK_BACKWARD_KEY = 220;	// \|
 	const SEEK_FORWARD_KEY = 191;	// /?
@@ -57,8 +57,7 @@
 	class VideoControlShortcuts {
 		constructor(videoElement) {
 			this.video = videoElement;
-			
-			body.addEventListener('keydown', this.shortcutHandler);
+			body.addEventListener('keydown', (e) => { this.shortcutHandler(e); });
 		}
 		toggleFullscreenMode(video) {
 			if (this.video.requestFullscreen) return this.video.displayingFullscreen ? this.video.exitFullscreen() : this.video.requestFullscreen();
@@ -107,8 +106,7 @@
 		}
 		init() {
 			const openInNewTabButton = this.createOpenInNewTabButton(this.index, this.video);
-			this.video.addEventListener('play', this.showOnPlayButton);
-            console.log(this.index, this.video);
+			this.video.addEventListener('play', (e) => { this.showOnPlayButton(e); });
 			/*
 			 *	Wrapping a new parent causes layout issues.
 			 *	Need to find RELIABLE way to place button near associated video.
@@ -142,11 +140,9 @@
 		let videoShortcuts;
 		for(let i = 0, length = videos.length; i < length; i++) {
 			const video = videos[i];
-			const controls = new VideoControls(i, video);
+			controllers.push(new VideoControls(i, video));
 			videoShortcuts = new VideoControlShortcuts(video);
-			controllers.push(controls);
 		}
-		console.log(controllers, videoShortcuts);
 	})();
 
 })();
