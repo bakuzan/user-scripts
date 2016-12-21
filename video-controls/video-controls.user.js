@@ -6,13 +6,12 @@
 // @author       Bakuzan
 // @include      http*
 // @exclude      http://localhost:*
-// @exclude		   *://gfycat.com/*
+// @exclude      *://gfycat.com/*
 // @exclude      *.mixtape.moe/*
 // @exclude      http://webmshare.com/*
-// @exclude		   *googlevideo.com*
 // @exclude      *drive.google.com/*
-// @require		   https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
-// @require		   https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
+// @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/video-controls/video-controls.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -31,11 +30,11 @@
 	const NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-';
 	const NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container';
 	const onPlayButton = buildElement('input', { id: `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`, className: 'userscript-ontv-transition', type: 'button', value: 'Open video in new tab?' });
-  const PREVENT_SHOW_ON_PLAY_WINDOW = 10;
+	const PREVENT_SHOW_ON_PLAY_WINDOW = 10;
 	const TRANSITION_CLASS = 'userscript-ontv-transition';
 	
 	const FULLSCREEN_KEY_CODE = 70;	// f
-  const INTRO_KEY_CODE = 73;		// i
+	const INTRO_KEY_CODE = 73;		// i
 	const PLAY_KEY_CODE = 32;		// SAPCEBAR
 	const SEEK_BACKWARD_KEY = 220;	// \|
 	const SEEK_FORWARD_KEY = 191;	// /?
@@ -128,7 +127,7 @@
 			window.open(this.video.getAttribute('src') || this.video.firstChild.getAttribute('src'), '_blank');
 		}
 		showOnPlayButton(event) {
-      if(this.video.currentTime > PREVENT_SHOW_ON_PLAY_WINDOW) return;
+			if(this.video.currentTime > PREVENT_SHOW_ON_PLAY_WINDOW) return;
 			onPlayButton.style.cssText = 'opacity: 1; height: 50px';
 			onPlayButton.setAttribute('video-link', this.video.getAttribute('src') || this.video.firstChild.getAttribute('src'));
 			setTimeout(() => {
@@ -140,7 +139,8 @@
 	(function() {
 		let controllers = [];
 		let videoShortcuts;
-		for(let i = 0, length = videos.length; i < length; i++) {
+		const length = videos.length;
+		for(let i = 0; i < length; i++) {
 			const video = videos[i];
 			controllers.push(new VideoControls(i, video));
 			videoShortcuts = new VideoControlShortcuts(video);
