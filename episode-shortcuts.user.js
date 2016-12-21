@@ -22,11 +22,7 @@
   const PREV_KEY_CODE = 188, 		// ,<
   const REGEX_EPISODE_TRIM = /\/(?=[^\/]*$).*/;
   const REGEX_GET_EPISODE = /^.*\//;
-  const video = document.getElementsByTagName('video')[0];
-	
-	if(video === undefined) return;
-	//video.setAttribute('controls', true);
-	
+ 
 	class EpisodeShortcut() {
 		constructor() {
 			this.processor = {
