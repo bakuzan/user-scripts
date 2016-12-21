@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.1
+// @version      0.0.2
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @include      http*
@@ -46,34 +46,34 @@
 	const videos = document.getElementsByTagName('video');	
 	if(!videos.length) return;
 	
-	function onPlayOpenInNewTab(event) => {
-		var target = event.target;
+	const onPlayOpenInNewTab = (event) => {
+		const target = event.target;
 		window.open(target.getAttribute('video-link'), '_blank');
-	}
+	};
 	
 	onPlayButton.addEventListener('click', onPlayOpenInNewTab);
 	body.appendChild(onPlayButton);
 	
-	class VideoControlShortcuts(videoElement) {
-		constructor() {
+	class VideoControlShortcuts {
+		constructor(videoElement) {
 			this.video = videoElement;
 			
 			body.addEventListener('keydown', this.shortcutHandler);
 		}
-		toggleFullscreenMode(video) => {
+		toggleFullscreenMode(video) {
 			if (this.video.requestFullscreen) return this.video.displayingFullscreen ? this.video.exitFullscreen() : this.video.requestFullscreen();
 			if (this.video.mozRequestFullScreen) return this.video.mozDisplayingFullscreen ? this.video.mozExitFullscreen() : this.video.mozRequestFullScreen();
 			if (this.video.webkitRequestFullscreen) return document.webkitIsFullScreen ? document.webkitCancelFullScreen() : this.video.webkitRequestFullscreen();
 		}
-		seekToPoint(moveInSeconds) => {
-			const seekToTime = this.video.currentTime + moveInSeconds;
+		seekToPoint(moveInSeconds) {
+			let seekToTime = this.video.currentTime + moveInSeconds;
 			if (seekToTime < 0 || seekToTime > this.video.duration) seekToTime = 0;
 			this.video.currentTime = seekToTime;
 		}
-		togglePlay() => {
+		togglePlay() {
 			return this.video.paused ? this.video.play() : this.video.pause();
 		}
-		shortcutHandler(event) => {
+		shortcutHandler(event) {
 			event.preventDefault();
 			const keyCode = event.which;
 			const ctrlKey = event.ctrlKey;
@@ -85,7 +85,7 @@
 			} else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
 				this.toggleFullscreenMode();
 			} else if (ctrlKey && keyCode === INTRO_KEY_CODE) {
-				this.seekToPoint(SEEK_INTRO_SKIP)
+				this.seekToPoint(SEEK_INTRO_SKIP);
 			} else if (keyCode === SEEK_FORWARD_KEY) {
 				if (ctrlKey && shiftKey) return this.seekToPoint(SEEK_LARGE_CHANGE);
 				if (ctrlKey) return this.seekToPoint(SEEK_NORMAL_CHANGE);
@@ -98,16 +98,17 @@
 		}
 	}
 	
-	class VideoControls(number, videoElement) {
-		constructor() {
+	class VideoControls {
+		constructor(number, videoElement) {
 			this.index = number;
 			this.video = videoElement;
 			
 			this.init();
 		}
-		init() => {
+		init() {
 			const openInNewTabButton = this.createOpenInNewTabButton(this.index, this.video);
 			this.video.addEventListener('play', this.showOnPlayButton);
+            console.log(this.index, this.video);
 			/*
 			 *	Wrapping a new parent causes layout issues.
 			 *	Need to find RELIABLE way to place button near associated video.
