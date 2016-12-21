@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.3
+// @version      0.0.5
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @include      http*
@@ -13,7 +13,7 @@
 // @exclude      *drive.google.com/*
 // @require		   https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
 // @require		   https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
-// @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/open-new-tab-video/open-new-tab-video.css
+// @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/video-controls/video-controls.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // ==/UserScript==
