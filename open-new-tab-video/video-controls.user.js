@@ -31,6 +31,7 @@
 	const NEW_TAB_CONTAINER_ID_PREFIX = 'userscript-ontv-container-';
 	const NEW_TAB_CONTAINER_CLASS = 'userscript-ontv-container';
 	const onPlayButton = buildElement('input', { id: `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`, className: 'userscript-ontv-transition', type: 'button', value: 'Open video in new tab?' });
+  const PREVENT_SHOW_ON_PLAY_WINDOW = 10;
 	const TRANSITION_CLASS = 'userscript-ontv-transition';
 	
 	const FULLSCREEN_KEY_CODE = 70;	// f
@@ -127,6 +128,7 @@
 			window.open(this.video.getAttribute('src') || this.video.firstChild.getAttribute('src'), '_blank');
 		}
 		showOnPlayButton(event) {
+      if(this.video.currentTime > PREVENT_SHOW_ON_PLAY_WINDOW) return;
 			onPlayButton.style.cssText = 'opacity: 1; height: 50px';
 			onPlayButton.setAttribute('video-link', this.video.getAttribute('src') || this.video.firstChild.getAttribute('src'));
 			setTimeout(() => {
