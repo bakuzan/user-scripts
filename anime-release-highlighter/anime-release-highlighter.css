@@ -125,7 +125,7 @@ h1, .view-header {
     -webkit-transition: background-color .3s ease-in-out;
     transition: background-color .3s ease-in-out;
     position: relative;
-    padding: 0 0 50%;
+    /* padding: 0 0 50%; */
     overflow: hidden;
     background-color: #1b1c1d;
     border-radius: 0!important;
@@ -183,6 +183,7 @@ h1, .view-header {
     font-size: 2.75rem;
 }
 #userscript-arh-container.masterani .card .content .cover img {
+	float: right;
     width: 45px;
 }
 #userscript-arh-container.masterani .card .content .thumb {
@@ -209,8 +210,17 @@ h1, .view-header {
     position: absolute;
     left: 0;
 }
-#userscript-arh-container.masterani .card .content .details .time {
-    float: right;
+#userscript-arh-container.masterani .card .content>.thumbnail>.overlay:hover .time {
+    opacity: 0;
+}
+#userscript-arh-container.masterani .content>.thumbnail>.overlay>.time {
+    -webkit-transition: opacity .2s ease-out;
+    transition: opacity .2s ease-out;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    text-transform: uppercase;
+    opacity: 1;
 }
 #userscript-arh-container.masterani .card .content .title .limit {
     max-height: 1.25rem;
