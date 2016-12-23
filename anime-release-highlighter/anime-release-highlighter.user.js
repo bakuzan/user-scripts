@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime release highlighter.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/anime-release-highlighter
-// @version      0.5.1
+// @version      0.5.2
 // @description  Highlight anime latest releases that are in my mal reading list. [supported sites: animefreak, kissanime]
 // @author       Bakuzan
 // @include      http://animefreak.tv/tracker
@@ -94,8 +94,8 @@
 	function masteraniProcessor() {
 		coreProcessor({
             containerSelector: '#home',
-            listSelector: '.cards',
-            itemSelector: 'div.card',
+            listSelector: '.thumbnails',
+            itemSelector: 'div.thumbnail',
 			textSelector: 'div.limit'
         });
 	}
