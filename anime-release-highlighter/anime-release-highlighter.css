@@ -88,7 +88,7 @@ h1, .view-header {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
-#userscript-arh-container.masterani .card {
+#userscript-arh-container.masterani .thumbnail {
     width: calc(25% - 1em);
     margin: .5em;
     display: inline-block!important;
@@ -114,11 +114,11 @@ h1, .view-header {
     z-index: '';
 }
 @media only screen and (max-width: 991px) and (min-width: 768px) {
-	#userscript-arh-container.masterani .card {
+	#userscript-arh-container.masterani .thumbnail {
 		width: calc(33% - 1em);
 	}
 }
-#userscript-arh-container.masterani .card .content {
+#userscript-arh-container.masterani .thumbnail .holder {
     font-size: .7rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -139,7 +139,7 @@ h1, .view-header {
     box-shadow: none;
     border-top: none!important;
 }
-#userscript-arh-container.masterani .card .content .cover {
+#userscript-arh-container.masterani .thumbnail .holder .cover {
     z-index: 2;
     position: absolute;
     bottom: 0;
@@ -148,10 +148,10 @@ h1, .view-header {
     border-right: none;
     border-bottom: none;
 }
-#userscript-arh-container.masterani .card:hover .content .overlay {
+#userscript-arh-container.masterani .thumbnail:hover .holder .overlay {
     opacity: 1;
 }
-#userscript-arh-container.masterani .card .content .overlay {
+#userscript-arh-container.masterani .thumbnail .holder .overlay {
     z-index: 1;
     display: -webkit-box;
     display: -webkit-flex;
@@ -172,48 +172,48 @@ h1, .view-header {
     height: 100%;
     opacity: 0;
 }
-#userscript-arh-container.masterani .card .content .overlay a {
+#userscript-arh-container.masterani .thumbnail .holder .overlay a {
     width: 100%;
 }
-#userscript-arh-container.masterani .card .content .overlay a .play.icon {
+#userscript-arh-container.masterani .thumbnail .holder .overlay a .play.icon {
     width: 100%;
     line-height: 1;
     margin: 0;
     color: #e50914;
     font-size: 2.75rem;
 }
-#userscript-arh-container.masterani .card .content .cover img {
+#userscript-arh-container.masterani .thumbnail .holder .cover img {
 	float: right;
     width: 45px;
 }
-#userscript-arh-container.masterani .card .content .thumb {
+#userscript-arh-container.masterani .thumbnail .holder .thumb {
     z-index: 0;
     position: absolute;
     width: 100%;
     height: auto;
 }
-#userscript-arh-container.masterani .card .content .title {
+#userscript-arh-container.masterani .thumbnail .holder .title {
     bottom: 0;
     width: calc(100% - 47px);
     padding: 15px 10px 5px;
 }
-#userscript-arh-container.masterani .card .content .details {
+#userscript-arh-container.masterani .thumbnail .holder .details {
     font-size: .65rem;
     top: 0;
     width: 100%;
     padding: 5px 10px 10px;
 }
-#userscript-arh-container.masterani .card .content .details, #userscript-arh-container.masterani .card .content .title {
+#userscript-arh-container.masterani .thumbnail .holder .details, #userscript-arh-container.masterani .thumbnail .holder .title {
 	background: -webkit-linear-gradient(bottom,transparent,rgba(0,0,0,.8));
     background: linear-gradient(0deg,transparent 0,rgba(0,0,0,.8));
     z-index: 1;
     position: absolute;
     left: 0;
 }
-#userscript-arh-container.masterani .card .content>.thumbnail>.overlay:hover .time {
+#userscript-arh-container.masterani .thumbnail .holder>.thumbnail>.overlay:hover .time {
     opacity: 0;
 }
-#userscript-arh-container.masterani .content>.thumbnail>.overlay>.time {
+#userscript-arh-container.masterani .holder>.thumbnail>.overlay>.time {
     -webkit-transition: opacity .2s ease-out;
     transition: opacity .2s ease-out;
     position: absolute;
@@ -222,7 +222,7 @@ h1, .view-header {
     text-transform: uppercase;
     opacity: 1;
 }
-#userscript-arh-container.masterani .card .content .title .limit {
+#userscript-arh-container.masterani .thumbnail .holder .title .limit {
     max-height: 1.25rem;
     overflow: hidden;
     white-space: nowrap;
