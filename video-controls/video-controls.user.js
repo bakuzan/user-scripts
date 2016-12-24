@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.6
+// @version      0.0.7
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @include      http*
@@ -22,6 +22,8 @@
 	
 	const cssTxt  = GM_getResourceText ("stylesheet");
 	GM_addStyle (cssTxt);
+	
+	let FIRST_CLICK_ON_KISSANIME = window.location.host === 'kissanime.ru';
 	
 	const body = document.body;
 	const NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-';
@@ -78,6 +80,10 @@
 			const shiftKey = event.shiftKey;
 			if(keyCode === PLAY_KEY_CODE) {
 				if (this.video !== document.activeElement) this.video.focus();
+				if (FIRST_CLICK_ON_KISSANIME) { 
+					this.togglePlay(); 
+					FIRST_CLICK_ON_KISSANIME = false;
+				}
 				this.togglePlay();
 				this.video.blur();
 			} else if (ctrlKey && shiftKey && keyCode === FULLSCREEN_KEY_CODE) {
