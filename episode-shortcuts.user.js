@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.7
+// @version      0.0.8
 // @description  Some conveinent keyboard shortcuts for anime site episode pages.
 // @author       Bakuzan
 // @include      http://www.masterani.me/anime/watch/*/*
@@ -14,6 +14,7 @@
   'use strict';
 
 	const body = document.body;
+	const HOST_KISSANIME = 'kissanime';
 	const HOST_NAME = window.location.host.replace(/([w]{3}(\d*)([.]))|(([.])\w{2,}$)/g, '');
 	const HOME_KEY_CODE = 192;		// '@
 	const LIST = 'episodeList';
@@ -33,7 +34,19 @@
 		}
 		init() {
 			this.currentPage = window.location.href;
-			document.body.addEventListener('keydown', (e) => { this.shortcutHandler(e); });
+			if (HOST_NAME === HOST_KISSANIME) this.fixKissanimeEpisodeLink();
+			
+			body.addEventListener('keydown', (e) => { this.shortcutHandler(e); });
+		}
+		fixKissanimeEpisodeLink() {
+			const idIndex = this.currentPage.indexOf('id=');
+			const length = this.currentPage.length;
+			if (idIndex + 3 === length) {
+				const episode = body.querySelector('#selectEpisode > option:last-child');
+				const value = episode.value;
+				const baseUrl = currentPage.replace(REGEX_EPISODE_TRIM, '');
+				this.updateWindowHref(`${baseUrl}/${value}`);
+			}
 		}
 		goToHandler(namedHandle) {
 			this.handler[namedHandle](this.currentPage, this.updateWindowHref);
@@ -74,10 +87,10 @@
 				updateWindowHref(currentPage.replace(REGEX_EPISODE_TRIM, ''));
 			},
 			next: () => {
-				document.getElementById('btnNext').click();
+				body.getElementById('btnNext').click();
 			},
 			previous: () => {
-				document.getElementById('btnPrevious').click();
+				body.getElementById('btnPrevious').click();
 			}
 		}
 	});
