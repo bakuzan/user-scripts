@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.8
+// @version      0.0.9
 // @description  Some conveinent keyboard shortcuts for anime site episode pages.
 // @author       Bakuzan
 // @include      http://www.masterani.me/anime/watch/*/*
@@ -44,7 +44,7 @@
 			if (idIndex + 3 === length) {
 				const episode = body.querySelector('#selectEpisode > option:last-child');
 				const value = episode.value;
-				const baseUrl = currentPage.replace(REGEX_EPISODE_TRIM, '');
+				const baseUrl = this.currentPage.replace(REGEX_EPISODE_TRIM, '');
 				this.updateWindowHref(`${baseUrl}/${value}`);
 			}
 		}
