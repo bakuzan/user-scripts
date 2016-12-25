@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.9
+// @version      0.0.10
 // @description  Some conveinent keyboard shortcuts for anime site episode pages.
 // @author       Bakuzan
 // @include      http://www.masterani.me/anime/watch/*/*
@@ -87,10 +87,10 @@
 				updateWindowHref(currentPage.replace(REGEX_EPISODE_TRIM, ''));
 			},
 			next: () => {
-				body.getElementById('btnNext').click();
+				document.getElementById('btnNext').click();
 			},
 			previous: () => {
-				body.getElementById('btnPrevious').click();
+				document.getElementById('btnPrevious').click();
 			}
 		}
 	});
