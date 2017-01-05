@@ -25,7 +25,7 @@ h1, .view-header {
     vertical-align: top;
 }
 #userscript-arh-container.gogoanime .img {
-	overflow: hidden;
+	  overflow: hidden;
     position: relative;
 }
 #userscript-arh-container.gogoanime li .img a{
@@ -175,6 +175,10 @@ h1, .view-header {
 #userscript-arh-container.masterani .thumbnail .holder .overlay a {
     width: 100%;
 }
+#userscript-arh-container.masterani .thumbnail .holder .overlay img {
+  width: 100%;
+  max-height: 100%;
+}
 #userscript-arh-container.masterani>.thumbnail>.holder>.overlay>.play {
     -webkit-transition: opacity .2s ease-in;
     transition: opacity .2s ease-in;
@@ -202,7 +206,7 @@ h1, .view-header {
     margin: 0;
 }
 #userscript-arh-container.masterani .thumbnail .holder .cover img {
-	float: right;
+	  float: right;
     width: 45px;
 }
 #userscript-arh-container.masterani .thumbnail .holder .thumb {
@@ -223,7 +227,7 @@ h1, .view-header {
     padding: 5px 10px 10px;
 }
 #userscript-arh-container.masterani .thumbnail .holder .details, #userscript-arh-container.masterani .thumbnail .holder .title {
-	background: -webkit-linear-gradient(bottom,transparent,rgba(0,0,0,.8));
+	  background: -webkit-linear-gradient(bottom,transparent,rgba(0,0,0,.8));
     background: linear-gradient(0deg,transparent 0,rgba(0,0,0,.8));
     z-index: 1;
     position: absolute;
