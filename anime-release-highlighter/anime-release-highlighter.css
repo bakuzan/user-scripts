@@ -172,10 +172,7 @@ h1, .view-header {
     height: 100%;
     opacity: 0;
 }
-#userscript-arh-container.masterani .thumbnail .holder .overlay a {
-    width: 100%;
-}
-#userscript-arh-container.masterani .thumbnail .holder img {
+#userscript-arh-container.masterani .thumbnail .holder .overlay a.play, #userscript-arh-container.masterani .thumbnail .holder img {
   width: 100%;
   max-height: 100%;
 }
@@ -205,8 +202,8 @@ h1, .view-header {
     border-radius: 5em;
     margin: 0;
 }
-#userscript-arh-container.masterani .thumbnail .holder .cover a, #userscript-arh-container.masterani .thumbnail .holder .cover img {
-	  float: right;
+#userscript-arh-container.masterani .thumbnail .holder .cover img {
+	float: right;
     width: 45px;
 }
 #userscript-arh-container.masterani .thumbnail .holder .thumb {
