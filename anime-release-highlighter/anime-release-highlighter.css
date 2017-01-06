@@ -205,7 +205,7 @@ h1, .view-header {
     border-radius: 5em;
     margin: 0;
 }
-#userscript-arh-container.masterani .thumbnail .holder .cover img {
+#userscript-arh-container.masterani .thumbnail .holder .cover a, #userscript-arh-container.masterani .thumbnail .holder .cover img {
 	  float: right;
     width: 45px;
 }
