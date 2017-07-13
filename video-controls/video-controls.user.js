@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.0
+// @version      0.1.1
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @include      http*
 // @include      *.mp4
 // @include      *.webm
 // @include		 file:///*
-// @exclude      *drive.google.com/*
+// @include	     *drive.google.com/videoplayback*
+// @exclude      *drive.google.com/drive/*
 // @exclude      *youtube*
 // @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
 // @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
