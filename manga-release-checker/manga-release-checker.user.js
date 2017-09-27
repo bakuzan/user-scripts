@@ -4,7 +4,7 @@
 // @version      0.5.4
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga, mangatown, readmanga]
 // @author       Bakuzan
-// @include		 http://mangafox.me/releases/*
+// @include		 http*://mangafox.me/releases/*
 // @include      http://eatmanga.com/latest/*
 // @include		 http://www.mangatown.com/latest/text/*
 // @include		 http://www.readmanga.today/latest-releases
