@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Episode shortcuts
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.0.10
+// @version      0.0.14
 // @description  Some conveinent keyboard shortcuts for anime site episode pages.
 // @author       Bakuzan
-// @include      http://www.masterani.me/anime/watch/*/*
+// @include      https://www.masterani.me/anime/watch/*/*
 // @include      http://kissanime.to/Anime/*/*?id=*
 // @include      http://kissanime.ru/Anime/*/*?id=*
 // @grant        none
@@ -55,7 +55,6 @@
 			window.location.href = url;
 		}
 		shortcutHandler(event) {
-			event.preventDefault();
 			const keyCode = event.which;
 			const ctrlKey = event.ctrlKey;
 			const shiftKey = event.shiftKey;
@@ -66,20 +65,23 @@
 		
 	}
 
+    const getMasteraniActions = () =>
+      document.querySelectorAll("#watch > div > div.row.anime-info > div > div.actions > a");
+
 	const episodeShortcuts = new EpisodeShortcut({
 		masterani: {
-			episodeList: (currentPage, updateWindowHref) => {
-				const episodes = 'http://www.masterani.me/anime/info';
-				const slug = currentPage.replace(REGEX_EPISODE_TRIM, '').replace(/^.*(?:watch)/, '');
-				updateWindowHref(`${episodes}${slug}`);
+			episodeList: () => {
+                const actions = getMasteraniActions();
+                console.log(actions, actions[2]);
+                actions[2].click();
 			},
-			next: (currentPage, updateWindowHref) => {
-				const episode = Number(currentPage.replace(REGEX_GET_EPISODE, '')) + 1;
-				updateWindowHref(`${currentPage.replace(REGEX_EPISODE_TRIM, '')}/${episode}`);
+			next: () => {
+                const actions = getMasteraniActions();
+                actions[3].click();
 			},
-			previous: (currentPage, updateWindowHref) => {
-				const episode = Number(currentPage.replace(REGEX_GET_EPISODE, '')) - 1;
-				updateWindowHref(`${currentPage.replace(REGEX_EPISODE_TRIM, '')}/${episode}`);
+			previous: () => {
+                const actions = getMasteraniActions();
+                actions[1].click();
 			}
 		},
 		kissanime: {
