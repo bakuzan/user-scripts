@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.1
+// @version      0.1.2
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @include      http*
@@ -76,11 +76,11 @@
 			return this.video.paused ? this.video.play() : this.video.pause();
 		}
 		shortcutHandler(event) {
-			event.preventDefault();
 			const keyCode = event.which;
 			const ctrlKey = event.ctrlKey;
 			const shiftKey = event.shiftKey;
 			if(keyCode === PLAY_KEY_CODE) {
+				event.preventDefault();
 				if (this.video !== document.activeElement) this.video.focus();
 				if (FIRST_CLICK_ON_KISSANIME) { 
 					this.togglePlay(); 
