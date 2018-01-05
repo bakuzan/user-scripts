@@ -29,7 +29,8 @@
             mangafox: mangafoxProcessor,
             eatmanga: eatmangaProcessor,
 			mangatown: mangatownProcessor,
-			readmanga: readmangaProcessor
+			readmanga: readmangaProcessor,
+			readmng: readmangaProcessor,
         },
         readingList = [],
 		REGEX = /\W|\d+ *$/g,
