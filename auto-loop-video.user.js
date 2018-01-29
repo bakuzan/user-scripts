@@ -3,6 +3,7 @@
 // @namespace   https://github.com/bakuzan/user-scripts
 // @author      Bakuzan
 // @description Automatically enables looping on Webm videos.
+// @noframes
 // @include		https://gfycat.com/*
 // @include     file:///*
 // @include     *.webm
