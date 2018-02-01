@@ -4,15 +4,16 @@
 // @version      0.1.2
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
+// @noframes
 // @include      http*
 // @include      *.mp4
 // @include      *.webm
-// @include		 file:///*
-// @include	     *drive.google.com/videoplayback*
+// @include      file:///*
+// @include	 *drive.google.com/videoplayback*
 // @exclude      *drive.google.com/drive/*
 // @exclude      *youtube*
-// @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
-// @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require	 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
+// @require	 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/video-controls/video-controls.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText

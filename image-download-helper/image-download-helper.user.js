@@ -4,6 +4,7 @@
 // @version      0.6.4
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
+// @noframes
 // @include      http*
 // @exclude      http://localhost*
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/includes/FileSaver.min.js
@@ -11,14 +12,14 @@
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/polyfills/SW_download.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/findWithAttr.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/pad.js
-// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/cssSelectorPath.js
-// @require		 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require	 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/cssSelectorPath.js
+// @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/image-download-helper/image-download-helper.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
-// @grant		 GM_openInTab
+// @grant	 GM_openInTab
 // ==/UserScript==
 
 (function() {

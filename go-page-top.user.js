@@ -3,6 +3,7 @@
 // @namespace   https://github.com/bakuzan/user-scripts
 // @authour     Bakuzan
 // @description Link to scroll to the top of the page.
+// @noframes
 // @include     http*
 // @version     0.1.5
 // @require     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
