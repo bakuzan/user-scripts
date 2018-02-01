@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Manga Release Checker.
 // @namespace    https://github.com/bakuzan/user-scripts/tree/master/manga-release-checker
-// @version      0.5.7
+// @version      0.5.8
 // @description  Pull out manga latest releases that are in my mal reading list. [supported sites: mangafox, eatmanga, mangatown, readmanga]
 // @author       Bakuzan
 // @include		 http*://mangafox.me/releases/*
 // @include		 http*://mangafox.la/releases/*
+// @include		 http*://fanfox.net/releases/*
 // @include      http*://www.mangahere.cc/latest/*
 // @include      http://eatmanga.com/latest/*
 // @include		 http://www.mangatown.com/latest/text/*
@@ -28,6 +29,7 @@
 		HIGHLIGHT_CLASS = ' userscript-mrc-highlight',
         processors = {
             mangafox: mangafoxProcessor,
+            fanfox: mangafoxProcessor,
             mangahere: mangahereProcessor,
             eatmanga: eatmangaProcessor,
 			mangatown: mangatownProcessor,
