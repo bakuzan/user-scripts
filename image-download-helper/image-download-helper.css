@@ -81,4 +81,5 @@ input[id^='userscript-idh-download-checkbox-'] {
 #userscript-idh-check-all {
 	top: 45%;
 	height: 50px;
+	z-index: 10000;
 }
