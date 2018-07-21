@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.1.2
+// @version      0.2.0
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @noframes
@@ -9,11 +9,11 @@
 // @include      *.mp4
 // @include      *.webm
 // @include      file:///*
-// @include	 *drive.google.com/videoplayback*
+// @include	    *drive.google.com/videoplayback*
 // @exclude      *drive.google.com/drive/*
 // @exclude      *youtube*
-// @require	 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
-// @require	 https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
+// @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/wrapElementWithNewParent.js
+// @require	     https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @resource     stylesheet https://raw.githubusercontent.com/bakuzan/user-scripts/master/video-controls/video-controls.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -22,12 +22,12 @@
 (function() {
     'use strict';
 	if (window.top !== window.self) return;
-	
+
 	const cssTxt  = GM_getResourceText ("stylesheet");
 	GM_addStyle (cssTxt);
-	
+
 	let FIRST_CLICK_ON_KISSANIME = window.location.host === 'kissanime.ru';
-	
+
 	const body = document.body;
 	const NEW_TAB_BUTTON_ID_PREFIX = 'userscript-ontv-button-';
 	const NEW_TAB_BUTTON_CLASS = 'userscript-ontv-button';
@@ -36,7 +36,7 @@
 	const onPlayButton = buildElement('input', { id: `${NEW_TAB_BUTTON_ID_PREFIX.slice(0, -1)}`, className: 'userscript-ontv-transition', type: 'button', value: 'Open video in new tab?' });
 	const PREVENT_SHOW_ON_PLAY_WINDOW = 10;
 	const TRANSITION_CLASS = 'userscript-ontv-transition';
-	
+
 	const FULLSCREEN_KEY_CODE = 70;	// f
 	const INTRO_KEY_CODE = 73;		// i
 	const PLAY_KEY_CODE = 32;		// SAPCEBAR
@@ -46,18 +46,24 @@
 	const SEEK_LARGE_CHANGE = 30;
 	const SEEK_NORMAL_CHANGE = 10;
 	const SEEK_SMALL_CHANGE = 5;
-	
-	const videos = document.getElementsByTagName('video');	
+	const PLAYBACK_FASTER_KEY = 187;  // =
+	const PLAYBACK_SLOWER_KEY = 189;  // -
+	const PLAYBACK_RESET_KEY = 48;    // 0
+	const PLAYBACK_FASTER = 0.25;
+	const PLAYBACK_SLOWER = -0.25;
+	const PLAYBACK_RESET = undefined;
+
+	const videos = document.getElementsByTagName('video');
 	if(!videos.length) return;
-	
+
 	const onPlayOpenInNewTab = (event) => {
 		const target = event.target;
 		window.open(target.getAttribute('video-link'), '_blank');
 	};
-	
+
 	onPlayButton.addEventListener('click', onPlayOpenInNewTab);
 	body.appendChild(onPlayButton);
-	
+
 	class VideoControlShortcuts {
 		constructor(videoElement) {
 			this.video = videoElement;
@@ -76,15 +82,24 @@
 		togglePlay() {
 			return this.video.paused ? this.video.play() : this.video.pause();
 		}
+		adjustPlaybackSpeed(adjustment) {
+			if (adjustment) {
+				this.video.playbackRate += adjustment;
+			} else {
+				this.video.playbackRate = 1;
+			}
+		}
 		shortcutHandler(event) {
 			const keyCode = event.which;
 			const ctrlKey = event.ctrlKey;
 			const shiftKey = event.shiftKey;
+			const altKey = event.altKey;
+
 			if(keyCode === PLAY_KEY_CODE) {
 				event.preventDefault();
 				if (this.video !== document.activeElement) this.video.focus();
-				if (FIRST_CLICK_ON_KISSANIME) { 
-					this.togglePlay(); 
+				if (FIRST_CLICK_ON_KISSANIME) {
+					this.togglePlay();
 					FIRST_CLICK_ON_KISSANIME = false;
 				}
 				this.togglePlay();
@@ -101,15 +116,23 @@
 				if (ctrlKey && shiftKey) return this.seekToPoint(-SEEK_LARGE_CHANGE);
 				if (ctrlKey) return this.seekToPoint(-SEEK_NORMAL_CHANGE);
 				return this.seekToPoint(-SEEK_SMALL_CHANGE);
+			} else if (altKey) {
+				if (keyCode === PLAYBACK_FASTER_KEY) {
+					return this.adjustPlaybackSpeed(PLAYBACK_FASTER);
+				} else if (keyCode === PLAYBACK_SLOWER_KEY) {
+					return this.adjustPlaybackSpeed(PLAYBACK_SLOWER);
+				} else if (keyCode === PLAYBACK_RESET_KEY) {
+					return this.adjustPlaybackSpeed(PLAYBACK_RESET);
+				}
 			}
 		}
 	}
-	
+
 	class VideoControls {
 		constructor(number, videoElement) {
 			this.index = number;
 			this.video = videoElement;
-			
+
 			this.init();
 		}
 		init() {
@@ -127,7 +150,7 @@
 			const newTabButton = buildElement('input', { id: `${NEW_TAB_BUTTON_ID_PREFIX}${index}`, className: NEW_TAB_BUTTON_CLASS, type: 'button', value: 'View video' });
 
 			newTabButton.addEventListener('click', this.openVideoInNewTab);
-			
+
 			container.appendChild(newTabButton);
 			return container;
 		}
@@ -143,7 +166,7 @@
 			}, 5000);
 		}
 	}
-	
+
 	(function() {
 		let controllers = [];
 		let videoShortcuts;
