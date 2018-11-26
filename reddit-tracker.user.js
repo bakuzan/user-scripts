@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.3.2
-// @description  Keep track of time wasted on reddit
+// @version      1.4.0
+// @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
 // @exclude      https://www.reddit.com/r/Dashboard*
@@ -18,6 +18,7 @@
         return;
     }
 
+	let interval;
     const generateUniqueId = () =>
     ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (
@@ -30,6 +31,20 @@
     const ONE_MINUTE = ONE_SECOND * 60;
     const STORAGE_DATA = "redditTimed";
     const TODAY = new Date().toISOString().split("T")[0];
+	const allowedSubreddits = [
+	  'anime',
+	  'dankruto',
+	  'kingdom',
+	  'manga',
+	  'memepiece',
+	  'onepiece',
+	  'outoftheloop',
+	  'patientgamers',
+	  'prequelmemes',
+	  'shitpostcrusaders',
+	  'stardustcrusaders',
+	  'totalwar'
+	];
 
     const containerStyle = `
     position: fixed;
@@ -86,6 +101,8 @@
         const timesUpDisplay = buildElement("div", { id: "reddit-tracker-timeup-display", style: timesUpStyle })
         timesUpDisplay.textContent = "Redditing limit reached!\n(30 minutes today)";
         node.appendChild(timesUpDisplay);
+		
+		clearInterval(interval);
     }
 
     function updateView(data) {
@@ -98,8 +115,15 @@
     function updateTimeForToday() {
         const redditData = getRedditData();
         const todaysData = getTodaysData();
-
-		if (todaysData.time / ONE_MINUTE > 30) {
+        const url = window.location.href;
+        const currentSub = url.includes('/r/')
+          ? window.location.href.split('/r/')[1].split('/')[0]
+          : url.includes('/user/')
+            ? 'user page'
+            : 'home';
+		const isNotAnException = !allowedSubreddits.includes(currentSub);
+		
+		if (todaysData.time / ONE_MINUTE > 30 && isNotAnException) {
 			activateRedditBlock();
 		}
 
@@ -111,12 +135,6 @@
             }
         }
 
-        const url = window.location.href;
-        const currentSub = url.includes('/r/')
-          ? window.location.href.split('/r/')[1].split('/')[0]
-          : url.includes('/user/')
-            ? 'user page'
-            : 'home';
         const uniqueSubs = [...todaysData.subs, currentSub].filter(
             (x, i, arr) => arr.indexOf(x) === i
         );
@@ -133,7 +151,6 @@
         persistTodaysData(updatedToday);
     }
 
-    let interval;
     clearInterval(interval);
     interval = setInterval(updateTimeForToday, ONE_SECOND);
 
