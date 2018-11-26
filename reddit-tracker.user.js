@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.4.0
+// @version      1.4.1
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
@@ -121,7 +121,7 @@
           : url.includes('/user/')
             ? 'user page'
             : 'home';
-		const isNotAnException = !allowedSubreddits.includes(currentSub);
+		const isNotAnException = !allowedSubreddits.includes(currentSub.toLowerCase());
 		
 		if (todaysData.time / ONE_MINUTE > 30 && isNotAnException) {
 			activateRedditBlock();
