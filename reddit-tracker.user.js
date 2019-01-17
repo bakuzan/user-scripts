@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.5.0
+// @version      1.6.0
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
@@ -37,6 +37,9 @@
     'crusaderkings',
     'dankruto',
     'darksouls',
+	'darksouls2',
+	'darksouls3',
+	'demonsouls',
     'kingdom',
     'manga',
     'memepiece',
