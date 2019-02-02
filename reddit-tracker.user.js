@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.6.0
+// @version      1.7.0
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
@@ -34,12 +34,12 @@
   const allowedSubreddits = [
     'anime',
     'bleach',
-    'crusaderkings',
     'dankruto',
     'darksouls',
+	'darksoulsmemes',
 	'darksouls2',
 	'darksouls3',
-	'demonsouls',
+	'demonssouls',
     'kingdom',
     'manga',
     'memepiece',
@@ -51,6 +51,7 @@
     'shittydarksouls',
     'stardustcrusaders',
     'totalwar',
+	'Trophies',
     'vita'
   ];
 
