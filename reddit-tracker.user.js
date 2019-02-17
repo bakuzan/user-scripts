@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.7.0
+// @version      1.8.0
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
@@ -46,6 +46,7 @@
     'onepiece',
     'outoftheloop',
     'patientgamers',
+	'pokemon',
     'prequelmemes',
     'shitpostcrusaders',
     'shittydarksouls',
