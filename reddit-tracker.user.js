@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.8.0
+// @version      1.9.0
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
@@ -33,6 +33,7 @@
   const TODAY = new Date().toISOString().split('T')[0];
   const allowedSubreddits = [
     'anime',
+	'animemes',
     'bleach',
     'dankruto',
     'darksouls',
@@ -52,7 +53,7 @@
     'shittydarksouls',
     'stardustcrusaders',
     'totalwar',
-	'Trophies',
+	'trophies',
     'vita'
   ];
 
