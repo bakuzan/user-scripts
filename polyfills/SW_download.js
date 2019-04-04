@@ -59,13 +59,13 @@ if (typeof GM_download !== 'function') {
 			__total: total,
 			__loading: 0,
 			__finished: 0,
-			setLoading(num) {
-				this.__loading = num;
-				progressLoad.textContent = `${num}/${this.__total} Queued`;
+			bumpLoadingCount() {
+				this.__loading += 1;
+				progressLoad.textContent = `${this.__loading}/${this.__total} Queued`;
 			},
-			setLoaded(num){
-				this.__finished = num;
-				progressDone.textContent = `${num}/${this.__total} Loaded`;
+			bumpLoadedCount(){
+				this.__finished += 1;
+				progressDone.textContent = `${this.__finished}/${this.__total} Loaded`;
 			},
 			zipping() {
 				progressLoad.textContent = '';
@@ -111,14 +111,14 @@ if (typeof GM_download !== 'function') {
 						url: download.url,
 						name: download.name,
 						onload: function(result) {
-							loadingDriver.setLoaded(i+1);
+							loadingDriver.bumpLoadedCount();
 							resolve(getDataForZipping(result, zip, download.name));
 						}
 					});
 				});
 				
 				promises.push(promise);
-				loadingDriver.setLoading(i+1);
+				loadingDriver.bumpLoadingCount();
 			}
 			//Pretty sweet way to force zipping process to wait until data has been retrieved.
 			Promise.all(promises).then(function(values) {
