@@ -2,7 +2,7 @@
  *
  *  @description  GM_download replacement with built in zipping.
  *  @author       Bakuzan
- *  @version      3.0.2
+ *  @version      3.0.3
  */
 
 // must include "@grant GM_xmlhttpRequest" at userscript metadata block
@@ -159,7 +159,6 @@ if (typeof GM_download !== 'function') {
       };
       data.onafterload = options.onload; // onload function support
       return GM_xmlhttpRequest(data);
->>>>>>> 472d0f335b027d97eababd9cf405094dce10ec2b
     }
   }
 }
