@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.7.0
+// @version      0.7.1
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @noframes
@@ -19,7 +19,7 @@
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_xmlhttpRequest
-// @grant	     GM_openInTab
+// @grant	       GM_openInTab
 // ==/UserScript==
 
 (function() {
@@ -42,11 +42,12 @@
       if (window.top !== window.self) return;
 
       this.initalisedCount++;
-      if (this.initalisedCount > 1)
+      if (this.initalisedCount > 1) {
         console.info(
           `%c initalised image download helper : ${this.initalisedCount}`,
           'color: #ff00ff; font-weight: bold'
         );
+      }
 
       var cssTxt = GM_getResourceText('stylesheet');
       GM_addStyle(cssTxt);
@@ -252,7 +253,6 @@
           }
 
           if (!checkbox.checked) {
-            checkbox.setAttribute('checked', true);
             checkbox.click();
           }
         }
@@ -273,15 +273,20 @@
       }
 
       function displayCheckAllOption(showCheckAllContainer) {
-        if (!checkAllContainer.parentNode) checkAllSetup();
+        if (!checkAllContainer.parentNode) {
+          checkAllSetup();
+        }
+
         var displayCheckSimilar = downloads.length > 0;
         checkSimilarButton.style.display = displayCheckSimilar
           ? 'block'
           : 'none';
-        if (showCheckAllContainer !== undefined)
+
+        if (showCheckAllContainer !== undefined) {
           checkAllContainer.style.display = showCheckAllContainer
             ? 'block'
             : 'none';
+        }
       }
 
       function toggleQueueDowload(event) {
@@ -291,15 +296,24 @@
           imageSrc = target.nextSibling.src,
           extension = imageSrc.replace(REGEX_EXTRACT_EXTENSION, ''),
           index = findWithAttr(downloads, 'url', imageSrc);
+
         extension = extensions.indexOf(extension) === -1 ? '.jpg' : extension;
-        if (target.checked && index === -1)
+
+        if (target.checked && index === -1) {
           downloads.push({
             id,
             url: imageSrc,
             name: `${pad(id.replace(REGEX_EXTRACT_NUMBER, ''), 3)}${extension}`
           });
-        if (!target.checked && index > -1) downloads.splice(index, 1);
-        if (event.detail) displayCheckAllOption();
+        }
+
+        if (!target.checked && index > -1) {
+          downloads.splice(index, 1);
+        }
+
+        if (event.detail) {
+          displayCheckAllOption();
+        }
       }
 
       function processDownloads() {
