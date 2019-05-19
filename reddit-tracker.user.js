@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.10.0
+// @version      1.10.1
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
 // @exclude      https://www.reddit.com/r/Dashboard*
-// @exclude		 https://www.reddit.com/me/m/*
+// @exclude		 https://www.reddit.com/*/m/*
 // @require      https://raw.githubusercontent.com/bakuzan/useful-code/master/scripts/buildElement.js
 // @grant        none
 // ==/UserScript==
