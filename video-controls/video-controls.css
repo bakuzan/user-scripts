@@ -1,51 +1,85 @@
 .userscript-ontv-container {
-	position: relative;
-	height: 100%;
-	width: 100%;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 #userscript-ontv-button {
-	display: block;
-	position: fixed;
-	top: 20px;
-	right: 20px;
-	width: 150px;
-	height: 0;
-	background: #fff;
-	color: #aaa;
-	padding: 0;
-	border: 1px solid #aaa;
-	cursor: pointer;
-	z-index: 999;
-	opacity: 0;
+  display: block;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 150px;
+  height: 0;
+  background: #fff;
+  color: #aaa;
+  padding: 0;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
 }
 #userscript-ontv-button:hover {
-	background: #eee;
+  background: #eee;
 }
 
-input[type="button"].userscript-ontv-button {
-	display: block;
-	position: absolute;
-	left: 0;
-	bottom: -20px;
-	width: 65px;
-	height: 20px;
-	background: #fff;
-	color: #aaa;
-	padding: 0 5px;
-	border: 1px solid #aaa;
-	cursor: pointer;
-	z-index: 999;
-	box-sizing: content-box;
+input[type='button'].userscript-ontv-button {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+  width: 65px;
+  height: 20px;
+  background: #fff;
+  color: #aaa;
+  padding: 0 5px;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  z-index: 999;
+  box-sizing: content-box;
 }
-input[type="button"].userscript-ontv-button:hover {
-	background: #eee;
+input[type='button'].userscript-ontv-button:hover {
+  background: #eee;
 }
 
 .userscript-ontv-transition {
-	-webkit-transition: opacity 2s ease-in-out, height 2s ease-in-out;
-	-moz-transition: opacity 2s ease-in-out, height 2s ease-in-out;
-	-o-transition: opacity 2s ease-in-out, height 2s ease-in-out;
-	-ms-transition: opacity 2s ease-in-out, height 2s ease-in-out;
-	transition: opacity 2s ease-in-out, height 2s ease-in-out;
+  -webkit-transition: opacity 2s ease-in-out, height 2s ease-in-out;
+  -moz-transition: opacity 2s ease-in-out, height 2s ease-in-out;
+  -o-transition: opacity 2s ease-in-out, height 2s ease-in-out;
+  -ms-transition: opacity 2s ease-in-out, height 2s ease-in-out;
+  transition: opacity 2s ease-in-out, height 2s ease-in-out;
+}
+
+/* Display styles */
+.userscript-ontv-display-button,
+.userscript-ontv-display {
+  position: fixed;
+  bottom: 30px;
+  background: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  z-index: 1000;
+}
+.userscript-ontv-display-button {
+  width: 25px;
+  height: 25px;
+  color: #aaa;
+  border-radius: 10px;
+  text-align: center;
+}
+.userscript-ontv-display {
+  left: 25px;
+  white-space: pre-line;
+}
+
+.userscript-ontv-display-speed {
+  position: absolute;
+  top: 50px;
+  left: calc(100% - 50px);
+  width: 25px;
+  height: 20px;
+  background: #fff;
+  font-size: 16px;
+  z-index: 1000;
 }
