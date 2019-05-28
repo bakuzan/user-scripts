@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.0
+// @version      0.3.1
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @noframes
@@ -95,14 +95,17 @@
       });
       this.helpDisplay = buildElement('pre', {
         className: DISPLAY_CLASS,
-        textContent: `
-		Controls
+        textContent: `Controls
 		--------
 		Play: Spacebar
 		Fullscreen: Ctrl + Shift + f
 		Skip 1m30s: Ctrl + i
-		Skip Forward: / or Ctrl + / or Ctrl + Shift + /
-		Skip Backward: \\ or Ctrl + \\ or Ctrl + Shift + \\
+		Skip Forward (Small): / 
+		Skip Forward (Normal): Ctrl + / 
+		Skip Forward (Large): Ctrl + Shift + /
+		Skip Backward (Small): \\
+		Skip Backward (Normal): Ctrl + \\
+		Skip Backward (Large): Ctrl + Shift + \\
 		Playback Speed (Faster): Alt + =
 		Playback Speed (Slower): Alt + -
 		Playback Speed (Reset): Alt + 0
@@ -124,8 +127,8 @@
         textContent: 'x1'
       });
       this.speedInfo.style.cssText = `
-	  top: ${pos.top - 20}px;
-	  left: ${pos.left + pos.width}px
+	  top: ${pos.top}px;
+	  left: ${pos.left + pos.width - 40}px
 	  `;
 
       body.appendChild(this.help);
