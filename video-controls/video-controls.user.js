@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.1
+// @version      0.3.2
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @noframes
@@ -86,8 +86,6 @@
     }
 
     createDisplays() {
-      const pos = this.video.getBoundingClientRect();
-
       this.help = buildElement('button', {
         className: DISPLAY_BUTTON_CLASS,
         type: 'button',
@@ -126,14 +124,22 @@
         className: DISPLAY_SPEED_CLASS,
         textContent: 'x1'
       });
-      this.speedInfo.style.cssText = `
-	  top: ${pos.top}px;
-	  left: ${pos.left + pos.width - 40}px
-	  `;
 
       body.appendChild(this.help);
       body.appendChild(this.helpDisplay);
       body.appendChild(this.speedInfo);
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const rec = entry.target.getBoundingClientRect();
+
+          this.speedInfo.style.cssText = `
+          top: ${rec.top}px;
+          left: ${rec.left + rec.width - 40}px;
+          `;
+        }
+      });
+      resizeObserver.observe(this.video);
     }
 
     toggleFullscreenMode() {
