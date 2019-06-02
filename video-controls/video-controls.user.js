@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video controls
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.2
+// @version      0.3.3
 // @description  Provide various controls for html5 video.
 // @author       Bakuzan
 // @noframes
@@ -45,18 +45,18 @@
   });
   const PREVENT_SHOW_ON_PLAY_WINDOW = 10;
 
-  const FULLSCREEN_KEY_CODE = 'f'; // f
-  const INTRO_KEY_CODE = 'i'; // i
-  const PLAY_KEY_CODE = ' '; // SAPCEBAR
-  const SEEK_BACKWARD_KEY = '\\'; // \|
-  const SEEK_FORWARD_KEY = '/'; // /?
+  const FULLSCREEN_KEY_CODE = 'KeyF'; // f
+  const INTRO_KEY_CODE = 'KeyI'; // i
+  const PLAY_KEY_CODE = 'Space'; // SAPCEBAR
+  const SEEK_BACKWARD_KEY = 'IntlBackslash'; // \|
+  const SEEK_FORWARD_KEY = 'Slash'; // /?
   const SEEK_INTRO_SKIP = 90;
   const SEEK_LARGE_CHANGE = 30;
   const SEEK_NORMAL_CHANGE = 10;
   const SEEK_SMALL_CHANGE = 5;
-  const PLAYBACK_FASTER_KEY = '='; // =
-  const PLAYBACK_SLOWER_KEY = '-'; // -
-  const PLAYBACK_RESET_KEY = '0'; // 0
+  const PLAYBACK_FASTER_KEY = 'Equal'; // =
+  const PLAYBACK_SLOWER_KEY = 'Minus'; // -
+  const PLAYBACK_RESET_KEYS = ['Digit0', 'Numpad0']; // 0
   const PLAYBACK_FASTER = 0.25;
   const PLAYBACK_SLOWER = -0.25;
   const PLAYBACK_RESET = undefined;
@@ -179,12 +179,9 @@
       this.speedInfo.textContent = `x${this.video.playbackRate}`;
     }
     shortcutHandler(event) {
-      const key = event.key;
-      const ctrlKey = event.ctrlKey;
-      const shiftKey = event.shiftKey;
-      const altKey = event.altKey;
+      const { code: pressed, ctrlKey, shiftKey, altKey } = event;
 
-      if (key === PLAY_KEY_CODE) {
+      if (pressed === PLAY_KEY_CODE) {
         event.preventDefault();
         if (this.video !== document.activeElement) {
           this.video.focus();
@@ -195,24 +192,24 @@
         }
         this.togglePlay();
         this.video.blur();
-      } else if (ctrlKey && shiftKey && key === FULLSCREEN_KEY_CODE) {
+      } else if (ctrlKey && shiftKey && pressed === FULLSCREEN_KEY_CODE) {
         this.toggleFullscreenMode();
-      } else if (ctrlKey && key === INTRO_KEY_CODE) {
+      } else if (ctrlKey && pressed === INTRO_KEY_CODE) {
         this.seekToPoint(SEEK_INTRO_SKIP);
-      } else if (key === SEEK_FORWARD_KEY) {
+      } else if (pressed === SEEK_FORWARD_KEY) {
         if (ctrlKey && shiftKey) return this.seekToPoint(SEEK_LARGE_CHANGE);
         if (ctrlKey) return this.seekToPoint(SEEK_NORMAL_CHANGE);
         return this.seekToPoint(SEEK_SMALL_CHANGE);
-      } else if (key === SEEK_BACKWARD_KEY) {
+      } else if (pressed === SEEK_BACKWARD_KEY) {
         if (ctrlKey && shiftKey) return this.seekToPoint(-SEEK_LARGE_CHANGE);
         if (ctrlKey) return this.seekToPoint(-SEEK_NORMAL_CHANGE);
         return this.seekToPoint(-SEEK_SMALL_CHANGE);
       } else if (altKey) {
-        if (key === PLAYBACK_FASTER_KEY) {
+        if (pressed === PLAYBACK_FASTER_KEY) {
           return this.adjustPlaybackSpeed(PLAYBACK_FASTER);
-        } else if (key === PLAYBACK_SLOWER_KEY) {
+        } else if (pressed === PLAYBACK_SLOWER_KEY) {
           return this.adjustPlaybackSpeed(PLAYBACK_SLOWER);
-        } else if (key === PLAYBACK_RESET_KEY) {
+        } else if (PLAYBACK_RESET_KEYS.includes(pressed)) {
           return this.adjustPlaybackSpeed(PLAYBACK_RESET);
         }
       }
