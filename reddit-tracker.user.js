@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reddit Tracker
 // @namespace    https://www.reddit.com
-// @version      1.10.1
+// @version      1.10.2
 // @description  Prevent and keep track of time wasted on reddit
 // @author       bakuzan
 // @match        https://www.reddit.com/*
@@ -50,6 +50,7 @@
     'patientgamers',
 	'pokemon',
     'prequelmemes',
+	'senrankagura',
     'shitpostcrusaders',
     'shittydarksouls',
     'stardustcrusaders',
