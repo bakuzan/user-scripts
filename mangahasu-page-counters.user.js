@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Mangahasu page counters
 // @namespace    http://mangahasu.se/
-// @version      0.1.0
+// @version      0.1.1
 // @description  Add page counters to mangahasu reader
 // @author       bakuzan
-// @match        ^http(s?):\/\/mangahasu.se\/.*\/.*chapter.*\.html$
+// @match        *://mangahasu.se/*/*.html
 // @grant        none
 // ==/UserScript==
 
