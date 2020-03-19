@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mangahasu page counters
 // @namespace    http://mangahasu.se/
-// @version      0.2.0
+// @version      0.2.1
 // @description  Add page counters to mangahasu reader
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -67,22 +67,23 @@
   const PREV_BUTTON = 'Prev';
   const NEXT_BUTTON = 'Next';
 
-  window.addEventListener('keypress', (event) => {
+  window.addEventListener('keydown', (event) => {
     const key = event.key;
     const btns = Array.from(
       document.querySelectorAll('.side-bar-read .change')
     );
 
     switch (key) {
-      case 'ArrowLeft':
+      case 'ArrowLeft': {
         const prev = btns.find((x) => x.textContent === PREV_BUTTON);
         if (prev) {
-          next.click();
+          prev.click();
         } else {
           alert('No previous chapter.');
         }
         return;
-      case 'ArrowRight':
+      }
+      case 'ArrowRight': {
         const next = btns.find((x) => x.textContent === NEXT_BUTTON);
         if (next) {
           next.click();
@@ -90,6 +91,7 @@
           alert('No next chapter.');
         }
         return;
+      }
       default:
         return;
     }
