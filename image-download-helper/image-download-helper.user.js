@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Image download helper
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.7.1
+// @version      0.8.0
 // @description  Take selected image url's and download them to your PC.
 // @author       Bakuzan
 // @noframes
@@ -144,8 +144,13 @@
             type: 'checkbox'
           });
 
+        checkbox.setAttribute('data-idh', true);
+        checkbox.style.display = 'block';
         checkbox.addEventListener('click', toggleQueueDowload);
+
+        container.setAttribute('data-idh', true);
         container.appendChild(checkbox, container.firstChild);
+
         return container;
       }
 
@@ -161,35 +166,45 @@
           );
         }
       }
-
       function addDownloadButtons() {
-        if (!hasDownloadButtons) {
-          for (var i = 0, length = images.length; i < length; i++) {
-            var image = images[i],
-              parent = image.parentNode,
-              downloadWrapper = createDownloadWrapper(i);
+        images = document.getElementsByTagName('img');
+
+        const maybeCheckboxes = Array.from(images).map(
+          (x) => x.previousSibling
+        );
+
+        const shouldDisplayCheckAll = !maybeCheckboxes.some(
+          (x) =>
+            x &&
+            x.nodeName !== '#text' &&
+            x.getAttribute('data-idh') &&
+            x.style.display === 'block'
+        );
+
+        for (var i = 0, count = images.length; i < count; i++) {
+          const image = images[i];
+          const parent = image.parentNode;
+
+          if (parent.getAttribute('data-idh')) {
+            downloads = [];
+            toggleParentHref(parent.parentNode);
+
+            const checkbox = image.previousSibling;
+            const makeCheckboxesVisible = checkbox.style.display === 'none';
+            checkbox.style.display = makeCheckboxesVisible ? 'block' : 'none';
+            checkbox.checked = false;
+          } else if (shouldDisplayCheckAll) {
+            const downloadWrapper = createDownloadWrapper(i);
             toggleParentHref(parent);
             wrapElementWithNewParent(downloadWrapper, image);
           }
-          hasDownloadButtons = true;
-          displayCheckAllOption(true);
-        } else {
-          for (var j = 0, count = images.length; j < count; j++) {
-            var imageForToggle = images[j],
-              originalParent = imageForToggle.parentNode.parentNode,
-              checkbox = imageForToggle.previousSibling;
-            toggleParentHref(originalParent);
-            var makeCheckboxesVisible = checkbox.style.display === 'none';
-            checkbox.style.display = makeCheckboxesVisible ? 'block' : 'none';
-            checkbox.checked = false;
-            downloads = [];
-            displayCheckAllOption(makeCheckboxesVisible);
-          }
         }
+
+        displayCheckAllOption(shouldDisplayCheckAll);
       }
 
       function stripImageSizes(downloads) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           for (var i = 0, length = downloads.length; i < length; i++) {
             var download = downloads[i];
             download.url = download.url.replace(REGEX_REMOVE_SIZE_SUFFIX, '');
