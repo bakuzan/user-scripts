@@ -38,5 +38,5 @@ function monitorUrlChanges(regex, onMatch) {
   });
 
   console.log(`BKZ: Monitoring url changes with ${regex}`);
-  return obs.disconnect;
+  return () => obs.disconnect();
 }
