@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube subscription fader
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Fade out watched videos in subscriptions
 // @author       Bakuzan
 // @noframes
@@ -20,7 +20,9 @@
 
   function runScript() {
     let timer = 0;
-    const container = document.querySelector('ytd-section-list-renderer');
+    const container = document.querySelector(
+      'ytd-section-list-renderer[page-subtype="subscriptions"]'
+    );
     const getSubscriptions = createItemGetter(container);
 
     function fadeSubscriptions() {
