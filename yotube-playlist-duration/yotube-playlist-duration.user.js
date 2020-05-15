@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube playlist duration
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.0
+// @version      0.3.1
 // @description  Add playlist duration to youtube
 // @author       Bakuzan
 // @noframes
@@ -89,6 +89,7 @@
       const hasRemoved = entry.removedNodes.length;
 
       if (hasAdded || hasRemoved) {
+        clearTimeout(timer);
         timer = window.setTimeout(() => {
           const value = calculatePlaylistDuration();
           displayCalculatedDuration(value);
