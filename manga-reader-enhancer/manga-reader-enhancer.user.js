@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.1.0
+// @version      0.2.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -24,8 +24,13 @@
     );
   }
 
+  function createCounterId(number) {
+    return `mre_${number}_counter`;
+  }
+
   function createCounter(number) {
     const counter = document.createElement('div');
+    counter.id = createCounterId(number);
     counter.textContent = number;
     counter.style.cssText = `
         position: relative;
@@ -72,6 +77,65 @@
     document.body.appendChild(pageTotal);
   }
 
+  function handleUserInput() {
+    const inputContainer = document.createElement('div');
+    inputContainer.style.cssText = `
+        background-color: #000;
+        color: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 150px;
+        padding: 10px;
+        transform: translateX(-50%) translateY(-50%);
+        box-shadow: 0px 0px 5px 1px #fff;
+        z-index: 200;
+    `;
+
+    const form = document.createElement('form');
+    form.autocomplete = 'off';
+    form.innerHTML = `
+        <label style="display: flex; flex-direction: column;">
+            Go to page
+            <input type="number" id="mreInput" min="0" style="color: #000;" />
+        </label>
+    `;
+
+    function onSubmit(event) {
+      event.preventDefault();
+
+      const value = Number(document.getElementById('mreInput').value);
+      const pageNumber = Math.max(0, value - 1);
+      const counterId = createCounterId(pageNumber);
+      const counter = document.getElementById(counterId);
+
+      if (counter) {
+        const rect = counter.getBoundingClientRect();
+        window.scrollTo({ top: rect.top });
+      } else if (!counter && pageNumber === 0) {
+        window.scrollTo(0, 0);
+      } else if (!counter) {
+        const message = document.createElement('div');
+        message.id = 'mreFeedback';
+        message.textContent = `${value} is not valid.`;
+        inputContainer.childNodes.forEach((x) =>
+          x.id === 'mreFeedback' ? inputContainer.removeChild(x) : null
+        );
+        inputContainer.appendChild(message);
+        return;
+      }
+
+      form.removeEventListener('submit', onSubmit);
+      document.body.removeChild(inputContainer);
+    }
+
+    form.addEventListener('submit', onSubmit);
+
+    inputContainer.appendChild(form);
+    document.body.appendChild(inputContainer);
+    requestAnimationFrame(() => document.getElementById('mreInput').focus());
+  }
+
   function addKeyboardShortcutListeners(
     pageButtonsSelector,
     [PREV_BUTTON, NEXT_BUTTON]
@@ -99,8 +163,8 @@
           }
           return;
         }
-        case 'KeyG':
-          log('Jump to page not implemented yet.');
+        case 'g':
+          handleUserInput();
           break;
         default:
           return;
