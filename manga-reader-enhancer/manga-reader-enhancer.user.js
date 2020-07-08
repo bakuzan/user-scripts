@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.2.0
+// @version      0.3.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -15,6 +15,9 @@
   if (window.top !== window.self) {
     return;
   }
+
+  const GO_TO_WIDGET_ID = 'mreGoToWidget';
+  const GO_TO_FEEDBACK_ID = 'mreFeedback';
 
   function log(...messages) {
     console.log(
@@ -77,8 +80,24 @@
     document.body.appendChild(pageTotal);
   }
 
+  function scrollIntoView(element) {
+    if (element.scrollIntoView) {
+      element.scrollIntoView(true);
+    } else {
+      const top = element.offsetTop;
+      window.scrollTo({ top });
+    }
+  }
+
   function handleUserInput() {
-    const inputContainer = document.createElement('div');
+    let inputContainer = document.getElementById(GO_TO_WIDGET_ID);
+    if (inputContainer) {
+      document.body.removeChild(inputContainer);
+      return;
+    }
+
+    inputContainer = document.createElement('div');
+    inputContainer.id = GO_TO_WIDGET_ID;
     inputContainer.style.cssText = `
         background-color: #000;
         color: #fff;
@@ -110,16 +129,15 @@
       const counter = document.getElementById(counterId);
 
       if (counter) {
-        const rect = counter.getBoundingClientRect();
-        window.scrollTo({ top: rect.top });
+        scrollIntoView(counter);
       } else if (!counter && pageNumber === 0) {
         window.scrollTo(0, 0);
       } else if (!counter) {
         const message = document.createElement('div');
-        message.id = 'mreFeedback';
+        message.id = GO_TO_FEEDBACK_ID;
         message.textContent = `${value} is not valid.`;
         inputContainer.childNodes.forEach((x) =>
-          x.id === 'mreFeedback' ? inputContainer.removeChild(x) : null
+          x.id === GO_TO_FEEDBACK_ID ? inputContainer.removeChild(x) : null
         );
         inputContainer.appendChild(message);
         return;
