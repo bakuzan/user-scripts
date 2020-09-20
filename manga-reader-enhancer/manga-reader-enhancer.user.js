@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.3.0
+// @version      0.4.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
 // @match        *://manganelo.com/chapter/*/*
+// @match        *://readcomiconline.to/Comic/*/*
 // @grant        none
 // ==/UserScript==
 
@@ -27,14 +28,14 @@
     );
   }
 
-  function createCounterId(number) {
-    return `mre_${number}_counter`;
+  function createCounterId(num) {
+    return `mre_${num}_counter`;
   }
 
-  function createCounter(number) {
+  function createCounter(num) {
     const counter = document.createElement('div');
-    counter.id = createCounterId(number);
-    counter.textContent = number;
+    counter.id = createCounterId(num);
+    counter.textContent = num;
     counter.style.cssText = `
         position: relative;
         width: 30px;
@@ -89,7 +90,7 @@
     }
   }
 
-  function handleUserInput() {
+  function handleUserInput(getCounterId) {
     let inputContainer = document.getElementById(GO_TO_WIDGET_ID);
     if (inputContainer) {
       document.body.removeChild(inputContainer);
@@ -125,7 +126,7 @@
 
       const value = Number(document.getElementById('mreInput').value);
       const pageNumber = Math.max(0, value - 1);
-      const counterId = createCounterId(pageNumber);
+      const counterId = getCounterId(pageNumber);
       const counter = document.getElementById(counterId);
 
       if (counter) {
@@ -156,7 +157,8 @@
 
   function addKeyboardShortcutListeners(
     pageButtonsSelector,
-    [PREV_BUTTON, NEXT_BUTTON]
+    [PREV_BUTTON, NEXT_BUTTON],
+    counterIdFunction = createCounterId
   ) {
     window.addEventListener('keydown', (event) => {
       const key = event.key;
@@ -182,7 +184,7 @@
           return;
         }
         case 'g':
-          handleUserInput();
+          handleUserInput(counterIdFunction);
           break;
         default:
           return;
@@ -204,6 +206,13 @@
         'PREV CHAPTER',
         'NEXT CHAPTER'
       ]);
+      break;
+    case 'readcomiconline.to':
+      addKeyboardShortcutListeners(
+        '.ml-chap-nav > a',
+        ['Prev Chapter', 'Next Chapter'],
+        (num) => `ml-pageid-${num + 1}`
+      );
       break;
     default:
       return;
