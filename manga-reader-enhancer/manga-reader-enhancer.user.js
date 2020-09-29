@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.4.0
+// @version      0.5.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -90,7 +90,7 @@
     }
   }
 
-  function handleUserInput(getCounterId) {
+  function handleUserInput(getCounterId, missingCounterFunction) {
     let inputContainer = document.getElementById(GO_TO_WIDGET_ID);
     if (inputContainer) {
       document.body.removeChild(inputContainer);
@@ -133,6 +133,8 @@
         scrollIntoView(counter);
       } else if (!counter && pageNumber === 0) {
         window.scrollTo(0, 0);
+      } else if (!counter && missingCounterFunction) {
+        missingCounterFunction(pageNumber);
       } else if (!counter) {
         const message = document.createElement('div');
         message.id = GO_TO_FEEDBACK_ID;
@@ -158,7 +160,8 @@
   function addKeyboardShortcutListeners(
     pageButtonsSelector,
     [PREV_BUTTON, NEXT_BUTTON],
-    counterIdFunction = createCounterId
+    counterIdFunction = createCounterId,
+    missingCounterFunction = null
   ) {
     window.addEventListener('keydown', (event) => {
       const key = event.key;
@@ -184,7 +187,7 @@
           return;
         }
         case 'g':
-          handleUserInput(counterIdFunction);
+          handleUserInput(counterIdFunction, missingCounterFunction);
           break;
         default:
           return;
@@ -211,7 +214,12 @@
       addKeyboardShortcutListeners(
         '.ml-chap-nav > a',
         ['Prev Chapter', 'Next Chapter'],
-        (num) => `ml-pageid-${num + 1}`
+        (num) => `ml-pageid-${num + 1}`,
+        (num) => {
+          window.location.hash = num + 1;
+          window.location.reload();
+          window.scrollTo(0, 0);
+        }
       );
       break;
     default:
