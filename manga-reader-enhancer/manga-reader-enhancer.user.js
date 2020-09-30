@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.5.1
+// @version      0.5.2
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -216,7 +216,7 @@
         ['Prev Chapter', 'Next Chapter'],
         (num) => `ml-pageid-${num + 1}`,
         (num) => {
-          window.location.hash = num + 2;
+          window.location.hash = num + 1;
           window.location.reload();
           window.scrollTo(0, 0);
         }
