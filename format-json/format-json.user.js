@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Format JSON
 // @namespace     http://github.com/bakuzan/user-scripts
-// @version      0.1.0
+// @version      0.2.0
 // @description  Format api response JSON in browser
 // @author       Bakuzan
 // @match        *://*/*.json
-// @match        https://api.gfycat.com/*
-// @match        https://api.redgifs.com/*
+// @match        https://api.*
+// @match        https://*/api/*
 // @grant        none
 // ==/UserScript==
 
