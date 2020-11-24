@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.5.2
+// @version      0.6.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
 // @match        *://manganelo.com/chapter/*/*
 // @match        *://readcomiconline.to/Comic/*/*
+// @match        *://mangaplus.shueisha.co.jp/viewer/*
+// @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/includes/waitForElement.js
 // @grant        none
 // ==/UserScript==
 
@@ -19,6 +21,8 @@
 
   const GO_TO_WIDGET_ID = 'mreGoToWidget';
   const GO_TO_FEEDBACK_ID = 'mreFeedback';
+  const MRE_COUNTER_CLASS = 'mre-counter';
+  const MRE_TOTAL_PAGES_ID = 'mre-total-pages';
 
   function log(...messages) {
     console.log(
@@ -34,6 +38,7 @@
 
   function createCounter(num) {
     const counter = document.createElement('div');
+    counter.className = MRE_COUNTER_CLASS;
     counter.id = createCounterId(num);
     counter.textContent = num;
     counter.style.cssText = `
@@ -55,17 +60,38 @@
     return counter;
   }
 
-  function addPageCounters(imagesSelector) {
+  function removeExistingCounters() {
+    return new Promise((resolve) => {
+      const total = document.getElementById(MRE_TOTAL_PAGES_ID);
+      if (total) {
+        total.parentNode.removeChild(total);
+      }
+
+      const counters = document.querySelectorAll(`.${MRE_COUNTER_CLASS}`);
+
+      for (const elem of counters) {
+        elem.parentNode.removeChild(elem);
+      }
+
+      resolve(true);
+    });
+  }
+
+  async function addPageCounters(imagesSelector, styleParentFn = () => null) {
+    await removeExistingCounters();
+
     const images = Array.from(document.querySelectorAll(imagesSelector));
     const total = images.length;
 
     // Insert counters
-    images.forEach((image, i) =>
-      image.insertAdjacentElement('afterend', createCounter(i + 1))
-    );
+    images.forEach((image, i) => {
+      image.insertAdjacentElement('afterend', createCounter(i + 1));
+      styleParentFn(image.parentNode);
+    });
 
     // Append page total count
     const pageTotal = document.createElement('div');
+    pageTotal.id = MRE_TOTAL_PAGES_ID;
     pageTotal.textContent = `${total} pages`;
     pageTotal.style.cssText = `
         position: fixed;
@@ -195,6 +221,31 @@
     });
   }
 
+  async function customMangaPlus() {
+    const mangaplusImage = '.zao-image-container > img';
+    const container = await waitForElement('.zao-surface', '#app');
+
+    const observer = new MutationObserver((mutationsList, observer) => {
+      const item = mutationsList.find((x) => x.addedNodes.length);
+      const element = item
+        ? Array.from(item.addedNodes).pop().querySelector(mangaplusImage)
+        : null;
+
+      if (element) {
+        addPageCounters(
+          mangaplusImage,
+          (p) => (p.style['flex-direction'] = 'column')
+        );
+      }
+    });
+
+    observer.observe(container, {
+      attributes: false,
+      childList: true,
+      subtree: false
+    });
+  }
+
   // Execute the stuff
   const [domain] = window.location.href.split('/').slice(2);
 
@@ -221,6 +272,9 @@
           window.scrollTo(0, 0);
         }
       );
+      break;
+    case 'mangaplus.shueisha.co.jp':
+      customMangaPlus();
       break;
     default:
       return;
