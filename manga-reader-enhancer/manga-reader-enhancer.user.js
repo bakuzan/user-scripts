@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.6.0
+// @version      0.7.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -222,28 +222,12 @@
   }
 
   async function customMangaPlus() {
-    const mangaplusImage = '.zao-image-container > img';
-    const container = await waitForElement('.zao-surface', '#app');
+    const container = await waitForElement(
+      'div[class^="Viewer-module_footer_"]',
+      '#app'
+    );
 
-    const observer = new MutationObserver((mutationsList, observer) => {
-      const item = mutationsList.find((x) => x.addedNodes.length);
-      const element = item
-        ? Array.from(item.addedNodes).pop().querySelector(mangaplusImage)
-        : null;
-
-      if (element) {
-        addPageCounters(
-          mangaplusImage,
-          (p) => (p.style['flex-direction'] = 'column')
-        );
-      }
-    });
-
-    observer.observe(container, {
-      attributes: false,
-      childList: true,
-      subtree: false
-    });
+    container.style.cssText = 'bottom: 0px !important;';
   }
 
   // Execute the stuff
