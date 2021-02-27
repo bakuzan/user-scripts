@@ -17,7 +17,7 @@
     'ytd-section-list-renderer[page-subtype="subscriptions"]';
   const listItemSelector = 'ytd-shelf-renderer.ytd-item-section-renderer';
   const gridItemSelector = 'ytd-grid-video-renderer.ytd-grid-renderer';
-  const progressSelector = 'ytd-thumbnail-overlay-resume-playback-renderer';
+  const progressSelector = '.ytd-thumbnail-overlay-resume-playback-renderer';
 
   const createItemGetter = (element) => (selector) =>
     element ? Array.from(element.querySelectorAll(selector)) : [];
