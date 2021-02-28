@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube playlist duration
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.1
+// @version      0.3.2
 // @description  Add playlist duration to youtube
 // @author       Bakuzan
 // @noframes
@@ -17,6 +17,10 @@
   const guard = (num, label) => (num ? `${num} ${label}` : '');
 
   function convertTimeStringToSeconds(str) {
+    if (str.toLowerCase() === 'live') {
+      return 0;
+    }
+
     return str
       .split(':')
       .reverse()
