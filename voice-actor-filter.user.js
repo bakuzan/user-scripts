@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MAL Voice role filter
 // @namespace    https://github.com/bakuzan/user-scripts
-// @version      0.2.0
+// @version      0.3.0
 // @description  Filter MAL voice actor roles by your MAL list anime.
 // @author       Bakuzan
 // @match        http://myanimelist.net/people/*
@@ -16,10 +16,13 @@
   const ROLE_FILTER_CONTROL = ' role-filter-control';
   const ADD_ID = 'hide-add-checkbox';
   const EDIT_ID = 'hide-edit-checkbox';
+  const AIRING_ID = 'hide-non-airing-checkbox';
   const ADD_TEXT = 'button_add';
   const EDIT_TEXT = 'button_edit';
+  const AIRING_TEXT = 'Airing';
   const HIDE_ADD_TEXT = 'Hide unlisted series.';
   const HIDE_EDIT_TEXT = 'Hide listed series.';
+  const HIDE_NON_AIRING_TEXT = 'Hide non-airing series.';
   const IGNORE_TABLES_FROM_HERE_CLASS = 'bgColor1';
 
   function getRolesTables() {
@@ -45,10 +48,15 @@
 
     for (let i = 0, len = roles.length; i < len; i++) {
       const role = roles[i];
+
+      const smalls = Array.from(role.querySelectorAll('small'));
+      const hasNoAiring = !smalls.some((x) => x.textContent === AIRING_TEXT);
+      const isAiringCheck = text === AIRING_TEXT;
+
       const anchors = role.childNodes[3].getElementsByTagName('a');
       const type = anchors[1].className;
 
-      if (type.indexOf(text) > -1) {
+      if (type.indexOf(text) > -1 || (isAiringCheck && hasNoAiring)) {
         role.style.display = hideIt ? 'none' : '';
       }
     }
@@ -60,9 +68,11 @@
 
     if (targetId === ADD_ID) return checkRoles(num, ADD_TEXT, target.checked);
     if (targetId === EDIT_ID) return checkRoles(num, EDIT_TEXT, target.checked);
+    if (targetId === AIRING_ID)
+      return checkRoles(num, AIRING_TEXT, target.checked);
   }
 
-  function createControls(num) {
+  function createControls(num, table) {
     const checkboxContainer = buildElement('div', {
       id: `voice-actor-filter-controls_${num}`,
       className: ' borderClass'
@@ -91,6 +101,24 @@
     checkboxContainer.appendChild(hideEditCheckBox);
     checkboxContainer.appendChild(hideEditText);
 
+    const smalls = Array.from(table.querySelectorAll('small'));
+    if (smalls.some((x) => x.textContent === AIRING_TEXT)) {
+      const airingText = buildElement('span', {
+        textContent: HIDE_NON_AIRING_TEXT
+      });
+
+      const airingCheckbox = buildElement('input', {
+        id: `${AIRING_ID}_${num}`,
+        type: 'checkbox',
+        className: ROLE_FILTER_CONTROL
+      });
+
+      airingCheckbox.addEventListener('change', changeHandler);
+
+      checkboxContainer.appendChild(airingCheckbox);
+      checkboxContainer.appendChild(airingText);
+    }
+
     return checkboxContainer;
   }
 
@@ -99,7 +127,7 @@
     const tables = getRolesTables();
 
     tables.forEach((x, i) => {
-      const controls = createControls(i);
+      const controls = createControls(i, x);
       pageContainer.insertBefore(controls, x);
     });
   }
