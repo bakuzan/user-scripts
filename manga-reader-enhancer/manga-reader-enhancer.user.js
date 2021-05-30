@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.9.0
+// @version      1.0.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
@@ -233,20 +233,21 @@
 
   // Execute the stuff
   const [domain] = window.location.href.split('/').slice(2);
+  const [siteName] = domain.split('.');
 
-  switch (domain) {
-    case 'mangahasu.se':
+  switch (siteName) {
+    case 'mangahasu':
       addPageCounters('#loadchapter .img > img');
       addKeyboardShortcutListeners('.side-bar-read .change', ['Prev', 'Next']);
       break;
-    case 'manganelo.com':
+    case 'manganelo':
       addPageCounters('.container-chapter-reader > img');
       addKeyboardShortcutListeners('.navi-change-chapter-btn > a', [
         'PREV CHAPTER',
         'NEXT CHAPTER'
       ]);
       break;
-    case 'readcomiconline.to':
+    case 'readcomiconline':
       addKeyboardShortcutListeners(
         '.ml-chap-nav > a',
         ['Prev Chapter', 'Next Chapter'],
@@ -258,7 +259,7 @@
         }
       );
       break;
-    case 'mangaplus.shueisha.co.jp':
+    case 'mangaplus':
       customMangaPlus();
       break;
     default:
