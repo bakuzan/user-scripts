@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      0.8.0
+// @version      0.9.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
 // @match        *://manganelo.com/chapter/*/*
-// @match        *://readcomiconline.*/Comic/*/*
+// @match        *://readcomiconline.to/Comic/*/*
+// @match        *://readcomiconline.li/Comic/*/*
 // @match        *://mangaplus.shueisha.co.jp/viewer/*
 // @require      https://raw.githubusercontent.com/bakuzan/user-scripts/master/includes/waitForElement.js
 // @grant        none
