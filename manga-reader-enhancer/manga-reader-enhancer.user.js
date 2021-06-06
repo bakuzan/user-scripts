@@ -6,6 +6,7 @@
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
 // @match        *://manganelo.com/chapter/*/*
+// @match        *://readmanganato.com/*/*
 // @match        *://readcomiconline.to/Comic/*/*
 // @match        *://readcomiconline.li/Comic/*/*
 // @match        *://mangaplus.shueisha.co.jp/viewer/*
@@ -241,6 +242,7 @@
       addKeyboardShortcutListeners('.side-bar-read .change', ['Prev', 'Next']);
       break;
     case 'manganelo':
+    case 'readmanganato':
       addPageCounters('.container-chapter-reader > img');
       addKeyboardShortcutListeners('.navi-change-chapter-btn > a', [
         'PREV CHAPTER',
