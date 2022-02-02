@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Cartoon Link Quick
 // @namespace    https://github.com/bakuzan/user-scripts
-// @version      0.1.0
+// @version      0.2.0
 // @description  Stop annoying redirects on cartoon site
 // @author       Bakuzan
-// @match        *://kimcartoon.li/*
-// @match        *://kimcartoon.to/*
-// @match        *://kimcartoon.me/*
+// @match        *://kimcartoon.li/Cartoon/*
+// @match        *://kimcartoon.to/Cartoon/*
+// @match        *://kimcartoon.me/Cartoon/*
 // @match        *://kisscenter.net/*
 // @icon         https://kimcartoon.li/Content/images/favicon.ico
 // @grant        none
