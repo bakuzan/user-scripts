@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cartoon Link Quick
 // @namespace    https://github.com/bakuzan/user-scripts
-// @version      0.2.0
+// @version      0.3.0
 // @description  Stop annoying redirects on cartoon site
 // @author       Bakuzan
 // @match        *://kimcartoon.li/Cartoon/*
@@ -30,6 +30,12 @@
 
     const target = e.path.find((x) => x.tagName === 'A');
     const url = new URL(target.href);
+
+    // If there isn't some kind of search, the link probably isn't an episode.
+    if (!url.search) {
+      window.location.href = target.href;
+      return;
+    }
 
     const pathParts = url.pathname.split('/').slice(2);
     const title = pathParts.join('-');
