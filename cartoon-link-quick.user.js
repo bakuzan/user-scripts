@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cartoon Link Quick
 // @namespace    https://github.com/bakuzan/user-scripts
-// @version      0.3.0
+// @version      1.0.0
 // @description  Stop annoying redirects on cartoon site
 // @author       Bakuzan
 // @match        *://kimcartoon.li/Cartoon/*
@@ -19,7 +19,7 @@
     return;
   }
 
-  const URL_TARGET_TEMPLATE = `https://kisscenter.net/p/{title}?sig={sig}&s=beta&pfail=3`;
+  // const URL_TARGET_TEMPLATE = `https://kisscenter.net/p/{title}?sig={sig}&s=beta&pfail=3`;
   function debug(...other) {
     console.log(` :: [Cartoon Link Quick] :: `, ...other);
   }
@@ -37,19 +37,22 @@
       return;
     }
 
-    const pathParts = url.pathname.split('/').slice(2);
-    const title = pathParts.join('-');
+    debug(target, url);
+    window.location.href = `${target.href}&s=beta&pfail=1`;
 
-    const time = new Date().getTime().toString().slice(0, 10);
-    const raws = [...pathParts, time].join('|||');
-    const sig = window.btoa(raws);
+    // const pathParts = url.pathname.split('/').slice(2);
+    // const title = pathParts.join('-');
 
-    const adjustedURL = URL_TARGET_TEMPLATE.replace('{title}', title).replace(
-      '{sig}',
-      sig
-    );
-    debug(target, url, pathParts, title, time, raws, sig, adjustedURL);
-    window.location.href = adjustedURL;
+    // const time = new Date().getTime().toString().slice(0, 10);
+    // const raws = [...pathParts, time].join('|||');
+    // const sig = window.btoa(raws);
+
+    // const adjustedURL = URL_TARGET_TEMPLATE.replace('{title}', title).replace(
+    //   '{sig}',
+    //   sig
+    // );
+    // debug(target, url, pathParts, title, time, raws, sig, adjustedURL);
+    // window.location.href = adjustedURL;
   }
 
   function applyClickHook(a) {
