@@ -8,16 +8,16 @@ Files in the root directory or their own named folder are currently used and sho
 
 > ### archive
 
-> > These scripts are no longer used by me, and I cannot confirm whether they work or not. Kept around for sentimental reasons and faster recovery if so required.
+These scripts are no longer used by me, and I cannot confirm whether they work or not. Kept around for sentimental reasons and faster recovery if so required.
 
 > ### downloaded
 
-> > Scripts sourced from the internet, not authored by @bakuzan
+Scripts sourced from the internet, not authored by @bakuzan
 
 > ### includes
 
-> > Scripts required in some of the user scripts
+Scripts required in some of the user scripts
 
 > ### polyfills
 
-> > As the name suggests
+As the name suggests
