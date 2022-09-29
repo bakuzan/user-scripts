@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube playlist duration
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.3.3
+// @version      0.4.0
 // @description  Add playlist duration to youtube
 // @author       Bakuzan
 // @noframes
@@ -14,7 +14,17 @@
   'use strict';
 
   const DISPLAY_ID = 'ypd-duration';
+  const TIME_BLOCK_CLASS = 'ytd-thumbnail-overlay-time-status-renderer';
   const guard = (num, label) => (num ? `${num} ${label}` : '');
+  const matchNodesOfInterest = (x) =>
+    (x.className &&
+      typeof x.className === 'string' &&
+      x.className.includes(TIME_BLOCK_CLASS)) ||
+    (x.querySelector && x.querySelector(`.${TIME_BLOCK_CLASS}`));
+
+  function debug(...other) {
+    console.log(`[Youtube Playlist Duration] :: `, ...other);
+  }
 
   function convertTimeStringToSeconds(str) {
     if (!str.includes(':')) {
@@ -62,10 +72,16 @@
     }
 
     const stats = document.getElementById('stats');
+    if (!stats) {
+      debug(`#stats block not found`);
+      return null;
+    }
+
     duration = stats.appendChild(document.createElement('yt-formatted-string'));
     duration.id = DISPLAY_ID;
+    duration.style.cssText = `display: initial;`;
     duration.className =
-      'style-scope ytd-playlist-sidebar-primary-info-renderer';
+      'style-scope ytd-playlist-sidebar-primary-info-renderer yt-playlist-duration';
 
     return duration;
   }
@@ -78,23 +94,29 @@
     const s = guard(seconds % 60, 'seconds');
 
     const display = getDisplay();
+    if (!display) {
+      debug(`Display not added.`);
+      return;
+    }
+
     display.innerHTML = [h, m, s]
       .filter((x) => !!x)
       .join(' ')
       .trim();
   }
 
-  function runPlaylistDuration() {
+  async function runPlaylistDuration() {
     let timer = 0;
-    const list = document.querySelector(
-      '#contents.style-scope.ytd-playlist-video-list-renderer'
-    );
 
     const obs = new MutationObserver(([entry]) => {
-      const hasAdded = entry.addedNodes.length;
-      const hasRemoved = entry.removedNodes.length;
+      debug(`Document Mutation `, { entry });
+      const hasAdded = Array.from(entry.addedNodes).some(matchNodesOfInterest);
+      const hasRemoved = Array.from(entry.removedNodes).some(
+        matchNodesOfInterest
+      );
 
       if (hasAdded || hasRemoved) {
+        debug(`Time Block Change`);
         clearTimeout(timer);
         timer = window.setTimeout(() => {
           const value = calculatePlaylistDuration();
@@ -103,7 +125,7 @@
       }
     });
 
-    obs.observe(list, {
+    obs.observe(document.documentElement, {
       attributes: false,
       childList: true,
       subtree: true
