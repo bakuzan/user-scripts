@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Manga reader enhancer
 // @namespace    https://github.com/bakuzan/user-scripts/manga-reader-enhancer
-// @version      1.1.0
+// @version      1.2.0
 // @description  Enhance certain manga reader sites
 // @author       bakuzan
 // @match        *://mangahasu.se/*/*.html*
 // @match        *://manganelo.com/chapter/*/*
 // @match        *://readmanganato.com/*/*
+// @match        *://chapmanganato.com/*/*
 // @match        *://readcomiconline.to/Comic/*/*
 // @match        *://readcomiconline.li/Comic/*/*
 // @match        *://mangaplus.shueisha.co.jp/viewer/*
@@ -243,6 +244,7 @@
       break;
     case 'manganelo':
     case 'readmanganato':
+    case 'chapmanganato':
       addPageCounters('.container-chapter-reader > img');
       addKeyboardShortcutListeners('.navi-change-chapter-btn > a', [
         'PREV CHAPTER',
