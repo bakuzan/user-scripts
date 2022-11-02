@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube playlist duration
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.1
+// @version      0.4.2
 // @description  Add playlist duration to youtube
 // @author       Bakuzan
 // @noframes
@@ -71,9 +71,12 @@
       return duration;
     }
 
-    const stats = document.querySelector('.metadata-stats');
+    const stats =
+      document.getElementById('stats') ??
+      document.querySelector('.metadata-stats');
+
     if (!stats) {
-      debug(`.metadata-stats block not found`);
+      debug(`#stats AND .metadata-stats blocks not found`);
       return null;
     }
 
