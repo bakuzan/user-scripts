@@ -2,9 +2,9 @@
 // @name         MAL Override
 // @namespace   https://github.com/bakuzan/user-scripts
 // @author      Bakuzan
-// @version      2024-02-15
+// @version      2024-02-19
 // @description  Prevent MAL disabling the Submit button
-// @match        https://myanimelist.net/ownlist/manga/*/edit
+// @match        https://myanimelist.net/ownlist/*/*/edit
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=myanimelist.net
 // @grant        none
 // ==/UserScript==
