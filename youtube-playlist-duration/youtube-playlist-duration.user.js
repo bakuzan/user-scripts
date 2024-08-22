@@ -61,7 +61,8 @@
     function calculatePlaylistDuration() {
         const spans = Array.from(
             document.querySelectorAll(
-                'ytd-playlist-video-renderer span.ytd-thumbnail-overlay-time-status-renderer'
+                // Grab all time durations for videos on page, but not reccomendations
+                'ytd-playlist-video-renderer.ytd-playlist-video-list-renderer span.ytd-thumbnail-overlay-time-status-renderer'
             )
         );
 
