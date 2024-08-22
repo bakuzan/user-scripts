@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Youtube playlist duration
 // @namespace    http://github.com/bakuzan/user-scripts
-// @version      0.4.4
+// @version      0.4.5
 // @description  Add playlist duration to youtube
 // @author       Bakuzan
 // @noframes
